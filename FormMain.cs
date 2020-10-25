@@ -47,7 +47,7 @@ namespace text_editor
             this.m_DefaultFontFamili = GetDefaultFont();
             tabControlPrincipal.ContextMenuStrip = contextMenuStripContextDoc;
 
-            NewDocument();
+            CreateNewTab();
             GetFontCollection();
             LoadListFontSize();
         }
@@ -70,7 +70,7 @@ namespace text_editor
         ///<summary>
         ///Метод, который создает новый документ без содержимого на новой вкладке.
         ///</summary>
-        private void NewDocument()
+        private void CreateNewTab()
         {
             //Создается экземпляр нового RichTextBox со следующими значениями, установленными в его свойствах.
             RichTextBox Body = new RichTextBox
@@ -110,7 +110,7 @@ namespace text_editor
             {
                 tabControlPrincipal.TabPages.Remove(tabControlPrincipal.SelectedTab);
                 this.m_intTabCount = 0;
-                NewDocument();
+                CreateNewTab();
             }
         }
         /// <summary>
@@ -123,7 +123,7 @@ namespace text_editor
                 tabControlPrincipal.TabPages.Remove(Page);
             }
             this.m_intTabCount = 0;
-            NewDocument();
+            CreateNewTab();
         }
         /// <summary>
         ///   Метод, удаляющий все активные вкладки, кроме текущей вкладки, выбранной пользователем.
@@ -160,9 +160,18 @@ namespace text_editor
                 // Если было выбрано допустимое имя файла ...
                 if(openFileDialog_Document.FileName.Length > 0)
                 {
-                    try
+                    try // Продуем прочитать файл
                     {
-
+                        // Создается новая вкладка.
+                        CreateNewTab();
+                        // Новая сгенерированная вкладка ищется и выбирается.
+                        tabControlPrincipal.SelectedTab = tabControlPrincipal.TabPages["Новый документ - " + this.m_intTabCount];
+                        // Загружаем содержимое файла в RichTextBox новой вкладки.
+                        GetNewDocument.LoadFile(openFileDialog_Document.FileName, RichTextBoxStreamType.RichText);
+                        // Имя файла указывается в заголовке вкладки и ее имени.
+                        string NameOpenDocument = Path.GetFileName(openFileDialog_Document.FileName);
+                        tabControlPrincipal.SelectedTab.Text = NameOpenDocument;
+                        tabControlPrincipal.SelectedTab.Name = NameOpenDocument;
                     }
                     catch (Exception e)
                     {
@@ -172,6 +181,15 @@ namespace text_editor
             }
         }
 
+        /// <summary>
+        /// Метод, сохраняющий активный документ.
+        /// </summary>
+        private void SaveDocument()
+        {
+            saveFileDialog_Document.FileName = tabControlPrincipal.SelectedTab.Name;
+            saveFileDialog_Document.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+        }
         #endregion Открыть и сохранить
 
         #region Основные 
