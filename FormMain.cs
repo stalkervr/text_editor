@@ -42,6 +42,16 @@ namespace text_editor
             InitializeComponent();
         }
 
+        private void FormMain_Load(object sender, EventArgs e)
+        {
+            this.m_DefaultFontFamili = GetDefaultFont();
+            tabControlPrincipal.ContextMenuStrip = contextMenuStripContextDoc;
+
+            NewDocument();
+            GetFontCollection();
+            LoadListFontSize();
+        }
+
         #region Свойства
         ///<summary>
         ///Свойство, в котором выполняется связь с элементом управления RichTextBox, 
@@ -132,10 +142,75 @@ namespace text_editor
         {
             // todo
         }
-        
+
 
         #endregion Вкладки
 
+        #region Открыть и сохранить
+        /// <summary>
+        /// Метод, открывающий существующий файл.
+        /// </summary>
+        private void OpenDocument()
+        {
+            openFileDialog_Document.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            openFileDialog_Document.Filter = "Формат текстовых файлов (RTF)|*.rtf";
+
+            if(openFileDialog_Document.ShowDialog() == DialogResult.OK)
+            {
+                // Если было выбрано допустимое имя файла ...
+                if(openFileDialog_Document.FileName.Length > 0)
+                {
+                    try
+                    {
+
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+                }
+            }
+        }
+
+        #endregion Открыть и сохранить
+
+        #region Основные 
+        /// <summary>
+        ///   Метод получения всех семейств шрифтов, установленных в системе, 
+        ///   и их установка в элементе управления toolStripComboBoxFontFamilySet.
+        /// </summary>
+        private void GetFontCollection()
+        {
+            InstalledFontCollection InstaledFonts = new InstalledFontCollection();
+            foreach(FontFamily item in InstaledFonts.Families)
+            {
+                toolStripComboBox_FontFamiliSet.Items.Add(item.Name);
+            }
+            toolStripComboBox_FontFamiliSet.SelectedIndex = toolStripComboBox_FontFamiliSet.FindStringExact(DefaultFontFamili);
+        }
+        /// <summary>
+        ///   Метод установки значений, которые будут представлять размеры шрифта 
+        ///   в элементе управления toolStripComboBox_FontSizeSet
+        /// </summary>
+        private void LoadListFontSize()
+        {
+            for(int i = 0; i <= 75; i++)
+            {
+                toolStripComboBox_FontSizeSet.Items.Add(i);
+            }
+            toolStripComboBox_FontSizeSet.SelectedIndex = DefaultFontSize;
+        }
+        /// <summary>
+        /// Метод получения семейства шрифтов по умолчанию.
+        /// </summary>
+        private Font GetDefaultFont()
+        {
+            return new Font(DefaultFontFamili, DefaultFontSize, FontStyle.Regular);
+        }
+        #endregion Основные
+
         #endregion Методы
+
+        
     }
 }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
