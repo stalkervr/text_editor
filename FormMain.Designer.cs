@@ -112,6 +112,9 @@
             this.toolStripMenuItem_CloseAll = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog_Document = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog_Document = new System.Windows.Forms.SaveFileDialog();
+            this.printDocument_Main = new System.Drawing.Printing.PrintDocument();
+            this.printDialog_Main = new System.Windows.Forms.PrintDialog();
+            this.printPreviewDialog_Main = new System.Windows.Forms.PrintPreviewDialog();
             this.statusStrip1.SuspendLayout();
             this.menuStrip_Main.SuspendLayout();
             this.toolStrip_Left.SuspendLayout();
@@ -828,6 +831,21 @@
             this.toolStripMenuItem_CloseAll.Size = new System.Drawing.Size(190, 22);
             this.toolStripMenuItem_CloseAll.Text = "Закрыть все";
             // 
+            // printDialog_Main
+            // 
+            this.printDialog_Main.UseEXDialog = true;
+            // 
+            // printPreviewDialog_Main
+            // 
+            this.printPreviewDialog_Main.AutoScrollMargin = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog_Main.AutoScrollMinSize = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog_Main.ClientSize = new System.Drawing.Size(400, 300);
+            this.printPreviewDialog_Main.Enabled = true;
+            this.printPreviewDialog_Main.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialog_Main.Icon")));
+            this.printPreviewDialog_Main.Name = "printPreviewDialog_Main";
+            this.printPreviewDialog_Main.ShowIcon = false;
+            this.printPreviewDialog_Main.Visible = false;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -942,6 +960,9 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem_CloseAll;
         private System.Windows.Forms.OpenFileDialog openFileDialog_Document;
         private System.Windows.Forms.SaveFileDialog saveFileDialog_Document;
+        private System.Drawing.Printing.PrintDocument printDocument_Main;
+        private System.Windows.Forms.PrintDialog printDialog_Main;
+        private System.Windows.Forms.PrintPreviewDialog printPreviewDialog_Main;
     }
 }
 

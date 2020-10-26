@@ -147,6 +147,7 @@ namespace text_editor
         #endregion Вкладки
 
         #region Открыть и сохранить
+
         /// <summary>
         /// Метод, открывающий существующий файл.
         /// </summary>
@@ -244,7 +245,40 @@ namespace text_editor
                 }
             }
         }
+
         #endregion Открыть и сохранить
+
+        #region Печать
+
+        /// <summary>
+        /// Метод, открывающий диалоговое окно для печати текущего желаемого документа.
+        /// </summary>
+        private void PrintDocument()
+        {
+            printDocument_Main.DocumentName = tabControlPrincipal.SelectedTab.Name;
+
+            printDialog_Main.Document = printDocument_Main;
+            printDialog_Main.AllowSelection = true;
+            printDialog_Main.AllowSomePages = true;
+
+            if(printDialog_Main.ShowDialog() == DialogResult.OK)
+            {
+                printDocument_Main.Print();
+            }
+        }
+
+        /// <summary>
+        /// Метод, открывающий диалоговое окно с предварительным просмотром того, как будет выглядеть документ при печати.
+        /// </summary>
+        private void PrintPreviwDocument()
+        {
+            printDocument_Main.DocumentName = tabControlPrincipal.SelectedTab.Name;
+
+            printPreviewDialog_Main.Document = printDocument_Main;
+
+            printPreviewDialog_Main.ShowDialog();
+        }
+        #endregion Печать
 
         #region Основные 
         /// <summary>
