@@ -188,7 +188,29 @@ namespace text_editor
         {
             saveFileDialog_Document.FileName = tabControlPrincipal.SelectedTab.Name;
             saveFileDialog_Document.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            saveFileDialog_Document.Filter = "Формат текстового файла (RTF)|*.rtf";
+            saveFileDialog_Document.Title = "Сохранить";
 
+            if(saveFileDialog_Document.ShowDialog() == DialogResult.OK)
+            {
+                // Если было выбрано допустимое имя файла ...
+                if(saveFileDialog_Document.FileName.Length > 0)
+                {
+                    try
+                    {
+                        // Сохраняем содержимое RichTextBox в установленном пути к файлу.
+                        GetNewDocument.SaveFile(saveFileDialog_Document.FileName, RichTextBoxStreamType.RichText);
+                        // Имя файла указывается в заголовке вкладки и ее имени.
+                        string FileName = Path.GetFileName(saveFileDialog_Document.FileName);
+                        tabControlPrincipal.SelectedTab.Text = FileName;
+                        tabControlPrincipal.SelectedTab.Name = FileName;
+                    }
+                    catch(Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+                }
+            }
         }
         #endregion Открыть и сохранить
 
