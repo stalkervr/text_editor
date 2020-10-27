@@ -62,7 +62,7 @@ namespace text_editor
         ///
         public RichTextBox ActiveDocument
         {
-            get { return (RichTextBox)tabControlPrincipal.SelectedTab.Controls["Body"]; }
+            get { return (RichTextBox)tabControlPrincipal.SelectedTab.Controls["Cuerpo"]; }
         }
         #endregion Свойства
 
@@ -77,12 +77,14 @@ namespace text_editor
             //Создается экземпляр нового RichTextBox со следующими значениями, установленными в его свойствах.
             RichTextBox Body = new RichTextBox
             {
-                Name = "Body",
+                Name = "Cuerpo",
                 AcceptsTab = true,
                 Dock = DockStyle.Fill,
                 ContextMenuStrip = contextMenuStripContextDoc,
                 Font = this.m_DefaultFontFamili
             };
+            // TODO: Подумать
+            // Body.SelectionIndent += 25;
             // Количество вкладок увеличивается ...
             this.m_intTabCount++;
             // Для нового документа создается имя.
@@ -142,7 +144,7 @@ namespace text_editor
         /// </summary>
         private void RemoveAllSavedTab()
         {
-            // todo
+            // TODO: Дописать позже
         }
 
 
@@ -428,5 +430,253 @@ namespace text_editor
         }
         #endregion Обработка событий menuStrip_Main
 
+        #region Обработка событий панели интрументов toolStrip_Top
+
+        /// <summary>
+        /// Обработка нажатия кнопки "B"
+        /// </summary>
+        private void toolStripButton_BoldFont_Click(object sender, EventArgs e)
+        {
+            Font FontRegular = new Font(ActiveDocument.SelectionFont.FontFamily,
+                ActiveDocument.SelectionFont.SizeInPoints, FontStyle.Regular);
+
+            Font FontBold = new Font(ActiveDocument.SelectionFont.FontFamily,
+                ActiveDocument.SelectionFont.SizeInPoints, FontStyle.Bold);
+
+            if (ActiveDocument.SelectionFont.Bold)
+            {
+                ActiveDocument.SelectionFont = FontRegular;
+                toolStripButton_BoldFont.BackColor = BackColor;
+            }
+            else
+            {
+                ActiveDocument.SelectionFont = FontBold;
+                toolStripButton_BoldFont.BackColor = Color.LightGray;
+            }
+        }
+
+        /// <summary>
+        /// Обработка нажатия кнопки "I" курсивное начертание
+        /// </summary>
+        private void toolStripButton_CursivFont_Click(object sender, EventArgs e)
+        {
+            Font FontRegular = new Font(ActiveDocument.SelectionFont.FontFamily,
+                ActiveDocument.SelectionFont.SizeInPoints, FontStyle.Regular);
+
+            Font FontItalica = new Font(ActiveDocument.SelectionFont.FontFamily,
+                ActiveDocument.SelectionFont.SizeInPoints, FontStyle.Italic);
+
+            if (ActiveDocument.SelectionFont.Italic)
+            {
+                ActiveDocument.SelectionFont = FontRegular;
+                toolStripButton_CursivFont.BackColor = BackColor;
+            }
+            else
+            {
+                ActiveDocument.SelectionFont = FontItalica;
+                toolStripButton_CursivFont.BackColor = Color.LightGray;
+            }
+        }
+
+        /// <summary>
+        /// Обработка нажатия кнопки подчёркивания текста
+        /// </summary>
+        private void toolStripButton_UnderlineFont_Click(object sender, EventArgs e)
+        {
+            Font FontRegular = new Font(ActiveDocument.SelectionFont.FontFamily,
+                ActiveDocument.SelectionFont.SizeInPoints, FontStyle.Regular);
+
+            Font FontUnderline = new Font(ActiveDocument.SelectionFont.FontFamily,
+                ActiveDocument.SelectionFont.SizeInPoints, FontStyle.Underline);
+
+            if (ActiveDocument.SelectionFont.Underline)
+            {
+                ActiveDocument.SelectionFont = FontRegular;
+                toolStripButton_UnderlineFont.BackColor = BackColor;
+            }
+            else
+            {
+                ActiveDocument.SelectionFont = FontUnderline;
+                toolStripButton_UnderlineFont.BackColor = Color.LightGray;
+            }
+        }
+        /// <summary>
+        /// Обработка нажатия кнопки пперечёркивания текста
+        /// </summary>
+        private void toolStripButton_CrostFont_Click(object sender, EventArgs e)
+        {
+            Font FuenteRegular = new Font(ActiveDocument.SelectionFont.FontFamily,
+                ActiveDocument.SelectionFont.SizeInPoints, FontStyle.Regular);
+
+            Font FuenteTachado = new Font(ActiveDocument.SelectionFont.FontFamily,
+                ActiveDocument.SelectionFont.SizeInPoints, FontStyle.Strikeout);
+
+            if (ActiveDocument.SelectionFont.Strikeout)
+            {
+                ActiveDocument.SelectionFont = FuenteRegular;
+                toolStripButton_CrostFont.BackColor = BackColor;
+            }
+            else
+            {
+                ActiveDocument.SelectionFont = FuenteTachado;
+                toolStripButton_CrostFont.BackColor = Color.LightGray;
+            }
+        }
+
+        /// <summary>
+        /// Обработка нажатия кнопки выравнивания текста по левому краю
+        /// </summary>
+        private void toolStripButton_AlignLeft_Click(object sender, EventArgs e)
+        {
+            ActiveDocument.SelectionAlignment = HorizontalAlignment.Left;
+        }
+
+        /// <summary>
+        /// Обработка нажатия кнопки выравнивания текста по центру
+        /// </summary>
+        private void toolStripButton_AlignCenter_Click(object sender, EventArgs e)
+        {
+            ActiveDocument.SelectionAlignment = HorizontalAlignment.Center;
+        }
+
+        /// <summary>
+        /// Обработка нажатия кнопки выравнивания текста по правому краю
+        /// </summary>
+        private void toolStripButton_AlignRight_Click(object sender, EventArgs e)
+        {
+            ActiveDocument.SelectionAlignment = HorizontalAlignment.Right;
+        }
+
+        /// <summary>
+        /// Обработка нажатия кнопки выравнивания текста по ширине страницы
+        /// </summary>
+        private void toolStripButton_AlignJustify_Click(object sender, EventArgs e)
+        {
+            ActiveDocument.SelectionAlignment = HorizontalAlignment.Center;
+        }
+
+        /// <summary>
+        /// Обработка нажатия кнопки смещения выделенного текста влево
+        /// </summary>
+        private void toolStripButton_TextIndent_Click(object sender, EventArgs e)
+        {
+            if (ActiveDocument.SelectionIndent != 0)
+            {
+                ActiveDocument.SelectionIndent -= 25;
+            }
+        }
+
+        /// <summary>
+        /// Обработка нажатия кнопки смещения выделенного текста вправо
+        /// </summary>
+        private void toolStripButton_TextOutdent_Click(object sender, EventArgs e)
+        {
+            ActiveDocument.SelectionIndent += 25;
+        }
+
+        /// <summary>
+        /// Обработка нажатия кнопки список с точками
+        /// </summary>
+        private void toolStripButton_BulletedList_Click(object sender, EventArgs e)
+        {
+            ActiveDocument.SelectionBullet = !ActiveDocument.SelectionBullet;
+        }
+
+        /// <summary>
+        /// Обработка нажатия кнопки нумерованный список
+        /// </summary>
+        private void toolStripButton_NumberedList_Click(object sender, EventArgs e)
+        {
+            //TODO: Нужно найти решение
+            ActiveDocument.SelectionBullet = !ActiveDocument.SelectionBullet;
+        }
+
+        /// <summary>
+        /// Обработка нажатия кнопки перевода в верхний регистр
+        /// </summary>
+        private void toolStripButton_TextToUpper_Click(object sender, EventArgs e)
+        {
+            ActiveDocument.SelectedText = ActiveDocument.SelectedText.ToUpper();
+        }
+
+        /// <summary>
+        /// Обработка нажатия кнопки перевода в нижний регистр
+        /// </summary>
+        private void toolStripButton_TextToLower_Click(object sender, EventArgs e)
+        {
+            ActiveDocument.SelectedText = ActiveDocument.SelectedText.ToLower();
+        }
+
+        /// <summary>
+        /// Обработка нажатия кнопки увеличения размера текста
+        /// </summary>
+        private void toolStripButton_FontUp_Click(object sender, EventArgs e)
+        {
+            float NewFontSize = ActiveDocument.SelectionFont.SizeInPoints + 2;
+
+            Font NewFont = new Font(ActiveDocument.SelectionFont.Name,
+                NewFontSize, ActiveDocument.SelectionFont.Style);
+
+            this.m_DefaultFontFamili = NewFont;
+            ActiveDocument.SelectionFont = NewFont;
+        }
+
+        /// <summary>
+        /// Обработка нажатия кнопки уменьшения размера текста
+        /// </summary>
+        private void toolStripButton_FontDown_Click(object sender, EventArgs e)
+        {
+            float NewFontSize = ActiveDocument.SelectionFont.SizeInPoints - 2;
+
+            Font NewFont = new Font(ActiveDocument.SelectionFont.Name,
+                NewFontSize, ActiveDocument.SelectionFont.Style);
+
+            this.m_DefaultFontFamili = NewFont;
+            ActiveDocument.SelectionFont = NewFont;
+        }
+        /// <summary>
+        /// Обработка нажатия кнопки выбора цвета текста
+        /// </summary>
+        private void toolStripButton_SetFontColor_Click(object sender, EventArgs e)
+        {
+            if (colorDialog_FontColor.ShowDialog() == DialogResult.OK)
+            {
+                ActiveDocument.SelectionColor = colorDialog_FontColor.Color;
+            }
+        }
+        /// <summary>
+        /// Обработка нажатия кнопки выделения текста маркером
+        /// </summary>
+        private void toolStripMenuItem_Yellow_Click(object sender, EventArgs e)
+        {
+            ActiveDocument.SelectionBackColor = Color.Yellow;
+        }
+        private void toolStripMenuItem_Cyan_Click(object sender, EventArgs e)
+        {
+            ActiveDocument.SelectionBackColor = Color.Cyan;
+        }
+
+        #endregion Обработка событий панели интрументов toolStrip_Top
+
+
+        #region PrintDocumentPrincipal Eventos
+
+        /// <summary>
+        ///   Событие, отвечающее за рисование в <see cref = "PrintDocument" /> содержимого, которое он содержит
+        ///   в выбранном документе для печати..
+        /// </summary>
+        private void printDocumentPrincipal_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            e.Graphics.DrawString(ActiveDocument.Text, ActiveDocument.Font, Brushes.Black, 100, 20);
+            e.Graphics.PageUnit = GraphicsUnit.Inch;
+        }
+
+
+        #endregion PrintDocumentPrincipal Eventos
+
+        private void toolStripSplitButton_MarkText_ButtonClick(object sender, EventArgs e)
+        {
+            ActiveDocument.SelectionBackColor = Color.White;
+        }
     }
 }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     

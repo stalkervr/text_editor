@@ -66,7 +66,7 @@
             this.RightToolStripPanel = new System.Windows.Forms.ToolStripPanel();
             this.LeftToolStripPanel = new System.Windows.Forms.ToolStripPanel();
             this.ContentPanel = new System.Windows.Forms.ToolStripContentPanel();
-            this.toolStrip_Left = new System.Windows.Forms.ToolStrip();
+            this.toolStrip_Top = new System.Windows.Forms.ToolStrip();
             this.toolStripButton_BoldFont = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton_CursivFont = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton_UnderlineFont = new System.Windows.Forms.ToolStripButton();
@@ -90,7 +90,6 @@
             this.toolStripButton_FontDown = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton_SetFontColor = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton_MarkText = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripComboBox_FontFamiliSet = new System.Windows.Forms.ToolStripComboBox();
@@ -115,9 +114,13 @@
             this.printDocumentPrincipal = new System.Drawing.Printing.PrintDocument();
             this.printDialogPrincipal = new System.Windows.Forms.PrintDialog();
             this.printPreviewDialogPrincipal = new System.Windows.Forms.PrintPreviewDialog();
+            this.colorDialog_FontColor = new System.Windows.Forms.ColorDialog();
+            this.toolStripSplitButton_MarkText = new System.Windows.Forms.ToolStripSplitButton();
+            this.toolStripMenuItem_Yellow = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem_Cyan = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.menuStrip_Main.SuspendLayout();
-            this.toolStrip_Left.SuspendLayout();
+            this.toolStrip_Top.SuspendLayout();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -426,10 +429,10 @@
             // 
             this.ContentPanel.Size = new System.Drawing.Size(799, 390);
             // 
-            // toolStrip_Left
+            // toolStrip_Top
             // 
-            this.toolStrip_Left.Dock = System.Windows.Forms.DockStyle.None;
-            this.toolStrip_Left.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStrip_Top.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStrip_Top.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButton_BoldFont,
             this.toolStripButton_CursivFont,
             this.toolStripButton_UnderlineFont,
@@ -453,18 +456,19 @@
             this.toolStripButton_FontDown,
             this.toolStripSeparator11,
             this.toolStripButton_SetFontColor,
-            this.toolStripButton_MarkText,
             this.toolStripSeparator12,
+            this.toolStripSplitButton_MarkText,
             this.toolStripSeparator13,
             this.toolStripComboBox_FontFamiliSet,
             this.toolStripComboBox_FontSizeSet});
-            this.toolStrip_Left.Location = new System.Drawing.Point(3, 24);
-            this.toolStrip_Left.Name = "toolStrip_Left";
-            this.toolStrip_Left.Size = new System.Drawing.Size(744, 31);
-            this.toolStrip_Left.TabIndex = 1;
+            this.toolStrip_Top.Location = new System.Drawing.Point(3, 24);
+            this.toolStrip_Top.Name = "toolStrip_Top";
+            this.toolStrip_Top.Size = new System.Drawing.Size(787, 31);
+            this.toolStrip_Top.TabIndex = 1;
             // 
             // toolStripButton_BoldFont
             // 
+            this.toolStripButton_BoldFont.BackColor = System.Drawing.SystemColors.Control;
             this.toolStripButton_BoldFont.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripButton_BoldFont.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.toolStripButton_BoldFont.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_BoldFont.Image")));
@@ -473,6 +477,7 @@
             this.toolStripButton_BoldFont.Name = "toolStripButton_BoldFont";
             this.toolStripButton_BoldFont.Size = new System.Drawing.Size(25, 28);
             this.toolStripButton_BoldFont.Text = "B";
+            this.toolStripButton_BoldFont.Click += new System.EventHandler(this.toolStripButton_BoldFont_Click);
             // 
             // toolStripButton_CursivFont
             // 
@@ -483,6 +488,7 @@
             this.toolStripButton_CursivFont.Name = "toolStripButton_CursivFont";
             this.toolStripButton_CursivFont.Size = new System.Drawing.Size(23, 28);
             this.toolStripButton_CursivFont.Text = "I";
+            this.toolStripButton_CursivFont.Click += new System.EventHandler(this.toolStripButton_CursivFont_Click);
             // 
             // toolStripButton_UnderlineFont
             // 
@@ -493,6 +499,7 @@
             this.toolStripButton_UnderlineFont.Name = "toolStripButton_UnderlineFont";
             this.toolStripButton_UnderlineFont.Size = new System.Drawing.Size(26, 28);
             this.toolStripButton_UnderlineFont.Text = "U";
+            this.toolStripButton_UnderlineFont.Click += new System.EventHandler(this.toolStripButton_UnderlineFont_Click);
             // 
             // toolStripButton_CrostFont
             // 
@@ -503,6 +510,7 @@
             this.toolStripButton_CrostFont.Name = "toolStripButton_CrostFont";
             this.toolStripButton_CrostFont.Size = new System.Drawing.Size(37, 28);
             this.toolStripButton_CrostFont.Text = "abc";
+            this.toolStripButton_CrostFont.Click += new System.EventHandler(this.toolStripButton_CrostFont_Click);
             // 
             // toolStripSeparator7
             // 
@@ -523,6 +531,7 @@
             this.toolStripButton_AlignLeft.Name = "toolStripButton_AlignLeft";
             this.toolStripButton_AlignLeft.Size = new System.Drawing.Size(28, 28);
             this.toolStripButton_AlignLeft.Text = "Align left";
+            this.toolStripButton_AlignLeft.Click += new System.EventHandler(this.toolStripButton_AlignLeft_Click);
             // 
             // toolStripButton_AlignCenter
             // 
@@ -533,6 +542,7 @@
             this.toolStripButton_AlignCenter.Name = "toolStripButton_AlignCenter";
             this.toolStripButton_AlignCenter.Size = new System.Drawing.Size(28, 28);
             this.toolStripButton_AlignCenter.Text = "Align center";
+            this.toolStripButton_AlignCenter.Click += new System.EventHandler(this.toolStripButton_AlignCenter_Click);
             // 
             // toolStripButton_AlignRight
             // 
@@ -543,6 +553,7 @@
             this.toolStripButton_AlignRight.Name = "toolStripButton_AlignRight";
             this.toolStripButton_AlignRight.Size = new System.Drawing.Size(28, 28);
             this.toolStripButton_AlignRight.Text = "Align right";
+            this.toolStripButton_AlignRight.Click += new System.EventHandler(this.toolStripButton_AlignRight_Click);
             // 
             // toolStripButton_AlignJustify
             // 
@@ -553,6 +564,7 @@
             this.toolStripButton_AlignJustify.Name = "toolStripButton_AlignJustify";
             this.toolStripButton_AlignJustify.Size = new System.Drawing.Size(28, 28);
             this.toolStripButton_AlignJustify.Text = "Align justify";
+            this.toolStripButton_AlignJustify.Click += new System.EventHandler(this.toolStripButton_AlignJustify_Click);
             // 
             // toolStripSeparator8
             // 
@@ -568,6 +580,7 @@
             this.toolStripButton_TextIndent.Name = "toolStripButton_TextIndent";
             this.toolStripButton_TextIndent.Size = new System.Drawing.Size(28, 28);
             this.toolStripButton_TextIndent.Text = "Text indent";
+            this.toolStripButton_TextIndent.Click += new System.EventHandler(this.toolStripButton_TextIndent_Click);
             // 
             // toolStripButton_TextOutdent
             // 
@@ -578,6 +591,7 @@
             this.toolStripButton_TextOutdent.Name = "toolStripButton_TextOutdent";
             this.toolStripButton_TextOutdent.Size = new System.Drawing.Size(28, 28);
             this.toolStripButton_TextOutdent.Text = "Text outdent";
+            this.toolStripButton_TextOutdent.Click += new System.EventHandler(this.toolStripButton_TextOutdent_Click);
             // 
             // toolStripSeparator9
             // 
@@ -593,6 +607,7 @@
             this.toolStripButton_BulletedList.Name = "toolStripButton_BulletedList";
             this.toolStripButton_BulletedList.Size = new System.Drawing.Size(28, 28);
             this.toolStripButton_BulletedList.Text = "Bulleted list";
+            this.toolStripButton_BulletedList.Click += new System.EventHandler(this.toolStripButton_BulletedList_Click);
             // 
             // toolStripButton_NumberedList
             // 
@@ -603,6 +618,7 @@
             this.toolStripButton_NumberedList.Name = "toolStripButton_NumberedList";
             this.toolStripButton_NumberedList.Size = new System.Drawing.Size(28, 28);
             this.toolStripButton_NumberedList.Text = "Numbered list";
+            this.toolStripButton_NumberedList.Click += new System.EventHandler(this.toolStripButton_NumberedList_Click);
             // 
             // toolStripSeparator10
             // 
@@ -619,6 +635,7 @@
             this.toolStripButton_TextToUpper.Size = new System.Drawing.Size(32, 28);
             this.toolStripButton_TextToUpper.Text = "TT";
             this.toolStripButton_TextToUpper.ToolTipText = "Text to uppercase";
+            this.toolStripButton_TextToUpper.Click += new System.EventHandler(this.toolStripButton_TextToUpper_Click);
             // 
             // toolStripButton_TextToLower
             // 
@@ -630,6 +647,7 @@
             this.toolStripButton_TextToLower.Size = new System.Drawing.Size(26, 28);
             this.toolStripButton_TextToLower.Text = "tt";
             this.toolStripButton_TextToLower.ToolTipText = "Text to lowercase";
+            this.toolStripButton_TextToLower.Click += new System.EventHandler(this.toolStripButton_TextToLower_Click);
             // 
             // toolStripButton_FontUp
             // 
@@ -641,6 +659,7 @@
             this.toolStripButton_FontUp.Size = new System.Drawing.Size(32, 28);
             this.toolStripButton_FontUp.Text = "T+";
             this.toolStripButton_FontUp.ToolTipText = "Font ++";
+            this.toolStripButton_FontUp.Click += new System.EventHandler(this.toolStripButton_FontUp_Click);
             // 
             // toolStripButton_FontDown
             // 
@@ -652,6 +671,7 @@
             this.toolStripButton_FontDown.Size = new System.Drawing.Size(28, 28);
             this.toolStripButton_FontDown.Text = "T-";
             this.toolStripButton_FontDown.ToolTipText = "Font --";
+            this.toolStripButton_FontDown.Click += new System.EventHandler(this.toolStripButton_FontDown_Click);
             // 
             // toolStripSeparator11
             // 
@@ -667,16 +687,7 @@
             this.toolStripButton_SetFontColor.Name = "toolStripButton_SetFontColor";
             this.toolStripButton_SetFontColor.Size = new System.Drawing.Size(28, 28);
             this.toolStripButton_SetFontColor.Text = "Chose font color";
-            // 
-            // toolStripButton_MarkText
-            // 
-            this.toolStripButton_MarkText.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton_MarkText.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_MarkText.Image")));
-            this.toolStripButton_MarkText.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.toolStripButton_MarkText.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton_MarkText.Name = "toolStripButton_MarkText";
-            this.toolStripButton_MarkText.Size = new System.Drawing.Size(28, 28);
-            this.toolStripButton_MarkText.Text = "Mark text";
+            this.toolStripButton_SetFontColor.Click += new System.EventHandler(this.toolStripButton_SetFontColor_Click);
             // 
             // toolStripSeparator12
             // 
@@ -724,7 +735,7 @@
             // toolStripContainer1.TopToolStripPanel
             // 
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuStrip_Main);
-            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolStrip_Left);
+            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolStrip_Top);
             // 
             // tabControlPrincipal
             // 
@@ -838,6 +849,10 @@
             this.toolStripMenuItem_CloseAll.Size = new System.Drawing.Size(190, 22);
             this.toolStripMenuItem_CloseAll.Text = "Закрыть все";
             // 
+            // printDocumentPrincipal
+            // 
+            this.printDocumentPrincipal.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.printDocumentPrincipal_PrintPage);
+            // 
             // printDialogPrincipal
             // 
             this.printDialogPrincipal.UseEXDialog = true;
@@ -852,6 +867,37 @@
             this.printPreviewDialogPrincipal.Name = "printPreviewDialog_Main";
             this.printPreviewDialogPrincipal.ShowIcon = false;
             this.printPreviewDialogPrincipal.Visible = false;
+            // 
+            // toolStripSplitButton_MarkText
+            // 
+            this.toolStripSplitButton_MarkText.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripSplitButton_MarkText.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem_Yellow,
+            this.toolStripMenuItem_Cyan});
+            this.toolStripSplitButton_MarkText.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButton_MarkText.Image")));
+            this.toolStripSplitButton_MarkText.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripSplitButton_MarkText.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripSplitButton_MarkText.Name = "toolStripSplitButton_MarkText";
+            this.toolStripSplitButton_MarkText.Size = new System.Drawing.Size(40, 28);
+            this.toolStripSplitButton_MarkText.Text = "Mark text";
+            this.toolStripSplitButton_MarkText.ToolTipText = "Mark text";
+            this.toolStripSplitButton_MarkText.ButtonClick += new System.EventHandler(this.toolStripSplitButton_MarkText_ButtonClick);
+            // 
+            // toolStripMenuItem_Yellow
+            // 
+            this.toolStripMenuItem_Yellow.BackColor = System.Drawing.Color.Yellow;
+            this.toolStripMenuItem_Yellow.Name = "toolStripMenuItem_Yellow";
+            this.toolStripMenuItem_Yellow.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem_Yellow.Text = "Yellow marker";
+            this.toolStripMenuItem_Yellow.Click += new System.EventHandler(this.toolStripMenuItem_Yellow_Click);
+            // 
+            // toolStripMenuItem_Cyan
+            // 
+            this.toolStripMenuItem_Cyan.BackColor = System.Drawing.Color.Cyan;
+            this.toolStripMenuItem_Cyan.Name = "toolStripMenuItem_Cyan";
+            this.toolStripMenuItem_Cyan.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem_Cyan.Text = "Cyan marker";
+            this.toolStripMenuItem_Cyan.Click += new System.EventHandler(this.toolStripMenuItem_Cyan_Click);
             // 
             // FormMain
             // 
@@ -868,8 +914,8 @@
             this.statusStrip1.PerformLayout();
             this.menuStrip_Main.ResumeLayout(false);
             this.menuStrip_Main.PerformLayout();
-            this.toolStrip_Left.ResumeLayout(false);
-            this.toolStrip_Left.PerformLayout();
+            this.toolStrip_Top.ResumeLayout(false);
+            this.toolStrip_Top.PerformLayout();
             this.toolStripContainer1.BottomToolStripPanel.ResumeLayout(false);
             this.toolStripContainer1.BottomToolStripPanel.PerformLayout();
             this.toolStripContainer1.ContentPanel.ResumeLayout(false);
@@ -920,7 +966,7 @@
         private System.Windows.Forms.ToolStripPanel RightToolStripPanel;
         private System.Windows.Forms.ToolStripPanel LeftToolStripPanel;
         private System.Windows.Forms.ToolStripContentPanel ContentPanel;
-        private System.Windows.Forms.ToolStrip toolStrip_Left;
+        private System.Windows.Forms.ToolStrip toolStrip_Top;
         private System.Windows.Forms.ToolStripButton toolStripButton_BoldFont;
         private System.Windows.Forms.ToolStripButton toolStripButton_CursivFont;
         private System.Windows.Forms.ToolStripButton toolStripButton_UnderlineFont;
@@ -944,7 +990,6 @@
         private System.Windows.Forms.ToolStripButton toolStripButton_FontDown;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
         private System.Windows.Forms.ToolStripButton toolStripButton_SetFontColor;
-        private System.Windows.Forms.ToolStripButton toolStripButton_MarkText;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBox_FontFamiliSet;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBox_FontSizeSet;
@@ -970,6 +1015,10 @@
         private System.Drawing.Printing.PrintDocument printDocumentPrincipal;
         private System.Windows.Forms.PrintDialog printDialogPrincipal;
         private System.Windows.Forms.PrintPreviewDialog printPreviewDialogPrincipal;
+        private System.Windows.Forms.ColorDialog colorDialog_FontColor;
+        private System.Windows.Forms.ToolStripSplitButton toolStripSplitButton_MarkText;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem_Yellow;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem_Cyan;
     }
 }
 
