@@ -54,11 +54,11 @@ namespace text_editor
 
         #region Свойства
         ///<summary>
-        ///Свойство, в котором выполняется связь с элементом управления RichTextBox, 
-        ///который находится внутри вкладки, выбранной пользователем в данный момент.
+        /// Свойство, в котором выполняется связь с элементом управления RichTextBox, 
+        /// который находится внутри вкладки, выбранной пользователем в данный момент.
         ///</summary>
         ///
-        public RichTextBox GetNewDocument
+        public RichTextBox ActiveDocument
         {
             get { return (RichTextBox)tabControlPrincipal.SelectedTab.Controls["Body"]; }
         }
@@ -168,7 +168,7 @@ namespace text_editor
                         // Новая сгенерированная вкладка ищется и выбирается.
                         tabControlPrincipal.SelectedTab = tabControlPrincipal.TabPages["Новый документ - " + this.m_intTabCount];
                         // Загружаем содержимое файла в RichTextBox новой вкладки.
-                        GetNewDocument.LoadFile(openFileDialog_Document.FileName, RichTextBoxStreamType.RichText);
+                        ActiveDocument.LoadFile(openFileDialog_Document.FileName, RichTextBoxStreamType.RichText);
                         // Имя файла указывается в заголовке вкладки и ее имени.
                         string NameOpenDocument = Path.GetFileName(openFileDialog_Document.FileName);
                         tabControlPrincipal.SelectedTab.Text = NameOpenDocument;
@@ -200,7 +200,7 @@ namespace text_editor
                     try
                     {
                         // Сохраняем содержимое RichTextBox в установленном пути к файлу.
-                        GetNewDocument.SaveFile(saveFileDialog_Document.FileName, RichTextBoxStreamType.RichText);
+                        ActiveDocument.SaveFile(saveFileDialog_Document.FileName, RichTextBoxStreamType.RichText);
                         // Имя файла указывается в заголовке вкладки и ее имени.
                         string FileName = Path.GetFileName(saveFileDialog_Document.FileName);
                         tabControlPrincipal.SelectedTab.Text = FileName;
@@ -232,7 +232,7 @@ namespace text_editor
                     try
                     {
                         // Сохраняем содержимое RichTextBox в установленном пути к файлу.
-                        GetNewDocument.SaveFile(saveFileDialog_Document.FileName, RichTextBoxStreamType.RichText);
+                        ActiveDocument.SaveFile(saveFileDialog_Document.FileName, RichTextBoxStreamType.RichText);
                         // Имя файла указывается в заголовке вкладки и ее имени.
                         string FileName = Path.GetFileName(saveFileDialog_Document.FileName);
                         tabControlPrincipal.SelectedTab.Text = FileName;
@@ -278,7 +278,60 @@ namespace text_editor
 
             printPreviewDialog_Main.ShowDialog();
         }
+
         #endregion Печать
+
+        #region Обработка текста
+
+        ///<summary>
+        /// Метод, отменяющий последнее действие, сделанное пользователем.
+        ///</summary>
+        private void UndoLastChange()
+        {
+            ActiveDocument.Undo();
+        }
+
+        ///<summary>
+        /// Метод, повторяющий последнее действие, сделанное пользователем.
+        /// </summary>
+        private void RedoLastChange()
+        {
+            ActiveDocument.Redo();
+        }
+
+        ///<summary>
+        /// Метод, который вырезает выделение из документа и помещает его в буфер обмена.
+        /// </summary>
+        private void CutText()
+        {
+            ActiveDocument.Cut();
+        }
+
+        ///<summary>
+        /// Метод, который копирует выделение с холста и помещает его в буфер обмена.
+        /// </summary>
+        private void CopySelectedText()
+        {
+            ActiveDocument.Copy();
+        }
+
+        ///<summary>
+        /// Метод, вставляющий содержимое буфера обмена.
+        /// </summary>
+        private void PasteFromBuf()
+        {
+            ActiveDocument.Paste();
+        }
+
+        ///<summary>
+        /// Метод, который выделяет весь текст в текущем документе.
+        /// </summary>
+        private void SelectAllText()
+        {
+            ActiveDocument.SelectAll();
+        }
+
+        #endregion Обработка текста
 
         #region Основные 
         /// <summary>
