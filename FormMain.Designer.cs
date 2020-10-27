@@ -112,9 +112,9 @@
             this.toolStripMenuItem_CloseAll = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog_Document = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog_Document = new System.Windows.Forms.SaveFileDialog();
-            this.printDocument_Main = new System.Drawing.Printing.PrintDocument();
-            this.printDialog_Main = new System.Windows.Forms.PrintDialog();
-            this.printPreviewDialog_Main = new System.Windows.Forms.PrintPreviewDialog();
+            this.printDocumentPrincipal = new System.Drawing.Printing.PrintDocument();
+            this.printDialogPrincipal = new System.Windows.Forms.PrintDialog();
+            this.printPreviewDialogPrincipal = new System.Windows.Forms.PrintPreviewDialog();
             this.statusStrip1.SuspendLayout();
             this.menuStrip_Main.SuspendLayout();
             this.toolStrip_Left.SuspendLayout();
@@ -204,6 +204,7 @@
             this.toolStripMenuItem_NewCreate.Size = new System.Drawing.Size(245, 22);
             this.toolStripMenuItem_NewCreate.Text = "Создать новый";
             this.toolStripMenuItem_NewCreate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.toolStripMenuItem_NewCreate.Click += new System.EventHandler(this.toolStripMenuItem_NewCreate_Click);
             // 
             // toolStripMenuItem_OpenFile
             // 
@@ -212,6 +213,7 @@
             this.toolStripMenuItem_OpenFile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.toolStripMenuItem_OpenFile.Size = new System.Drawing.Size(245, 22);
             this.toolStripMenuItem_OpenFile.Text = "Открыть";
+            this.toolStripMenuItem_OpenFile.Click += new System.EventHandler(this.toolStripMenuItem_OpenFile_Click);
             // 
             // toolStripSeparator1
             // 
@@ -225,6 +227,7 @@
             this.toolStripMenuItem_SaveFile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.toolStripMenuItem_SaveFile.Size = new System.Drawing.Size(245, 22);
             this.toolStripMenuItem_SaveFile.Text = "Сохранить";
+            this.toolStripMenuItem_SaveFile.Click += new System.EventHandler(this.toolStripMenuItem_SaveFile_Click);
             // 
             // toolStripMenuItem_SaveAs
             // 
@@ -234,6 +237,7 @@
             | System.Windows.Forms.Keys.S)));
             this.toolStripMenuItem_SaveAs.Size = new System.Drawing.Size(245, 22);
             this.toolStripMenuItem_SaveAs.Text = "Сохранить как";
+            this.toolStripMenuItem_SaveAs.Click += new System.EventHandler(this.toolStripMenuItem_SaveAs_Click);
             // 
             // toolStripSeparator2
             // 
@@ -247,6 +251,7 @@
             this.toolStripMenuItem_Print.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
             this.toolStripMenuItem_Print.Size = new System.Drawing.Size(245, 22);
             this.toolStripMenuItem_Print.Text = "Печать";
+            this.toolStripMenuItem_Print.Click += new System.EventHandler(this.toolStripMenuItem_Print_Click);
             // 
             // toolStripMenuItem_PrintPreview
             // 
@@ -256,6 +261,7 @@
             | System.Windows.Forms.Keys.P)));
             this.toolStripMenuItem_PrintPreview.Size = new System.Drawing.Size(245, 22);
             this.toolStripMenuItem_PrintPreview.Text = "Просмотр печати";
+            this.toolStripMenuItem_PrintPreview.Click += new System.EventHandler(this.toolStripMenuItem_PrintPreview_Click);
             // 
             // toolStripSeparator3
             // 
@@ -270,6 +276,7 @@
             this.toolStripMenuItem_Exit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
             this.toolStripMenuItem_Exit.Size = new System.Drawing.Size(245, 22);
             this.toolStripMenuItem_Exit.Text = "Выход";
+            this.toolStripMenuItem_Exit.Click += new System.EventHandler(this.toolStripMenuItem_Exit_Click);
             // 
             // toolStripMenuItem_Edit
             // 
@@ -831,20 +838,20 @@
             this.toolStripMenuItem_CloseAll.Size = new System.Drawing.Size(190, 22);
             this.toolStripMenuItem_CloseAll.Text = "Закрыть все";
             // 
-            // printDialog_Main
+            // printDialogPrincipal
             // 
-            this.printDialog_Main.UseEXDialog = true;
+            this.printDialogPrincipal.UseEXDialog = true;
             // 
-            // printPreviewDialog_Main
+            // printPreviewDialogPrincipal
             // 
-            this.printPreviewDialog_Main.AutoScrollMargin = new System.Drawing.Size(0, 0);
-            this.printPreviewDialog_Main.AutoScrollMinSize = new System.Drawing.Size(0, 0);
-            this.printPreviewDialog_Main.ClientSize = new System.Drawing.Size(400, 300);
-            this.printPreviewDialog_Main.Enabled = true;
-            this.printPreviewDialog_Main.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialog_Main.Icon")));
-            this.printPreviewDialog_Main.Name = "printPreviewDialog_Main";
-            this.printPreviewDialog_Main.ShowIcon = false;
-            this.printPreviewDialog_Main.Visible = false;
+            this.printPreviewDialogPrincipal.AutoScrollMargin = new System.Drawing.Size(0, 0);
+            this.printPreviewDialogPrincipal.AutoScrollMinSize = new System.Drawing.Size(0, 0);
+            this.printPreviewDialogPrincipal.ClientSize = new System.Drawing.Size(400, 300);
+            this.printPreviewDialogPrincipal.Enabled = true;
+            this.printPreviewDialogPrincipal.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialogPrincipal.Icon")));
+            this.printPreviewDialogPrincipal.Name = "printPreviewDialog_Main";
+            this.printPreviewDialogPrincipal.ShowIcon = false;
+            this.printPreviewDialogPrincipal.Visible = false;
             // 
             // FormMain
             // 
@@ -960,9 +967,9 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem_CloseAll;
         private System.Windows.Forms.OpenFileDialog openFileDialog_Document;
         private System.Windows.Forms.SaveFileDialog saveFileDialog_Document;
-        private System.Drawing.Printing.PrintDocument printDocument_Main;
-        private System.Windows.Forms.PrintDialog printDialog_Main;
-        private System.Windows.Forms.PrintPreviewDialog printPreviewDialog_Main;
+        private System.Drawing.Printing.PrintDocument printDocumentPrincipal;
+        private System.Windows.Forms.PrintDialog printDialogPrincipal;
+        private System.Windows.Forms.PrintPreviewDialog printPreviewDialogPrincipal;
     }
 }
 

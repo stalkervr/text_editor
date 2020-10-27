@@ -41,7 +41,9 @@ namespace text_editor
         {
             InitializeComponent();
         }
-
+        /// <summary>
+        /// Обработка события загрузки формы
+        /// </summary>
         private void FormMain_Load(object sender, EventArgs e)
         {
             this.m_DefaultFontFamili = GetDefaultFont();
@@ -255,16 +257,14 @@ namespace text_editor
         /// </summary>
         private void PrintDocument()
         {
-            printDocument_Main.DocumentName = tabControlPrincipal.SelectedTab.Name;
+            printDocumentPrincipal.DocumentName = tabControlPrincipal.SelectedTab.Name;
 
-            printDialog_Main.Document = printDocument_Main;
-            printDialog_Main.AllowSelection = true;
-            printDialog_Main.AllowSomePages = true;
+            printDialogPrincipal.Document = printDocumentPrincipal;
+            printDialogPrincipal.AllowSelection = true;
+            printDialogPrincipal.AllowSomePages = true;
 
-            if(printDialog_Main.ShowDialog() == DialogResult.OK)
-            {
-                printDocument_Main.Print();
-            }
+            if (printDialogPrincipal.ShowDialog() == DialogResult.OK)
+                printDocumentPrincipal.Print();
         }
 
         /// <summary>
@@ -272,11 +272,11 @@ namespace text_editor
         /// </summary>
         private void PrintPreviwDocument()
         {
-            printDocument_Main.DocumentName = tabControlPrincipal.SelectedTab.Name;
+            printDocumentPrincipal.DocumentName = tabControlPrincipal.SelectedTab.Name;
 
-            printPreviewDialog_Main.Document = printDocument_Main;
+            printPreviewDialogPrincipal.Document = printDocumentPrincipal;
 
-            printPreviewDialog_Main.ShowDialog();
+            printPreviewDialogPrincipal.ShowDialog();
         }
 
         #endregion Печать
@@ -370,6 +370,63 @@ namespace text_editor
 
         #endregion Методы
 
-        
+        #region Обработка событий menuStrip_Main
+
+        /// <summary>
+        /// Обработка нажатия на пункт меню "Создать новый"
+        /// </summary>
+        private void toolStripMenuItem_NewCreate_Click(object sender, EventArgs e)
+        {
+            CreateNewTab();
+        }
+
+        /// <summary>
+        /// Обработка нажатия на пункт меню "Открыть"
+        /// </summary>
+        private void toolStripMenuItem_OpenFile_Click(object sender, EventArgs e)
+        {
+            OpenDocument();
+        }
+
+        /// <summary>
+        /// Обработка нажатия на пункт меню "Сохранить"
+        /// </summary>
+        private void toolStripMenuItem_SaveFile_Click(object sender, EventArgs e)
+        {
+            SaveDocument();
+        }
+        /// <summary>
+        /// Обработка нажатия на пункт меню "Сохранить как"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void toolStripMenuItem_SaveAs_Click(object sender, EventArgs e)
+        {
+            SaveAsDocument();
+        }
+        /// <summary>
+        /// Обработка нажатия на пункт меню "Печатать"
+        /// </summary>
+        private void toolStripMenuItem_Print_Click(object sender, EventArgs e)
+        {
+            PrintDocument();
+        }
+        /// <summary>
+        /// Обработка нажатия на пункт меню "Просмотр печати"
+        /// </summary>
+        private void toolStripMenuItem_PrintPreview_Click(object sender, EventArgs e)
+        {
+            PrintPreviwDocument();
+        }
+        /// <summary>
+        /// Обработка нажатия на пункт меню "Выход"
+        /// </summary>
+        private void toolStripMenuItem_Exit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            this.Dispose();
+        }
+        #endregion Обработка событий menuStrip_Main
+
     }
 }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
