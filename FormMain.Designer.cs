@@ -91,6 +91,9 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton_SetFontColor = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSplitButton_MarkText = new System.Windows.Forms.ToolStripSplitButton();
+            this.toolStripMenuItem_Yellow = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem_Cyan = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripComboBox_FontFamiliSet = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripComboBox_FontSizeSet = new System.Windows.Forms.ToolStripComboBox();
@@ -115,9 +118,6 @@
             this.printDialogPrincipal = new System.Windows.Forms.PrintDialog();
             this.printPreviewDialogPrincipal = new System.Windows.Forms.PrintPreviewDialog();
             this.colorDialog_FontColor = new System.Windows.Forms.ColorDialog();
-            this.toolStripSplitButton_MarkText = new System.Windows.Forms.ToolStripSplitButton();
-            this.toolStripMenuItem_Yellow = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem_Cyan = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.menuStrip_Main.SuspendLayout();
             this.toolStrip_Top.SuspendLayout();
@@ -144,7 +144,7 @@
             this.toolStripStatusLabel_CountCharactersDoc});
             this.statusStrip1.Location = new System.Drawing.Point(0, 0);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(890, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1148, 22);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -176,7 +176,7 @@
             this.menuStrip_Main.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.menuStrip_Main.Location = new System.Drawing.Point(0, 0);
             this.menuStrip_Main.Name = "menuStrip_Main";
-            this.menuStrip_Main.Size = new System.Drawing.Size(890, 24);
+            this.menuStrip_Main.Size = new System.Drawing.Size(1148, 24);
             this.menuStrip_Main.TabIndex = 0;
             this.menuStrip_Main.Text = "menuStrip1";
             // 
@@ -463,7 +463,7 @@
             this.toolStripComboBox_FontSizeSet});
             this.toolStrip_Top.Location = new System.Drawing.Point(3, 24);
             this.toolStrip_Top.Name = "toolStrip_Top";
-            this.toolStrip_Top.Size = new System.Drawing.Size(787, 31);
+            this.toolStrip_Top.Size = new System.Drawing.Size(756, 31);
             this.toolStrip_Top.TabIndex = 1;
             // 
             // toolStripButton_BoldFont
@@ -694,6 +694,37 @@
             this.toolStripSeparator12.Name = "toolStripSeparator12";
             this.toolStripSeparator12.Size = new System.Drawing.Size(6, 31);
             // 
+            // toolStripSplitButton_MarkText
+            // 
+            this.toolStripSplitButton_MarkText.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripSplitButton_MarkText.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem_Yellow,
+            this.toolStripMenuItem_Cyan});
+            this.toolStripSplitButton_MarkText.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButton_MarkText.Image")));
+            this.toolStripSplitButton_MarkText.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripSplitButton_MarkText.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripSplitButton_MarkText.Name = "toolStripSplitButton_MarkText";
+            this.toolStripSplitButton_MarkText.Size = new System.Drawing.Size(40, 28);
+            this.toolStripSplitButton_MarkText.Text = "Mark text";
+            this.toolStripSplitButton_MarkText.ToolTipText = "Mark text";
+            this.toolStripSplitButton_MarkText.ButtonClick += new System.EventHandler(this.toolStripSplitButton_MarkText_ButtonClick);
+            // 
+            // toolStripMenuItem_Yellow
+            // 
+            this.toolStripMenuItem_Yellow.BackColor = System.Drawing.Color.Yellow;
+            this.toolStripMenuItem_Yellow.Name = "toolStripMenuItem_Yellow";
+            this.toolStripMenuItem_Yellow.Size = new System.Drawing.Size(148, 22);
+            this.toolStripMenuItem_Yellow.Text = "Yellow marker";
+            this.toolStripMenuItem_Yellow.Click += new System.EventHandler(this.toolStripMenuItem_Yellow_Click);
+            // 
+            // toolStripMenuItem_Cyan
+            // 
+            this.toolStripMenuItem_Cyan.BackColor = System.Drawing.Color.Cyan;
+            this.toolStripMenuItem_Cyan.Name = "toolStripMenuItem_Cyan";
+            this.toolStripMenuItem_Cyan.Size = new System.Drawing.Size(148, 22);
+            this.toolStripMenuItem_Cyan.Text = "Cyan marker";
+            this.toolStripMenuItem_Cyan.Click += new System.EventHandler(this.toolStripMenuItem_Cyan_Click);
+            // 
             // toolStripSeparator13
             // 
             this.toolStripSeparator13.Name = "toolStripSeparator13";
@@ -705,6 +736,7 @@
             this.toolStripComboBox_FontFamiliSet.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.toolStripComboBox_FontFamiliSet.Name = "toolStripComboBox_FontFamiliSet";
             this.toolStripComboBox_FontFamiliSet.Size = new System.Drawing.Size(121, 31);
+            this.toolStripComboBox_FontFamiliSet.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox_FontFamiliSet_SelectedIndexChanged);
             // 
             // toolStripComboBox_FontSizeSet
             // 
@@ -713,6 +745,7 @@
             this.toolStripComboBox_FontSizeSet.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.toolStripComboBox_FontSizeSet.Name = "toolStripComboBox_FontSizeSet";
             this.toolStripComboBox_FontSizeSet.Size = new System.Drawing.Size(50, 31);
+            this.toolStripComboBox_FontSizeSet.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox_FontSizeSet_SelectedIndexChanged);
             // 
             // toolStripContainer1
             // 
@@ -724,11 +757,11 @@
             // toolStripContainer1.ContentPanel
             // 
             this.toolStripContainer1.ContentPanel.Controls.Add(this.tabControlPrincipal);
-            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(890, 386);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(1148, 488);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
             this.toolStripContainer1.Name = "toolStripContainer1";
-            this.toolStripContainer1.Size = new System.Drawing.Size(890, 463);
+            this.toolStripContainer1.Size = new System.Drawing.Size(1148, 565);
             this.toolStripContainer1.TabIndex = 1;
             this.toolStripContainer1.Text = "toolStripContainer1";
             // 
@@ -743,7 +776,7 @@
             this.tabControlPrincipal.Location = new System.Drawing.Point(0, 0);
             this.tabControlPrincipal.Name = "tabControlPrincipal";
             this.tabControlPrincipal.SelectedIndex = 0;
-            this.tabControlPrincipal.Size = new System.Drawing.Size(890, 386);
+            this.tabControlPrincipal.Size = new System.Drawing.Size(1148, 488);
             this.tabControlPrincipal.TabIndex = 0;
             // 
             // contextMenuStripContextDoc
@@ -868,42 +901,11 @@
             this.printPreviewDialogPrincipal.ShowIcon = false;
             this.printPreviewDialogPrincipal.Visible = false;
             // 
-            // toolStripSplitButton_MarkText
-            // 
-            this.toolStripSplitButton_MarkText.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripSplitButton_MarkText.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem_Yellow,
-            this.toolStripMenuItem_Cyan});
-            this.toolStripSplitButton_MarkText.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButton_MarkText.Image")));
-            this.toolStripSplitButton_MarkText.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.toolStripSplitButton_MarkText.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripSplitButton_MarkText.Name = "toolStripSplitButton_MarkText";
-            this.toolStripSplitButton_MarkText.Size = new System.Drawing.Size(40, 28);
-            this.toolStripSplitButton_MarkText.Text = "Mark text";
-            this.toolStripSplitButton_MarkText.ToolTipText = "Mark text";
-            this.toolStripSplitButton_MarkText.ButtonClick += new System.EventHandler(this.toolStripSplitButton_MarkText_ButtonClick);
-            // 
-            // toolStripMenuItem_Yellow
-            // 
-            this.toolStripMenuItem_Yellow.BackColor = System.Drawing.Color.Yellow;
-            this.toolStripMenuItem_Yellow.Name = "toolStripMenuItem_Yellow";
-            this.toolStripMenuItem_Yellow.Size = new System.Drawing.Size(180, 22);
-            this.toolStripMenuItem_Yellow.Text = "Yellow marker";
-            this.toolStripMenuItem_Yellow.Click += new System.EventHandler(this.toolStripMenuItem_Yellow_Click);
-            // 
-            // toolStripMenuItem_Cyan
-            // 
-            this.toolStripMenuItem_Cyan.BackColor = System.Drawing.Color.Cyan;
-            this.toolStripMenuItem_Cyan.Name = "toolStripMenuItem_Cyan";
-            this.toolStripMenuItem_Cyan.Size = new System.Drawing.Size(180, 22);
-            this.toolStripMenuItem_Cyan.Text = "Cyan marker";
-            this.toolStripMenuItem_Cyan.Click += new System.EventHandler(this.toolStripMenuItem_Cyan_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(890, 463);
+            this.ClientSize = new System.Drawing.Size(1148, 565);
             this.Controls.Add(this.toolStripContainer1);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

@@ -83,8 +83,10 @@ namespace text_editor
                 ContextMenuStrip = contextMenuStripContextDoc,
                 Font = this.m_DefaultFontFamili
             };
-            // TODO: Подумать
-            // Body.SelectionIndent += 25;
+            // смещение границ начала и конца строки в окне
+            Body.SelectionIndent = 56;
+            Body.SelectionRightIndent = 56; 
+            
             // Количество вкладок увеличивается ...
             this.m_intTabCount++;
             // Для нового документа создается имя.
@@ -650,10 +652,46 @@ namespace text_editor
         private void toolStripMenuItem_Yellow_Click(object sender, EventArgs e)
         {
             ActiveDocument.SelectionBackColor = Color.Yellow;
+            toolStripSplitButton_MarkText.Image = Properties.Resources.yellow;
         }
         private void toolStripMenuItem_Cyan_Click(object sender, EventArgs e)
         {
             ActiveDocument.SelectionBackColor = Color.Cyan;
+            toolStripSplitButton_MarkText.Image = Properties.Resources.cyan;
+        }
+        private void toolStripSplitButton_MarkText_ButtonClick(object sender, EventArgs e)
+        {
+            ActiveDocument.SelectionBackColor = Color.White;
+            toolStripSplitButton_MarkText.Image = Properties.Resources.black;
+        }
+
+        /// <summary>
+        /// Обработка нажатия кнопки выбора шрифта
+        /// </summary>
+        private void toolStripComboBox_FontFamiliSet_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Font NewFont = new Font(toolStripComboBox_FontFamiliSet.SelectedItem.ToString(),
+                ActiveDocument.SelectionFont.Size,
+                ActiveDocument.SelectionFont.Style);
+
+            this.m_DefaultFontFamili = NewFont;
+            ActiveDocument.SelectionFont = NewFont;
+        }
+
+        /// <summary>
+        /// Обработка нажатия кнопки выбора размера шрифта
+        /// </summary>
+        private void toolStripComboBox_FontSizeSet_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            float NewSize;
+
+            float.TryParse(toolStripComboBox_FontSizeSet.SelectedItem.ToString(), out NewSize);
+
+            Font NewFont = new Font(ActiveDocument.SelectionFont.Name, NewSize,
+                ActiveDocument.SelectionFont.Style);
+
+            this.m_DefaultFontFamili = NewFont;
+            ActiveDocument.SelectionFont = NewFont;
         }
 
         #endregion Обработка событий панели интрументов toolStrip_Top
@@ -672,11 +710,8 @@ namespace text_editor
         }
 
 
+
         #endregion PrintDocumentPrincipal Eventos
 
-        private void toolStripSplitButton_MarkText_ButtonClick(object sender, EventArgs e)
-        {
-            ActiveDocument.SelectionBackColor = Color.White;
-        }
     }
 }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
