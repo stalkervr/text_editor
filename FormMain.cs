@@ -336,31 +336,33 @@ namespace text_editor
             ActiveDocument.SelectAll();
         }
 
+        #endregion Обработка текста
+
+        #region Вставка объектов
+        /// <summary>
+        /// Метод вставки изображения
+        /// </summary>
         private void InsertImage()
         {
             OpenFileDialog _dialog = new OpenFileDialog();
             _dialog.Filter = "All Image Files|*.bmp;*.ico;*.gif;*.jpeg;*.jpg;*.png;*.tif;*.tiff";
 
-            if(_dialog.ShowDialog() == DialogResult.OK)
+            if (_dialog.ShowDialog() == DialogResult.OK)
             {
-                if(_dialog.FileName.Length > 0)
+                if (_dialog.FileName.Length > 0)
                 {
                     try
                     {
                         string lstrFile = _dialog.FileName;
                         Bitmap myBitmap = new Bitmap(lstrFile);
-                        // Copy the bitmap to the clipboard.
+                        // Копируем изображение в буфер обмена .
                         Clipboard.SetDataObject(myBitmap);
-                        // Get the format for the object type.
+                        // Определяем формат объекта вставки.
                         DataFormats.Format myFormat = DataFormats.GetFormat(DataFormats.Bitmap);
                         if (ActiveDocument.CanPaste(myFormat))
                         {
+                            // Вставляем изображение из буфера
                             ActiveDocument.Paste(myFormat);
-                        }
-                        else
-                        {
-                            MessageBox.Show("The data format that you attempted site" +
-                              " is not supportedby this control.");
                         }
                     }
                     catch (Exception e)
@@ -369,11 +371,9 @@ namespace text_editor
                     }
                 }
             }
-
-           
         }
 
-        #endregion Обработка текста
+        #endregion Вставка объектов
 
         #region Основные 
         /// <summary>
@@ -732,6 +732,11 @@ namespace text_editor
             ActiveDocument.SelectionFont = NewFont;
         }
 
+        private void toolStripButton_InsertImage_Click(object sender, EventArgs e)
+        {
+            InsertImage();
+        }
+
         #endregion Обработка событий панели интрументов toolStrip_Top
 
 
@@ -747,13 +752,66 @@ namespace text_editor
             e.Graphics.PageUnit = GraphicsUnit.Inch;
         }
 
-
-
         #endregion PrintDocumentPrincipal Eventos
 
-        private void toolStripButton_InsertImage_Click(object sender, EventArgs e)
+        
+
+        #region События меню редактировать и контекстное меню
+        private void toolStripMenuItem_UndoLast_Click(object sender, EventArgs e)
         {
-            InsertImage();
+            UndoLastChange();
         }
+
+        private void toolStripMenuItem_RedoLast_Click(object sender, EventArgs e)
+        {
+            RedoLastChange();
+        }
+
+        private void toolStripMenuItem_SelectAllText_Click(object sender, EventArgs e)
+        {
+            SelectAllText();
+        }
+
+        private void toolStripMenuItem_CopySelect_Click(object sender, EventArgs e)
+        {
+            CopySelectedText();
+        }
+
+        private void toolStripMenuItem_PasteInPlace_Click(object sender, EventArgs e)
+        {
+            PasteFromBuf();
+        }
+
+        private void toolStripMenuItem_Undo_Click(object sender, EventArgs e)
+        {
+            UndoLastChange();
+        }
+
+        private void toolStripMenuItem_Redo_Click(object sender, EventArgs e)
+        {
+            RedoLastChange();
+        }
+
+        private void toolStripMenuItem_Cut_Click(object sender, EventArgs e)
+        {
+            CutText();
+        }
+
+        private void toolStripMenuItem_Copy_Click(object sender, EventArgs e)
+        {
+            CopySelectedText();
+        }
+
+        private void toolStripMenuItem_Paste_Click(object sender, EventArgs e)
+        {
+            PasteFromBuf();
+        }
+
+        private void toolStripMenuItem_SelectAll_Click(object sender, EventArgs e)
+        {
+            SelectAllText();
+        }
+
+        #endregion События меню редактировать и контекстное меню
     }
 }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
