@@ -118,6 +118,7 @@
             this.printDialogPrincipal = new System.Windows.Forms.PrintDialog();
             this.printPreviewDialogPrincipal = new System.Windows.Forms.PrintPreviewDialog();
             this.colorDialog_FontColor = new System.Windows.Forms.ColorDialog();
+            this.toolStripButton_InsertImage = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1.SuspendLayout();
             this.menuStrip_Main.SuspendLayout();
             this.toolStrip_Top.SuspendLayout();
@@ -458,12 +459,13 @@
             this.toolStripButton_SetFontColor,
             this.toolStripSeparator12,
             this.toolStripSplitButton_MarkText,
+            this.toolStripButton_InsertImage,
             this.toolStripSeparator13,
             this.toolStripComboBox_FontFamiliSet,
             this.toolStripComboBox_FontSizeSet});
             this.toolStrip_Top.Location = new System.Drawing.Point(3, 24);
             this.toolStrip_Top.Name = "toolStrip_Top";
-            this.toolStrip_Top.Size = new System.Drawing.Size(756, 31);
+            this.toolStrip_Top.Size = new System.Drawing.Size(784, 31);
             this.toolStrip_Top.TabIndex = 1;
             // 
             // toolStripButton_BoldFont
@@ -901,6 +903,17 @@
             this.printPreviewDialogPrincipal.ShowIcon = false;
             this.printPreviewDialogPrincipal.Visible = false;
             // 
+            // toolStripButton_InsertImage
+            // 
+            this.toolStripButton_InsertImage.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton_InsertImage.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_InsertImage.Image")));
+            this.toolStripButton_InsertImage.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButton_InsertImage.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton_InsertImage.Name = "toolStripButton_InsertImage";
+            this.toolStripButton_InsertImage.Size = new System.Drawing.Size(28, 28);
+            this.toolStripButton_InsertImage.Text = "Вставить рисунок";
+            this.toolStripButton_InsertImage.Click += new System.EventHandler(this.toolStripButton_InsertImage_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1021,6 +1034,7 @@
         private System.Windows.Forms.ToolStripSplitButton toolStripSplitButton_MarkText;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem_Yellow;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem_Cyan;
+        private System.Windows.Forms.ToolStripButton toolStripButton_InsertImage;
     }
 }
 

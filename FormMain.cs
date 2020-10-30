@@ -87,6 +87,7 @@ namespace text_editor
             Body.SelectionIndent = 56;
             Body.SelectionRightIndent = 56; 
             
+            
             // Количество вкладок увеличивается ...
             this.m_intTabCount++;
             // Для нового документа создается имя.
@@ -333,6 +334,43 @@ namespace text_editor
         private void SelectAllText()
         {
             ActiveDocument.SelectAll();
+        }
+
+        private void InsertImage()
+        {
+            OpenFileDialog _dialog = new OpenFileDialog();
+            _dialog.Filter = "All Image Files|*.bmp;*.ico;*.gif;*.jpeg;*.jpg;*.png;*.tif;*.tiff";
+
+            if(_dialog.ShowDialog() == DialogResult.OK)
+            {
+                if(_dialog.FileName.Length > 0)
+                {
+                    try
+                    {
+                        string lstrFile = _dialog.FileName;
+                        Bitmap myBitmap = new Bitmap(lstrFile);
+                        // Copy the bitmap to the clipboard.
+                        Clipboard.SetDataObject(myBitmap);
+                        // Get the format for the object type.
+                        DataFormats.Format myFormat = DataFormats.GetFormat(DataFormats.Bitmap);
+                        if (ActiveDocument.CanPaste(myFormat))
+                        {
+                            ActiveDocument.Paste(myFormat);
+                        }
+                        else
+                        {
+                            MessageBox.Show("The data format that you attempted site" +
+                              " is not supportedby this control.");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+                }
+            }
+
+           
         }
 
         #endregion Обработка текста
@@ -713,5 +751,9 @@ namespace text_editor
 
         #endregion PrintDocumentPrincipal Eventos
 
+        private void toolStripButton_InsertImage_Click(object sender, EventArgs e)
+        {
+            InsertImage();
+        }
     }
 }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
