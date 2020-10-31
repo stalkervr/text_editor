@@ -3,39 +3,40 @@ using System.Drawing;
 using System.Drawing.Printing;
 using System.Drawing.Text;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace text_editor
 {
     public partial class FormMain : Form
-{
-    #region Константы
+    {
+        #region Константы
 
-    /// <summary>
-    ///   Семейство шрифтов по умолчанию.
-    /// </summary>
-     private const string DefaultFontFamili = "Calibri";
+        /// <summary>
+        ///   Семейство шрифтов по умолчанию.
+        /// </summary>
+        private const string DefaultFontFamili = "Calibri";
 
-    /// <summary>
-    /// Размер шрифта по умолчанию.
-    /// </summary>
-    private const int DefaultFontSize = 15;
+        /// <summary>
+        /// Размер шрифта по умолчанию.
+        /// </summary>
+        private const int DefaultFontSize = 15;
 
-    #endregion Константы
+        #endregion Константы
 
-    #region Притные поля
+        #region Притные поля
 
-    /// <summary>
-    /// Количество активных вкладок редактора.
-    /// </summary>
-    private int m_intTabCount = 0;
+        /// <summary>
+        /// Количество активных вкладок редактора.
+        /// </summary>
+        private int m_intTabCount = 0;
 
-    /// <summary>
-    ///  Шрифт установленный по умолчанию.
-    /// </summary>
-    private Font m_DefaultFontFamili;
+        /// <summary>
+        ///  Шрифт установленный по умолчанию.
+        /// </summary>
+        private Font m_DefaultFontFamili;
 
-    #endregion Притные поля
+        #endregion Притные поля
 
         public FormMain()
         {
@@ -47,7 +48,7 @@ namespace text_editor
         private void FormMain_Load(object sender, EventArgs e)
         {
             this.m_DefaultFontFamili = GetDefaultFont();
-            tabControlPrincipal.ContextMenuStrip = contextMenuStripContextDoc;
+            tabControlPrincipal.ContextMenuStrip = contextMenuStripContextTab;
 
             CreateNewTab();
             GetFontCollection();
@@ -62,7 +63,7 @@ namespace text_editor
         ///
         public RichTextBox ActiveDocument
         {
-            get { return (RichTextBox)tabControlPrincipal.SelectedTab.Controls["Cuerpo"]; }
+            get { return (RichTextBox)tabControlPrincipal.SelectedTab.Controls["Body"]; }
         }
         #endregion Свойства
 
@@ -77,7 +78,7 @@ namespace text_editor
             //Создается экземпляр нового RichTextBox со следующими значениями, установленными в его свойствах.
             RichTextBox Body = new RichTextBox
             {
-                Name = "Cuerpo",
+                Name = "Body",
                 AcceptsTab = true,
                 Dock = DockStyle.Fill,
                 ContextMenuStrip = contextMenuStripContextDoc,
@@ -85,9 +86,9 @@ namespace text_editor
             };
             // смещение границ начала и конца строки в окне
             Body.SelectionIndent = 56;
-            Body.SelectionRightIndent = 56; 
-            
-            
+            Body.SelectionRightIndent = 56;
+
+
             // Количество вкладок увеличивается ...
             this.m_intTabCount++;
             // Для нового документа создается имя.
@@ -97,7 +98,8 @@ namespace text_editor
             TabPage NewTab = new TabPage
             {
                 Name = NameDocument,
-                Text = NameDocument
+                Text = NameDocument,
+                ContextMenuStrip = contextMenuStripContextTab
             };
             // Новый RichTextBox добавляется внутри новой вкладки (TabPage).
             NewTab.Controls.Add(Body);
@@ -109,7 +111,7 @@ namespace text_editor
         /// </summary>
         private void DeleteTab()
         {
-            if(tabControlPrincipal.TabPages.Count != 1)
+            if (tabControlPrincipal.TabPages.Count != 1)
             {
                 tabControlPrincipal.TabPages.Remove(tabControlPrincipal.SelectedTab);
             }
@@ -125,7 +127,7 @@ namespace text_editor
         /// </summary>
         private void RemoveAllTabs()
         {
-            foreach(TabPage Page in tabControlPrincipal.TabPages)
+            foreach (TabPage Page in tabControlPrincipal.TabPages)
             {
                 tabControlPrincipal.TabPages.Remove(Page);
             }
@@ -137,10 +139,18 @@ namespace text_editor
         /// </summary>
         private void RemoveAllActiveTabUnselected()
         {
-            for (int i = tabControlPrincipal.TabCount - 1; i > tabControlPrincipal.SelectedIndex; i--)
+            //for (int i = tabControlPrincipal.TabCount - 1; i > tabControlPrincipal.SelectedIndex; i--)
+            //{
+            //    tabControlPrincipal.TabPages.RemoveAt(i);
+            //}
+            foreach(TabPage Page in tabControlPrincipal.TabPages)
             {
-                tabControlPrincipal.TabPages.RemoveAt(i);
+                if(Page.Name != tabControlPrincipal.SelectedTab.Name)
+                {
+                    tabControlPrincipal.TabPages.Remove(Page);
+                }
             }
+
         }
         /// <summary>
         ///   Метод, удаляющий все вкладки, где их содержимое уже было сохранено пользователем..
@@ -163,10 +173,10 @@ namespace text_editor
             openFileDialog_Document.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             openFileDialog_Document.Filter = "Формат текстовых файлов (RTF)|*.rtf";
 
-            if(openFileDialog_Document.ShowDialog() == DialogResult.OK)
+            if (openFileDialog_Document.ShowDialog() == DialogResult.OK)
             {
                 // Если было выбрано допустимое имя файла ...
-                if(openFileDialog_Document.FileName.Length > 0)
+                if (openFileDialog_Document.FileName.Length > 0)
                 {
                     try // Продуем прочитать файл
                     {
@@ -199,10 +209,10 @@ namespace text_editor
             saveFileDialog_Document.Filter = "Формат текстового файла (RTF)|*.rtf";
             saveFileDialog_Document.Title = "Сохранить";
 
-            if(saveFileDialog_Document.ShowDialog() == DialogResult.OK)
+            if (saveFileDialog_Document.ShowDialog() == DialogResult.OK)
             {
                 // Если было выбрано допустимое имя файла ...
-                if(saveFileDialog_Document.FileName.Length > 0)
+                if (saveFileDialog_Document.FileName.Length > 0)
                 {
                     try
                     {
@@ -213,7 +223,7 @@ namespace text_editor
                         tabControlPrincipal.SelectedTab.Text = FileName;
                         tabControlPrincipal.SelectedTab.Name = FileName;
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         MessageBox.Show(e.Message);
                     }
@@ -231,10 +241,10 @@ namespace text_editor
             saveFileDialog_Document.Filter = "Формат текстового файла (RTF)|*.rtf";
             saveFileDialog_Document.Title = "Сохранить как";
 
-            if(saveFileDialog_Document.ShowDialog() == DialogResult.OK)
+            if (saveFileDialog_Document.ShowDialog() == DialogResult.OK)
             {
                 // Если было выбрано допустимое имя файла ...
-                if(saveFileDialog_Document.FileName.Length > 0)
+                if (saveFileDialog_Document.FileName.Length > 0)
                 {
                     try
                     {
@@ -245,7 +255,7 @@ namespace text_editor
                         tabControlPrincipal.SelectedTab.Text = FileName;
                         tabControlPrincipal.SelectedTab.Name = FileName;
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         MessageBox.Show(e.Message);
                     }
@@ -283,6 +293,20 @@ namespace text_editor
 
             printPreviewDialogPrincipal.ShowDialog();
         }
+
+        #region События операции печати
+
+        /// <summary>
+        ///   Событие, отвечающее за рисование в <see cref = "PrintDocument" /> содержимого, которое он содержит
+        ///   в выбранном документе для печати..
+        /// </summary>
+        private void printDocumentPrincipal_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            e.Graphics.DrawString(ActiveDocument.Text, ActiveDocument.Font, Brushes.Black, 100, 20);
+            e.Graphics.PageUnit = GraphicsUnit.Inch;
+        }
+
+        #endregion События операции печати
 
         #endregion Печать
 
@@ -373,6 +397,8 @@ namespace text_editor
             }
         }
 
+
+
         #endregion Вставка объектов
 
         #region Основные 
@@ -383,7 +409,7 @@ namespace text_editor
         private void GetFontCollection()
         {
             InstalledFontCollection InstaledFonts = new InstalledFontCollection();
-            foreach(FontFamily item in InstaledFonts.Families)
+            foreach (FontFamily item in InstaledFonts.Families)
             {
                 toolStripComboBox_FontFamiliSet.Items.Add(item.Name);
             }
@@ -395,7 +421,7 @@ namespace text_editor
         /// </summary>
         private void LoadListFontSize()
         {
-            for(int i = 0; i <= 75; i++)
+            for (int i = 0; i <= 75; i++)
             {
                 toolStripComboBox_FontSizeSet.Items.Add(i);
             }
@@ -410,9 +436,55 @@ namespace text_editor
         }
         #endregion Основные
 
+        #region Поиск слов в тексте
+        /// <summary>
+        /// Метод выполняет поиск слов в тексте активного документа
+        /// </summary>
+        private void SearchWorld()
+        {
+            string[] words = toolStripTextBox_textSearch.Text.Split(',');
+            foreach (string word in words)
+            {
+                int startIndex = 0;
+                while (startIndex < ActiveDocument.TextLength)
+                {
+                    int wordStartIndex = ActiveDocument.Find(word, startIndex, RichTextBoxFinds.None);
+                    if (wordStartIndex != -1)
+                    {
+                        ActiveDocument.SelectionStart = wordStartIndex;
+                        ActiveDocument.SelectionLength = word.Length;
+                        ActiveDocument.SelectionBackColor = Color.Yellow;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    startIndex += wordStartIndex + word.Length;
+                }
+            }
+            //throw new NotImplementedException();
+        }
+        /// <summary>
+        /// Метод выполнят очистку результатов поиска в активном документе
+        /// </summary>
+        private void SearchClear()
+        {
+            toolStripTextBox_textSearch.Text = "";
+            ActiveDocument.SelectionStart = 0;
+            ActiveDocument.SelectAll();
+            ActiveDocument.SelectionBackColor = Color.White;
+            ActiveDocument.SelectionStart = ActiveDocument.TextLength;
+        }
+
+        #endregion Поиск слов в тексте
+
         #endregion Методы
 
-        #region Обработка событий menuStrip_Main
+        #region Обработка событий
+
+        #region Обработка событий главного меню
+
+        #region Пунк меню "Файл"
 
         /// <summary>
         /// Обработка нажатия на пункт меню "Создать новый"
@@ -440,8 +512,6 @@ namespace text_editor
         /// <summary>
         /// Обработка нажатия на пункт меню "Сохранить как"
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void toolStripMenuItem_SaveAs_Click(object sender, EventArgs e)
         {
             SaveAsDocument();
@@ -468,7 +538,94 @@ namespace text_editor
             this.Close();
             this.Dispose();
         }
-        #endregion Обработка событий menuStrip_Main
+
+        #endregion Пунк меню "Файл"
+
+        #region Пунк меню "Редактировать" и контекстное меню
+        private void toolStripMenuItem_UndoLast_Click(object sender, EventArgs e)
+        {
+            UndoLastChange();
+        }
+
+        private void toolStripMenuItem_RedoLast_Click(object sender, EventArgs e)
+        {
+            RedoLastChange();
+        }
+
+        private void toolStripMenuItem_SelectAllText_Click(object sender, EventArgs e)
+        {
+            SelectAllText();
+        }
+
+        private void toolStripMenuItem_CopySelect_Click(object sender, EventArgs e)
+        {
+            CopySelectedText();
+        }
+
+        private void toolStripMenuItem_PasteInPlace_Click(object sender, EventArgs e)
+        {
+            PasteFromBuf();
+        }
+
+        private void toolStripMenuItem_Undo_Click(object sender, EventArgs e)
+        {
+            UndoLastChange();
+        }
+
+        private void toolStripMenuItem_Redo_Click(object sender, EventArgs e)
+        {
+            RedoLastChange();
+        }
+
+        private void toolStripMenuItem_Cut_Click(object sender, EventArgs e)
+        {
+            CutText();
+        }
+
+        private void toolStripMenuItem_Copy_Click(object sender, EventArgs e)
+        {
+            CopySelectedText();
+        }
+
+        private void toolStripMenuItem_Paste_Click(object sender, EventArgs e)
+        {
+            PasteFromBuf();
+        }
+
+        private void toolStripMenuItem_SelectAll_Click(object sender, EventArgs e)
+        {
+            SelectAllText();
+        }
+
+        #endregion Пунк меню "Редактировать" и контекстное меню
+
+        #region Пункты меню "Поиск" "Очистка" и поле ввода текста
+
+        /// <summary>
+        /// Обработка нажатия на пункт меню "Поиск"
+        /// </summary>
+        private void toolStripMenuItem_Search_Click(object sender, EventArgs e)
+        {
+            SearchWorld();
+        }
+        /// <summary>
+        /// Обработка клика в поле для ввода слов 
+        /// </summary>
+        private void toolStripTextBox_textSearch_Click(object sender, EventArgs e)
+        {
+            toolStripTextBox_textSearch.Text = "";
+        }
+        /// <summary>
+        /// Обработка нажатия на пункт меню "Очистить"
+        /// </summary>
+        private void ToolStripMenuItem_ClearSearch_Click(object sender, EventArgs e)
+        {
+            SearchClear();
+        }
+
+        #endregion Пункты меню "Поиск" "Очистка" и поле ввода текста
+
+        #endregion Обработка событий главного меню
 
         #region Обработка событий панели интрументов toolStrip_Top
 
@@ -739,79 +896,21 @@ namespace text_editor
 
         #endregion Обработка событий панели интрументов toolStrip_Top
 
+        #endregion Обработка событий
 
-        #region PrintDocumentPrincipal Eventos
-
-        /// <summary>
-        ///   Событие, отвечающее за рисование в <see cref = "PrintDocument" /> содержимого, которое он содержит
-        ///   в выбранном документе для печати..
-        /// </summary>
-        private void printDocumentPrincipal_PrintPage(object sender, PrintPageEventArgs e)
+        private void toolStripMenuItem_Close_Click(object sender, EventArgs e)
         {
-            e.Graphics.DrawString(ActiveDocument.Text, ActiveDocument.Font, Brushes.Black, 100, 20);
-            e.Graphics.PageUnit = GraphicsUnit.Inch;
+            DeleteTab();
         }
 
-        #endregion PrintDocumentPrincipal Eventos
-
-        
-
-        #region События меню редактировать и контекстное меню
-        private void toolStripMenuItem_UndoLast_Click(object sender, EventArgs e)
+        private void toolStripMenuItem_CloseOthers_Click(object sender, EventArgs e)
         {
-            UndoLastChange();
+            RemoveAllActiveTabUnselected();
         }
 
-        private void toolStripMenuItem_RedoLast_Click(object sender, EventArgs e)
+        private void toolStripMenuItem_CloseAll_Click(object sender, EventArgs e)
         {
-            RedoLastChange();
+            RemoveAllTabs();
         }
-
-        private void toolStripMenuItem_SelectAllText_Click(object sender, EventArgs e)
-        {
-            SelectAllText();
-        }
-
-        private void toolStripMenuItem_CopySelect_Click(object sender, EventArgs e)
-        {
-            CopySelectedText();
-        }
-
-        private void toolStripMenuItem_PasteInPlace_Click(object sender, EventArgs e)
-        {
-            PasteFromBuf();
-        }
-
-        private void toolStripMenuItem_Undo_Click(object sender, EventArgs e)
-        {
-            UndoLastChange();
-        }
-
-        private void toolStripMenuItem_Redo_Click(object sender, EventArgs e)
-        {
-            RedoLastChange();
-        }
-
-        private void toolStripMenuItem_Cut_Click(object sender, EventArgs e)
-        {
-            CutText();
-        }
-
-        private void toolStripMenuItem_Copy_Click(object sender, EventArgs e)
-        {
-            CopySelectedText();
-        }
-
-        private void toolStripMenuItem_Paste_Click(object sender, EventArgs e)
-        {
-            PasteFromBuf();
-        }
-
-        private void toolStripMenuItem_SelectAll_Click(object sender, EventArgs e)
-        {
-            SelectAllText();
-        }
-
-        #endregion События меню редактировать и контекстное меню
     }
-}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
