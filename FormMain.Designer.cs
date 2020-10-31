@@ -122,6 +122,7 @@
             this.printDialogPrincipal = new System.Windows.Forms.PrintDialog();
             this.printPreviewDialogPrincipal = new System.Windows.Forms.PrintPreviewDialog();
             this.colorDialog_FontColor = new System.Windows.Forms.ColorDialog();
+            this.toolStripButton_PrintCtrl = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1.SuspendLayout();
             this.menuStrip_Main.SuspendLayout();
             this.toolStrip_Top.SuspendLayout();
@@ -497,10 +498,11 @@
             this.toolStripButton_InsertImage,
             this.toolStripSeparator13,
             this.toolStripComboBox_FontFamiliSet,
-            this.toolStripComboBox_FontSizeSet});
+            this.toolStripComboBox_FontSizeSet,
+            this.toolStripButton_PrintCtrl});
             this.toolStrip_Top.Location = new System.Drawing.Point(3, 27);
             this.toolStrip_Top.Name = "toolStrip_Top";
-            this.toolStrip_Top.Size = new System.Drawing.Size(784, 31);
+            this.toolStrip_Top.Size = new System.Drawing.Size(952, 31);
             this.toolStrip_Top.TabIndex = 1;
             // 
             // toolStripButton_BoldFont
@@ -836,7 +838,7 @@
             this.toolStripMenuItem_CloseSaved,
             this.toolStripMenuItem_CloseAll});
             this.contextMenuStripContextTab.Name = "contextMenuStripContextTab";
-            this.contextMenuStripContextTab.Size = new System.Drawing.Size(191, 136);
+            this.contextMenuStripContextTab.Size = new System.Drawing.Size(191, 114);
             // 
             // toolStripMenuItem_Close
             // 
@@ -956,6 +958,17 @@
             this.printPreviewDialogPrincipal.Name = "printPreviewDialog_Main";
             this.printPreviewDialogPrincipal.ShowIcon = false;
             this.printPreviewDialogPrincipal.Visible = false;
+            // 
+            // toolStripButton_PrintCtrl
+            // 
+            this.toolStripButton_PrintCtrl.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripButton_PrintCtrl.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_PrintCtrl.Image")));
+            this.toolStripButton_PrintCtrl.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton_PrintCtrl.Name = "toolStripButton_PrintCtrl";
+            this.toolStripButton_PrintCtrl.Size = new System.Drawing.Size(141, 28);
+            this.toolStripButton_PrintCtrl.Text = "toolStripButton_PrintCtrl";
+            this.toolStripButton_PrintCtrl.ToolTipText = "toolStripButton_PrintCtrl";
+            this.toolStripButton_PrintCtrl.Click += new System.EventHandler(this.toolStripButton_PrintCtrl_Click);
             // 
             // FormMain
             // 
@@ -1081,6 +1094,7 @@
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox_textSearch;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem_Search;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_ClearSearch;
+        private System.Windows.Forms.ToolStripButton toolStripButton_PrintCtrl;
     }
 }
 

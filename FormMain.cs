@@ -5,6 +5,7 @@ using System.Drawing.Text;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using PrintCtrl;
 
 namespace text_editor
 {
@@ -61,9 +62,9 @@ namespace text_editor
         /// который находится внутри вкладки, выбранной пользователем в данный момент.
         ///</summary>
         ///
-        public RichTextBox ActiveDocument
+        public RichTextBoxPrintCtrl ActiveDocument
         {
-            get { return (RichTextBox)tabControlPrincipal.SelectedTab.Controls["Body"]; }
+            get { return (RichTextBoxPrintCtrl)tabControlPrincipal.SelectedTab.Controls["Body"]; }
         }
         #endregion Свойства
 
@@ -76,19 +77,19 @@ namespace text_editor
         private void CreateNewTab()
         {
             //Создается экземпляр нового RichTextBox со следующими значениями, установленными в его свойствах.
-            RichTextBox Body = new RichTextBox
+            RichTextBoxPrintCtrl Body = new RichTextBoxPrintCtrl
             {
                 Name = "Body",
                 AcceptsTab = true,
                 Dock = DockStyle.Fill,
                 ContextMenuStrip = contextMenuStripContextDoc,
-                Font = this.m_DefaultFontFamili
+                Font = this.m_DefaultFontFamili,
             };
-            // смещение границ начала и конца строки в окне
-            Body.SelectionIndent = 56;
-            Body.SelectionRightIndent = 56;
 
-
+            // смещение границ начала и конца строки в окне и отступа сверху
+            const int dist = 24;
+            Body.SetInnerMargins(dist, dist, dist, 0);
+            
             // Количество вкладок увеличивается ...
             this.m_intTabCount++;
             // Для нового документа создается имя.
@@ -139,10 +140,6 @@ namespace text_editor
         /// </summary>
         private void RemoveAllActiveTabUnselected()
         {
-            //for (int i = tabControlPrincipal.TabCount - 1; i > tabControlPrincipal.SelectedIndex; i--)
-            //{
-            //    tabControlPrincipal.TabPages.RemoveAt(i);
-            //}
             foreach(TabPage Page in tabControlPrincipal.TabPages)
             {
                 if(Page.Name != tabControlPrincipal.SelectedTab.Name)
@@ -150,7 +147,6 @@ namespace text_editor
                     tabControlPrincipal.TabPages.Remove(Page);
                 }
             }
-
         }
         /// <summary>
         ///   Метод, удаляющий все вкладки, где их содержимое уже было сохранено пользователем..
@@ -627,6 +623,25 @@ namespace text_editor
 
         #endregion Обработка событий главного меню
 
+        #region Обработка событий контекстного меню клик на вкладке
+
+        private void toolStripMenuItem_Close_Click(object sender, EventArgs e)
+        {
+            DeleteTab();
+        }
+
+        private void toolStripMenuItem_CloseOthers_Click(object sender, EventArgs e)
+        {
+            RemoveAllActiveTabUnselected();
+        }
+
+        private void toolStripMenuItem_CloseAll_Click(object sender, EventArgs e)
+        {
+            RemoveAllTabs();
+        }
+
+        #endregion Обработка событий контекстного меню клик на вкладке
+
         #region Обработка событий панели интрументов toolStrip_Top
 
         /// <summary>
@@ -894,23 +909,17 @@ namespace text_editor
             InsertImage();
         }
 
+
+
+
         #endregion Обработка событий панели интрументов toolStrip_Top
 
         #endregion Обработка событий
 
-        private void toolStripMenuItem_Close_Click(object sender, EventArgs e)
+        private void toolStripButton_PrintCtrl_Click(object sender, EventArgs e)
         {
-            DeleteTab();
-        }
-
-        private void toolStripMenuItem_CloseOthers_Click(object sender, EventArgs e)
-        {
-            RemoveAllActiveTabUnselected();
-        }
-
-        private void toolStripMenuItem_CloseAll_Click(object sender, EventArgs e)
-        {
-            RemoveAllTabs();
+            //
+            //ActiveDocument.Print();
         }
     }
 }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
