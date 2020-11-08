@@ -3,14 +3,26 @@ using System.Drawing;
 using System.Drawing.Printing;
 using System.Drawing.Text;
 using System.IO;
-using System.Reflection;
+//using System.Reflection;
 using System.Windows.Forms;
-using PrintCtrl;
+//using PrintCtrl;
+using System.Runtime.InteropServices;
 
 namespace text_editor
 {
     public partial class FormMain : Form
     {
+        Image CloseImage;
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
+        private const int TCM_SETMINTABWIDTH = 0x1300 + 49;
+        private void tabControl1_HandleCreated(object sender, EventArgs e)
+        {
+            SendMessage(this.tabControlPrincipal.Handle, TCM_SETMINTABWIDTH, IntPtr.Zero, (IntPtr)16);
+        }
+
+
         #region Константы
 
         /// <summary>
@@ -26,6 +38,13 @@ namespace text_editor
         #endregion Константы
 
         #region Притные поля
+
+        private Mp3Player mp3Player = new Mp3Player();
+
+        /// <summary>
+        /// Путь к файлу.
+        /// </summary
+        private string FilePath = null;
 
         /// <summary>
         /// Количество активных вкладок редактора.
@@ -54,6 +73,48 @@ namespace text_editor
             CreateNewTab();
             GetFontCollection();
             LoadListFontSize();
+
+            // отрисовка кнопок закрытия вкладок
+            tabControlPrincipal.DrawMode = TabDrawMode.OwnerDrawFixed;
+            tabControlPrincipal.DrawItem += TabControlPrincipal_DrawItem;
+            CloseImage = text_editor.Properties.Resources.close_tab;
+            tabControlPrincipal.Padding = new Point(10, 3);
+        }
+
+        //private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    // If the last TabPage is selected then Create a new TabPage
+        //    if (tabControlPrincipal.SelectedIndex == tabControlPrincipal.TabPages.Count - 1)
+        //        CreateNewTab();
+        //}
+
+        private void TabControlPrincipal_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            try
+            {
+                var tabPage = this.tabControlPrincipal.TabPages[e.Index];
+                var tabRect = this.tabControlPrincipal.GetTabRect(e.Index);
+                tabRect.Inflate(2, -3);
+                // рисуем кнопку добавления вкладки
+                //if (e.Index == this.tabControlPrincipal.TabCount - 1)
+                //{
+                //    var addImage = new Bitmap(text_editor.Properties.Resources.add_tab);
+                //    e.Graphics.DrawImage(addImage,
+                //        tabRect.Left + (tabRect.Width - addImage.Width) / 2,
+                //        tabRect.Top + (tabRect.Height - addImage.Height) / 2);
+                //}
+                // рисум кнопку закрытия для всех вкладок
+               // else
+                //{
+                    var closeImage = new Bitmap(text_editor.Properties.Resources.close_tab);
+                    e.Graphics.DrawImage(closeImage,
+                        (tabRect.Right - closeImage.Width - 3),
+                        tabRect.Top + (tabRect.Height +1 - closeImage.Height) / 2);
+                    TextRenderer.DrawText(e.Graphics, tabPage.Text, tabPage.Font,
+                        tabRect, tabPage.ForeColor, TextFormatFlags.Left);
+                //}
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
         }
 
         #region Свойства
@@ -62,9 +123,9 @@ namespace text_editor
         /// который находится внутри вкладки, выбранной пользователем в данный момент.
         ///</summary>
         ///
-        public RichTextBoxPrintCtrl ActiveDocument
+        public RichTextBox ActiveDocument
         {
-            get { return (RichTextBoxPrintCtrl)tabControlPrincipal.SelectedTab.Controls["Body"]; }
+            get { return (RichTextBox)tabControlPrincipal.SelectedTab.Controls["Body"]; }
         }
         #endregion Свойства
 
@@ -77,23 +138,26 @@ namespace text_editor
         private void CreateNewTab()
         {
             //Создается экземпляр нового RichTextBox со следующими значениями, установленными в его свойствах.
-            RichTextBoxPrintCtrl Body = new RichTextBoxPrintCtrl
+            RichTextBox Body = new RichTextBox
             {
                 Name = "Body",
                 AcceptsTab = true,
                 Dock = DockStyle.Fill,
                 ContextMenuStrip = contextMenuStripContextDoc,
-                Font = this.m_DefaultFontFamili,
+                Font = this.m_DefaultFontFamili
             };
 
             // смещение границ начала и конца строки в окне и отступа сверху
             const int dist = 24;
             Body.SetInnerMargins(dist, dist, dist, 0);
+            // вставка картинки перетаскиванием
+            Body.AllowDrop = true;
+            Body.DragDrop += new DragEventHandler(Body_DragDrop);
             
             // Количество вкладок увеличивается ...
             this.m_intTabCount++;
             // Для нового документа создается имя.
-            string NameDocument = "Новый документ - " + this.m_intTabCount;
+            string NameDocument = "  Новый документ - " + this.m_intTabCount;
             //Новая вкладка (TabPage) создается с именем нового документа в 
             //качестве заголовка и именем нового элемента управления.
             TabPage NewTab = new TabPage
@@ -106,7 +170,12 @@ namespace text_editor
             NewTab.Controls.Add(Body);
             // Новая вкладка (TabPage) добавляется внутри элемента управления вкладкой (TabControl).
             tabControlPrincipal.TabPages.Add(NewTab);
+            FilePath = null;
+            //Console.WriteLine("Method CreateNewTab Path to file -> " + FilePath);
         }
+
+        
+
         /// <summary>
         ///   Метод, удаляющий текущую выбранную вкладку.
         /// </summary>
@@ -166,7 +235,7 @@ namespace text_editor
         /// </summary>
         private void OpenDocument()
         {
-            openFileDialog_Document.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            openFileDialog_Document.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             openFileDialog_Document.Filter = "Формат текстовых файлов (RTF)|*.rtf";
 
             if (openFileDialog_Document.ShowDialog() == DialogResult.OK)
@@ -174,18 +243,21 @@ namespace text_editor
                 // Если было выбрано допустимое имя файла ...
                 if (openFileDialog_Document.FileName.Length > 0)
                 {
+                    
                     try // Продуем прочитать файл
                     {
                         // Создается новая вкладка.
                         CreateNewTab();
+                        FilePath = openFileDialog_Document.FileName;
+                        Console.WriteLine("Method OpenDocument Path to file -> " + FilePath);
                         // Новая сгенерированная вкладка ищется и выбирается.
-                        tabControlPrincipal.SelectedTab = tabControlPrincipal.TabPages["Новый документ - " + this.m_intTabCount];
+                        tabControlPrincipal.SelectedTab = tabControlPrincipal.TabPages["  Новый документ - " + this.m_intTabCount];
                         // Загружаем содержимое файла в RichTextBox новой вкладки.
                         ActiveDocument.LoadFile(openFileDialog_Document.FileName, RichTextBoxStreamType.RichText);
                         // Имя файла указывается в заголовке вкладки и ее имени.
                         string NameOpenDocument = Path.GetFileName(openFileDialog_Document.FileName);
-                        tabControlPrincipal.SelectedTab.Text = NameOpenDocument;
-                        tabControlPrincipal.SelectedTab.Name = NameOpenDocument;
+                        tabControlPrincipal.SelectedTab.Text = "  " + NameOpenDocument;
+                        tabControlPrincipal.SelectedTab.Name = FilePath;
                     }
                     catch (Exception e)
                     {
@@ -200,31 +272,42 @@ namespace text_editor
         /// </summary>
         private void SaveDocument()
         {
-            saveFileDialog_Document.FileName = tabControlPrincipal.SelectedTab.Name;
-            saveFileDialog_Document.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            saveFileDialog_Document.Filter = "Формат текстового файла (RTF)|*.rtf";
-            saveFileDialog_Document.Title = "Сохранить";
-
-            if (saveFileDialog_Document.ShowDialog() == DialogResult.OK)
+            if (string.IsNullOrEmpty(FilePath))
             {
-                // Если было выбрано допустимое имя файла ...
-                if (saveFileDialog_Document.FileName.Length > 0)
+                saveFileDialog_Document.FileName = tabControlPrincipal.SelectedTab.Name;
+                saveFileDialog_Document.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                saveFileDialog_Document.Filter = "Формат текстового файла (RTF)|*.rtf";
+                saveFileDialog_Document.Title = "Сохранить";
+                if (saveFileDialog_Document.ShowDialog() == DialogResult.OK)
                 {
-                    try
+                    
+                    if (saveFileDialog_Document.FileName.Length > 0)
                     {
-                        // Сохраняем содержимое RichTextBox в установленном пути к файлу.
-                        ActiveDocument.SaveFile(saveFileDialog_Document.FileName, RichTextBoxStreamType.RichText);
-                        // Имя файла указывается в заголовке вкладки и ее имени.
-                        string FileName = Path.GetFileName(saveFileDialog_Document.FileName);
-                        tabControlPrincipal.SelectedTab.Text = FileName;
-                        tabControlPrincipal.SelectedTab.Name = FileName;
-                    }
-                    catch (Exception e)
-                    {
-                        MessageBox.Show(e.Message);
+                        // Если было выбрано допустимое имя файла ...
+                        FilePath = saveFileDialog_Document.FileName;
+                        Console.WriteLine("Method SaveDocument (if) Path to file -> " + FilePath);
+                        try
+                        {
+                            // Сохраняем содержимое RichTextBox в установленном пути к файлу.
+                            ActiveDocument.SaveFile(saveFileDialog_Document.FileName, RichTextBoxStreamType.RichText);
+                            // Имя файла указывается в заголовке вкладки и ее имени.
+                            string FileName = Path.GetFileName(saveFileDialog_Document.FileName);
+                            tabControlPrincipal.SelectedTab.Text = FileName;
+                            tabControlPrincipal.SelectedTab.Name = FilePath;
+                        }
+                        catch (Exception e)
+                        {
+                            MessageBox.Show(e.Message);
+                        }
                     }
                 }
             }
+            else
+            {
+                File.WriteAllText(FilePath, ActiveDocument.Rtf);
+                Console.WriteLine("Method SaveDocument(else) Path to file -> " + FilePath);
+            }
+            //FilePath = tabControlPrincipal.SelectedTab.Name;
         }
 
         /// <summary>
@@ -233,7 +316,7 @@ namespace text_editor
         private void SaveAsDocument()
         {
             saveFileDialog_Document.FileName = tabControlPrincipal.SelectedTab.Name;
-            saveFileDialog_Document.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            saveFileDialog_Document.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             saveFileDialog_Document.Filter = "Формат текстового файла (RTF)|*.rtf";
             saveFileDialog_Document.Title = "Сохранить как";
 
@@ -387,13 +470,32 @@ namespace text_editor
                     }
                     catch (Exception e)
                     {
-                        MessageBox.Show(e.Message);
+                        MessageBox.Show("Ошибка вставки изображения ! " + e.Message);
                     }
                 }
             }
         }
-
-
+        /// <summary>
+        /// Вставка изображения перетаскиванием из папки в поле документа.
+        /// Обработка события перетаскивания изображения в поле активного документа
+        /// </summary>
+        private void Body_DragDrop(object sender, DragEventArgs e)
+        {
+            // для вставки изображения
+            string[] droppedFiles = e.Data.GetData(DataFormats.FileDrop) as string[];
+            foreach (string droppedFile in droppedFiles)
+            {
+                using (Bitmap image = new Bitmap(droppedFile))
+                {
+                    Clipboard.SetDataObject(image);
+                    DataFormats.Format MyFormat = DataFormats.GetFormat(DataFormats.Bitmap);
+                    if (ActiveDocument.CanPaste(MyFormat))
+                    {
+                        ActiveDocument.Paste(MyFormat);
+                    }
+                }
+            }
+        }
 
         #endregion Вставка объектов
 
@@ -538,6 +640,7 @@ namespace text_editor
         #endregion Пунк меню "Файл"
 
         #region Пунк меню "Редактировать" и контекстное меню
+
         private void toolStripMenuItem_UndoLast_Click(object sender, EventArgs e)
         {
             UndoLastChange();
@@ -881,9 +984,9 @@ namespace text_editor
         private void toolStripComboBox_FontFamiliSet_SelectedIndexChanged(object sender, EventArgs e)
         {
             Font NewFont = new Font(toolStripComboBox_FontFamiliSet.SelectedItem.ToString(),
-                ActiveDocument.SelectionFont.Size,
-                ActiveDocument.SelectionFont.Style);
+                DefaultFontSize, m_DefaultFontFamili.Style);
 
+           // ActiveDocument.SelectedText.
             this.m_DefaultFontFamili = NewFont;
             ActiveDocument.SelectionFont = NewFont;
         }
@@ -910,16 +1013,100 @@ namespace text_editor
         }
 
 
-
-
         #endregion Обработка событий панели интрументов toolStrip_Top
+
+        #region Обработка событий кликов на вкладках
+
+        /// <summary>
+        /// Обработка нажания кнопки закрытия вкладки
+        /// </summary>
+        private void tabControlPrincipal_MouseDown(object sender, MouseEventArgs e)
+        {
+            // Process MouseDown event only till (tabControl.TabPages.Count - 1) excluding the last TabPage
+            for (var i = 0; i <= this.tabControlPrincipal.TabPages.Count - 1; i++)
+            {
+                var tabRect = this.tabControlPrincipal.GetTabRect(i);
+                tabRect.Inflate(2, -3);
+
+                var closeImage = new Bitmap(text_editor.Properties.Resources.close_tab);
+                var imageRect = new Rectangle(
+                    (tabRect.Right - closeImage.Width),
+                    tabRect.Top + (tabRect.Height - closeImage.Height) / 2,
+                    closeImage.Width,
+                    closeImage.Height);
+                //
+                if (imageRect.Contains(e.Location))
+                {
+                    //сохраняем документ перед закрытием
+                    if (string.IsNullOrEmpty(FilePath))
+                    {
+                        SaveDocument();
+                    }
+                    //удаляем вкладку
+                    this.tabControlPrincipal.TabPages.RemoveAt(i);
+                    //если закрыты все вкладки создаем новую пустую вкладку
+                    if (this.tabControlPrincipal.TabPages.Count == 0)
+                    {
+                        this.m_intTabCount = 0;
+                        CreateNewTab();
+                    }
+                    break;
+                }
+            }
+        }
+        /// <summary>
+        /// Обработка события переключения по вкладкам
+        /// </summary>
+        private void tabControlPrincipal_Click(object sender, EventArgs e)
+        {
+            //Записываем в поле путь к файлу при переключении по вкладкам
+            FilePath = tabControlPrincipal.SelectedTab.Name;
+            //прорверяем содержится ли в переменной FilePath символ \ если нет то файл не открыт с диска и не сохранялся
+            bool checkPath = FilePath.Contains(@"\");
+            if (!checkPath)
+            {
+                FilePath = null;
+            }
+            Console.WriteLine("Method tabControlPrincipal_Click Path to file -> " + FilePath);
+        }
+
+        #endregion Обработка событий кликов на вкладках
 
         #endregion Обработка событий
 
-        private void toolStripButton_PrintCtrl_Click(object sender, EventArgs e)
+
+        #region Музыкальный плайер
+
+        private void музыкаToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //
-            //ActiveDocument.Print();
+            panel3.Visible = !panel3.Visible;
         }
+
+        private void button_MOpen_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                ofd.Filter = "Mp3 Files|*.mp3";
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    mp3Player.open(ofd.FileName);
+                }
+            }
+        }
+
+        private void button_MPlay_Click(object sender, EventArgs e)
+        {
+            mp3Player.play();
+        }
+
+        private void button_MStop_Click(object sender, EventArgs e)
+        {
+            mp3Player.stop();
+        }
+
+        #endregion Музыкальный плайер
+
+
+
     }
 }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
