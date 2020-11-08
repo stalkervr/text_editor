@@ -106,10 +106,23 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.tabControlPrincipal = new System.Windows.Forms.TabControl();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.label_Volume = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.button_Add = new System.Windows.Forms.Button();
+            this.button_Clear = new System.Windows.Forms.Button();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.button_Play = new System.Windows.Forms.Button();
+            this.button_Next = new System.Windows.Forms.Button();
+            this.button_Prev = new System.Windows.Forms.Button();
+            this.panel_List = new System.Windows.Forms.Panel();
+            this.listBox_Playlist = new System.Windows.Forms.ListBox();
+            this.label_TrakName = new System.Windows.Forms.Label();
             this.panel_MControl = new System.Windows.Forms.Panel();
-            this.button_MPlay = new System.Windows.Forms.Button();
-            this.button_MStop = new System.Windows.Forms.Button();
-            this.button_MOpen = new System.Windows.Forms.Button();
+            this.trackBar_Duration = new System.Windows.Forms.TrackBar();
+            this.label_Duration = new System.Windows.Forms.Label();
+            this.label_CurentPos = new System.Windows.Forms.Label();
             this.pictureBox_MuzikCover = new System.Windows.Forms.PictureBox();
             this.contextMenuStripContextTab = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem_Close = new System.Windows.Forms.ToolStripMenuItem();
@@ -139,7 +152,13 @@
             this.toolStripContainer1.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            this.panel5.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.panel_List.SuspendLayout();
             this.panel_MControl.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_Duration)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_MuzikCover)).BeginInit();
             this.contextMenuStripContextTab.SuspendLayout();
             this.contextMenuStripContextDoc.SuspendLayout();
@@ -436,6 +455,7 @@
             // 
             // toolStripTextBox_textSearch
             // 
+            this.toolStripTextBox_textSearch.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.toolStripTextBox_textSearch.Name = "toolStripTextBox_textSearch";
             this.toolStripTextBox_textSearch.Size = new System.Drawing.Size(100, 23);
             this.toolStripTextBox_textSearch.Text = "Введите слово";
@@ -824,11 +844,11 @@
             // 
             this.toolStripContainer1.ContentPanel.Controls.Add(this.panel4);
             this.toolStripContainer1.ContentPanel.Controls.Add(this.panel3);
-            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(1051, 585);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(1051, 681);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
             this.toolStripContainer1.Name = "toolStripContainer1";
-            this.toolStripContainer1.Size = new System.Drawing.Size(1051, 665);
+            this.toolStripContainer1.Size = new System.Drawing.Size(1051, 761);
             this.toolStripContainer1.TabIndex = 1;
             this.toolStripContainer1.Text = "toolStripContainer1";
             // 
@@ -843,7 +863,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(0, 0);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(751, 585);
+            this.panel4.Size = new System.Drawing.Size(751, 681);
             this.panel4.TabIndex = 4;
             // 
             // tabControlPrincipal
@@ -853,69 +873,201 @@
             this.tabControlPrincipal.Location = new System.Drawing.Point(0, 0);
             this.tabControlPrincipal.Name = "tabControlPrincipal";
             this.tabControlPrincipal.SelectedIndex = 0;
-            this.tabControlPrincipal.Size = new System.Drawing.Size(751, 585);
+            this.tabControlPrincipal.Size = new System.Drawing.Size(751, 681);
             this.tabControlPrincipal.TabIndex = 0;
             this.tabControlPrincipal.Click += new System.EventHandler(this.tabControlPrincipal_Click);
             this.tabControlPrincipal.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tabControlPrincipal_MouseDown);
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.label_Volume);
+            this.panel3.Controls.Add(this.panel1);
+            this.panel3.Controls.Add(this.panel5);
+            this.panel3.Controls.Add(this.panel2);
+            this.panel3.Controls.Add(this.panel_List);
+            this.panel3.Controls.Add(this.label_TrakName);
             this.panel3.Controls.Add(this.panel_MControl);
             this.panel3.Controls.Add(this.pictureBox_MuzikCover);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel3.Location = new System.Drawing.Point(751, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(300, 585);
+            this.panel3.Size = new System.Drawing.Size(300, 681);
             this.panel3.TabIndex = 3;
+            // 
+            // label_Volume
+            // 
+            this.label_Volume.AutoSize = true;
+            this.label_Volume.Location = new System.Drawing.Point(212, 565);
+            this.label_Volume.Name = "label_Volume";
+            this.label_Volume.Size = new System.Drawing.Size(62, 13);
+            this.label_Volume.TabIndex = 7;
+            this.label_Volume.Text = "Громкость";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.trackBar1);
+            this.panel1.Location = new System.Drawing.Point(24, 581);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(248, 30);
+            this.panel1.TabIndex = 6;
+            // 
+            // trackBar1
+            // 
+            this.trackBar1.AutoSize = false;
+            this.trackBar1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.trackBar1.Location = new System.Drawing.Point(0, 0);
+            this.trackBar1.Maximum = 100;
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(248, 30);
+            this.trackBar1.TabIndex = 0;
+            this.trackBar1.Value = 30;
+            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
+            // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.button_Add);
+            this.panel5.Controls.Add(this.button_Clear);
+            this.panel5.Location = new System.Drawing.Point(24, 646);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(248, 24);
+            this.panel5.TabIndex = 5;
+            // 
+            // button_Add
+            // 
+            this.button_Add.Dock = System.Windows.Forms.DockStyle.Right;
+            this.button_Add.Location = new System.Drawing.Point(149, 0);
+            this.button_Add.Name = "button_Add";
+            this.button_Add.Size = new System.Drawing.Size(99, 24);
+            this.button_Add.TabIndex = 1;
+            this.button_Add.Text = "Add to list";
+            this.button_Add.UseVisualStyleBackColor = true;
+            this.button_Add.Click += new System.EventHandler(this.button_Add_Click);
+            // 
+            // button_Clear
+            // 
+            this.button_Clear.Dock = System.Windows.Forms.DockStyle.Left;
+            this.button_Clear.Location = new System.Drawing.Point(0, 0);
+            this.button_Clear.Name = "button_Clear";
+            this.button_Clear.Size = new System.Drawing.Size(111, 24);
+            this.button_Clear.TabIndex = 0;
+            this.button_Clear.Text = "Clear";
+            this.button_Clear.UseVisualStyleBackColor = true;
+            this.button_Clear.Click += new System.EventHandler(this.button_Clear_Click);
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.button_Play);
+            this.panel2.Controls.Add(this.button_Next);
+            this.panel2.Controls.Add(this.button_Prev);
+            this.panel2.Location = new System.Drawing.Point(24, 617);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(248, 23);
+            this.panel2.TabIndex = 4;
+            // 
+            // button_Play
+            // 
+            this.button_Play.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button_Play.Location = new System.Drawing.Point(75, 0);
+            this.button_Play.Name = "button_Play";
+            this.button_Play.Size = new System.Drawing.Size(98, 23);
+            this.button_Play.TabIndex = 2;
+            this.button_Play.Text = "Play";
+            this.button_Play.UseVisualStyleBackColor = true;
+            this.button_Play.Click += new System.EventHandler(this.button_Play_Click);
+            // 
+            // button_Next
+            // 
+            this.button_Next.Dock = System.Windows.Forms.DockStyle.Right;
+            this.button_Next.Location = new System.Drawing.Point(173, 0);
+            this.button_Next.Name = "button_Next";
+            this.button_Next.Size = new System.Drawing.Size(75, 23);
+            this.button_Next.TabIndex = 1;
+            this.button_Next.Text = "Next";
+            this.button_Next.UseVisualStyleBackColor = true;
+            this.button_Next.Click += new System.EventHandler(this.button_Next_Click);
+            // 
+            // button_Prev
+            // 
+            this.button_Prev.Dock = System.Windows.Forms.DockStyle.Left;
+            this.button_Prev.Location = new System.Drawing.Point(0, 0);
+            this.button_Prev.Name = "button_Prev";
+            this.button_Prev.Size = new System.Drawing.Size(75, 23);
+            this.button_Prev.TabIndex = 0;
+            this.button_Prev.Text = "Prev";
+            this.button_Prev.UseVisualStyleBackColor = true;
+            this.button_Prev.Click += new System.EventHandler(this.button_Prev_Click);
+            // 
+            // panel_List
+            // 
+            this.panel_List.Controls.Add(this.listBox_Playlist);
+            this.panel_List.Location = new System.Drawing.Point(24, 354);
+            this.panel_List.Name = "panel_List";
+            this.panel_List.Size = new System.Drawing.Size(248, 203);
+            this.panel_List.TabIndex = 3;
+            // 
+            // listBox_Playlist
+            // 
+            this.listBox_Playlist.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBox_Playlist.FormattingEnabled = true;
+            this.listBox_Playlist.Location = new System.Drawing.Point(0, 0);
+            this.listBox_Playlist.Name = "listBox_Playlist";
+            this.listBox_Playlist.Size = new System.Drawing.Size(248, 203);
+            this.listBox_Playlist.TabIndex = 0;
+            this.listBox_Playlist.SelectedIndexChanged += new System.EventHandler(this.listBox_Playlist_SelectedIndexChanged);
+            // 
+            // label_TrakName
+            // 
+            this.label_TrakName.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label_TrakName.Location = new System.Drawing.Point(24, 3);
+            this.label_TrakName.Name = "label_TrakName";
+            this.label_TrakName.Size = new System.Drawing.Size(250, 25);
+            this.label_TrakName.TabIndex = 2;
+            this.label_TrakName.Text = "Trak name";
+            this.label_TrakName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panel_MControl
             // 
-            this.panel_MControl.Controls.Add(this.button_MPlay);
-            this.panel_MControl.Controls.Add(this.button_MStop);
-            this.panel_MControl.Controls.Add(this.button_MOpen);
-            this.panel_MControl.Location = new System.Drawing.Point(4, 291);
+            this.panel_MControl.Controls.Add(this.trackBar_Duration);
+            this.panel_MControl.Controls.Add(this.label_Duration);
+            this.panel_MControl.Controls.Add(this.label_CurentPos);
+            this.panel_MControl.Location = new System.Drawing.Point(24, 292);
             this.panel_MControl.Name = "panel_MControl";
-            this.panel_MControl.Size = new System.Drawing.Size(291, 46);
+            this.panel_MControl.Size = new System.Drawing.Size(250, 56);
             this.panel_MControl.TabIndex = 1;
             // 
-            // button_MPlay
+            // trackBar_Duration
             // 
-            this.button_MPlay.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button_MPlay.Location = new System.Drawing.Point(83, 0);
-            this.button_MPlay.Name = "button_MPlay";
-            this.button_MPlay.Size = new System.Drawing.Size(122, 46);
-            this.button_MPlay.TabIndex = 2;
-            this.button_MPlay.Text = "Играть";
-            this.button_MPlay.UseVisualStyleBackColor = true;
-            this.button_MPlay.Click += new System.EventHandler(this.button_MPlay_Click);
+            this.trackBar_Duration.AutoSize = false;
+            this.trackBar_Duration.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.trackBar_Duration.Location = new System.Drawing.Point(0, 24);
+            this.trackBar_Duration.Name = "trackBar_Duration";
+            this.trackBar_Duration.Size = new System.Drawing.Size(250, 32);
+            this.trackBar_Duration.TabIndex = 2;
+            this.trackBar_Duration.Scroll += new System.EventHandler(this.trackBar_Duration_Scroll);
             // 
-            // button_MStop
+            // label_Duration
             // 
-            this.button_MStop.Dock = System.Windows.Forms.DockStyle.Right;
-            this.button_MStop.Location = new System.Drawing.Point(205, 0);
-            this.button_MStop.Name = "button_MStop";
-            this.button_MStop.Size = new System.Drawing.Size(86, 46);
-            this.button_MStop.TabIndex = 1;
-            this.button_MStop.Text = "Стоп";
-            this.button_MStop.UseVisualStyleBackColor = true;
-            this.button_MStop.Click += new System.EventHandler(this.button_MStop_Click);
+            this.label_Duration.Location = new System.Drawing.Point(207, 2);
+            this.label_Duration.Name = "label_Duration";
+            this.label_Duration.Size = new System.Drawing.Size(41, 20);
+            this.label_Duration.TabIndex = 1;
+            this.label_Duration.Text = "label2";
+            this.label_Duration.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // button_MOpen
+            // label_CurentPos
             // 
-            this.button_MOpen.Dock = System.Windows.Forms.DockStyle.Left;
-            this.button_MOpen.Location = new System.Drawing.Point(0, 0);
-            this.button_MOpen.Name = "button_MOpen";
-            this.button_MOpen.Size = new System.Drawing.Size(83, 46);
-            this.button_MOpen.TabIndex = 0;
-            this.button_MOpen.Text = "Открыть";
-            this.button_MOpen.UseVisualStyleBackColor = true;
-            this.button_MOpen.Click += new System.EventHandler(this.button_MOpen_Click);
+            this.label_CurentPos.Location = new System.Drawing.Point(2, 2);
+            this.label_CurentPos.Name = "label_CurentPos";
+            this.label_CurentPos.Size = new System.Drawing.Size(41, 20);
+            this.label_CurentPos.TabIndex = 0;
+            this.label_CurentPos.Text = "label1";
+            this.label_CurentPos.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pictureBox_MuzikCover
             // 
             this.pictureBox_MuzikCover.Image = global::text_editor.Properties.Resources.def_cover;
             this.pictureBox_MuzikCover.InitialImage = global::text_editor.Properties.Resources.def_cover;
-            this.pictureBox_MuzikCover.Location = new System.Drawing.Point(24, 21);
+            this.pictureBox_MuzikCover.Location = new System.Drawing.Point(24, 34);
             this.pictureBox_MuzikCover.Name = "pictureBox_MuzikCover";
             this.pictureBox_MuzikCover.Size = new System.Drawing.Size(250, 250);
             this.pictureBox_MuzikCover.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -1056,7 +1208,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1051, 665);
+            this.ClientSize = new System.Drawing.Size(1051, 761);
             this.Controls.Add(this.toolStripContainer1);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -1078,7 +1230,14 @@
             this.toolStripContainer1.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            this.panel5.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel_List.ResumeLayout(false);
             this.panel_MControl.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_Duration)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_MuzikCover)).EndInit();
             this.contextMenuStripContextTab.ResumeLayout(false);
             this.contextMenuStripContextDoc.ResumeLayout(false);
@@ -1185,9 +1344,22 @@
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_Music;
         private System.Windows.Forms.PictureBox pictureBox_MuzikCover;
         private System.Windows.Forms.Panel panel_MControl;
-        private System.Windows.Forms.Button button_MPlay;
-        private System.Windows.Forms.Button button_MStop;
-        private System.Windows.Forms.Button button_MOpen;
+        private System.Windows.Forms.Label label_TrakName;
+        private System.Windows.Forms.TrackBar trackBar_Duration;
+        private System.Windows.Forms.Label label_Duration;
+        private System.Windows.Forms.Label label_CurentPos;
+        private System.Windows.Forms.Panel panel_List;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Button button_Add;
+        private System.Windows.Forms.Button button_Clear;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button button_Play;
+        private System.Windows.Forms.Button button_Next;
+        private System.Windows.Forms.Button button_Prev;
+        private System.Windows.Forms.ListBox listBox_Playlist;
+        private System.Windows.Forms.Label label_Volume;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TrackBar trackBar1;
     }
 }
 

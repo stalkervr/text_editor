@@ -7,6 +7,7 @@ using System.IO;
 using System.Windows.Forms;
 //using PrintCtrl;
 using System.Runtime.InteropServices;
+using DAudio;
 
 namespace text_editor
 {
@@ -35,11 +36,13 @@ namespace text_editor
         /// </summary>
         private const int DefaultFontSize = 15;
 
+        private AudioPlayer Player;
+
         #endregion Константы
 
         #region Притные поля
 
-        private Mp3Player mp3Player = new Mp3Player();
+        //private Mp3Player mp3Player = new Mp3Player();
 
         /// <summary>
         /// Путь к файлу.
@@ -61,6 +64,27 @@ namespace text_editor
         public FormMain()
         {
             InitializeComponent();
+
+            Player = new AudioPlayer();
+            // подписываемся на событие изменения статуса
+            Player.PlayingStatusChanged += (s, e) => button_Play.Text = e == Status.Playing ? "Pause" : "Play";
+
+            Player.AudioSelected += (s, e) =>
+            {
+                //приравниваем максимум трекбара к продолжительности трека
+                trackBar_Duration.Maximum = (int)e.Duration;
+                //выводим название трека в верхний лэбел 
+                label_TrakName.Text = e.Name;
+                //выводим длину трека в правый лэбел
+                label_Duration.Text = e.DurationTime.ToString(@"mm\:ss");
+                listBox_Playlist.SelectedItem = e.Name;
+            };
+
+            Player.ProgressChanged += (s, e) =>
+            {
+                trackBar_Duration.Value = (int)e;
+                label_CurentPos.Text = ((AudioPlayer)s).PositionTime.ToString(@"mm\:ss");
+            };
         }
         /// <summary>
         /// Обработка события загрузки формы
@@ -1082,31 +1106,68 @@ namespace text_editor
             panel3.Visible = !panel3.Visible;
         }
 
-        private void button_MOpen_Click(object sender, EventArgs e)
+        private void button_Add_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog ofd = new OpenFileDialog())
+            using (OpenFileDialog dialog = new OpenFileDialog() { Multiselect = true, Filter = "Audio files|*.wav;*.aac;*.mp4;*.mp3;" })
             {
-                ofd.Filter = "Mp3 Files|*.mp3";
-                if (ofd.ShowDialog() == DialogResult.OK)
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    mp3Player.open(ofd.FileName);
+                    Player.LoadAudio(dialog.FileNames);
+                    listBox_Playlist.Items.Clear();
+                    listBox_Playlist.Items.AddRange(Player.Playlist);
                 }
             }
         }
 
-        private void button_MPlay_Click(object sender, EventArgs e)
+        private void listBox_Playlist_SelectedIndexChanged(object sender, EventArgs e)
         {
-            mp3Player.play();
+            if (((ListBox)sender).SelectedItem == null) return;
+
+            Player.SelectAudio(((ListBox)sender).SelectedIndex);
         }
 
-        private void button_MStop_Click(object sender, EventArgs e)
+        private void button_Play_Click(object sender, EventArgs e)
         {
-            mp3Player.stop();
+            if (((Button)sender).Text == "Play") Player.Play();
+
+            else if (((Button)sender).Text == "Pause") Player.Pause();
         }
+        private void trackBar_Duration_Scroll(object sender, EventArgs e) => Player.Position = ((TrackBar)sender).Value;
+        private void trackBar1_Scroll(object sender, EventArgs e) => Player.Volume = ((TrackBar)sender).Value;
+        private void button_Clear_Click(object sender, EventArgs e)
+        {
+            Player.Stop();
+            label_CurentPos.Text = "0.00";
+            label_Duration.Text = "0.00";
+            trackBar_Duration.Value = 0;
+            listBox_Playlist.Items.Clear();
+            Player.ClearPlaylist();
+        }
+        private void button_Next_Click(object sender, EventArgs e)
+        {
+            if (listBox_Playlist.SelectedIndex < listBox_Playlist.Items.Count)
+            {
+                Player.SelectAudio(listBox_Playlist.SelectedIndex + 1);
+            }
+            else
+            {
+                Player.SelectAudio(0);
+            }
+        }
+        private void button_Prev_Click(object sender, EventArgs e)
+        {
+            if (listBox_Playlist.SelectedIndex < listBox_Playlist.Items.Count)
+            {
+                Player.SelectAudio(listBox_Playlist.SelectedIndex - 1);
+            }
+            else
+            {
+                Player.SelectAudio(0);
+            }
+        }
+
 
         #endregion Музыкальный плайер
-
-
 
     }
 }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
