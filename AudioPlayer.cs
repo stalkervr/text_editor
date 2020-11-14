@@ -1,9 +1,4 @@
-﻿/*
-    Дмитрий Головин
-    https://www.youtube.com/channel/UC3BlvFTVSTbyxsl1w0xcQdQ
-    22 ноября 2019
-*/
-
+﻿
 using System;
 using System.Collections.Generic;
 using System.IO;

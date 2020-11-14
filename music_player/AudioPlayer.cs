@@ -1,9 +1,5 @@
-﻿/*
-    Дмитрий Головин
-    https://www.youtube.com/channel/UC3BlvFTVSTbyxsl1w0xcQdQ
-    22 ноября 2019
-*/
-
+﻿
+using TagLib;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,6 +22,7 @@ namespace DAudio
 
     public sealed class Audio
     {
+        
         /// <summary>
         /// Название аудио
         /// </summary>
@@ -46,6 +43,10 @@ namespace DAudio
         /// Объект IWMPMedia
         /// </summary>
         public IWMPMedia Media { get; private set; }
+        /// <summary>
+        /// Объект тегов медиафайла
+        /// </summary>
+        public TagLib.File fileTag { get; private set; }
 
         public Audio(IWMPMedia media)
         {
@@ -53,8 +54,10 @@ namespace DAudio
             Name = Path.GetFileNameWithoutExtension(Media.sourceURL);
             Duration = Media.duration;
             SourceUrl = Media.sourceURL;
+            fileTag =  TagLib.File.Create(Media.sourceURL);
         }
     }
+    
 
     public sealed class AudioPlayer
     {
@@ -68,6 +71,7 @@ namespace DAudio
         /// Текущее аудио
         /// </summary>
         public Audio CurrentAudio => playlist[currentIndex];
+        
         /// <summary>
         /// Плейлист
         /// </summary>

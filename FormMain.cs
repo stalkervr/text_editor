@@ -8,6 +8,8 @@ using System.Windows.Forms;
 //using PrintCtrl;
 using System.Runtime.InteropServices;
 using DAudio;
+using TagLib;
+using System.Linq;
 
 namespace text_editor
 {
@@ -42,8 +44,6 @@ namespace text_editor
 
         #region Притные поля
 
-        //private Mp3Player mp3Player = new Mp3Player();
-
         /// <summary>
         /// Путь к файлу.
         /// </summary
@@ -64,6 +64,16 @@ namespace text_editor
         public FormMain()
         {
             InitializeComponent();
+
+            //if (path != string.Empty && Path.GetExtension(path).ToLower() != ".rtf")
+            //{
+            //    MessageBox.Show("Ok", "File Type ok", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Dropped File is not Bgl File", "File Type Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            //    path = string.Empty;
+            //}
 
             Player = new AudioPlayer();
             // подписываемся на событие изменения статуса
@@ -103,6 +113,7 @@ namespace text_editor
             tabControlPrincipal.DrawItem += TabControlPrincipal_DrawItem;
             CloseImage = text_editor.Properties.Resources.close_tab;
             tabControlPrincipal.Padding = new Point(10, 3);
+            //panel_MControl.Paint += dropShadow;
         }
 
         //private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
@@ -154,6 +165,30 @@ namespace text_editor
         #endregion Свойства
 
         #region Методы
+
+        //private void dropShadow(object sender, PaintEventArgs e)
+        //{
+        //    Panel panel = (Panel)sender;
+        //    Color[] shadow = new Color[3];
+        //    shadow[0] = Color.FromArgb(181, 181, 181);
+        //    shadow[1] = Color.FromArgb(195, 195, 195);
+        //    shadow[2] = Color.FromArgb(211, 211, 211);
+        //    Pen pen = new Pen(shadow[0]);
+        //    using (pen)
+        //    {
+        //        foreach (Panel p in panel.Controls.OfType<Panel>())
+        //        {
+        //            Point pt = p.Location;
+        //            pt.Y += p.Height;
+        //            for (var sp = 0; sp < 3; sp++)
+        //            {
+        //                pen.Color = shadow[sp];
+        //                e.Graphics.DrawLine(pen, pt.X, pt.Y, pt.X + p.Width - 1, pt.Y);
+        //                pt.Y++;
+        //            }
+        //        }
+        //    }
+        //}
 
         #region Вкладки
         ///<summary>
@@ -253,6 +288,41 @@ namespace text_editor
         #endregion Вкладки
 
         #region Открыть и сохранить
+        /// <summary>
+        /// Метод открыть с помощью приложения
+        /// </summary>
+        /// <param name="path">путь к файлу</param>
+        public void OpenDocumentContext(string path)
+        {
+            // Если было выбрано допустимое имя файла ...
+            if (path != string.Empty && Path.GetExtension(path).ToLower() == ".rtf")
+            {
+                try // Пробуем прочитать файл
+                {
+                    // Создается новая вкладка.
+                    CreateNewTab();
+                    FilePath = path;
+                    Console.WriteLine("Method OpenDocument Path to file -> " + FilePath);
+                    // Новая сгенерированная вкладка ищется и выбирается.
+                    tabControlPrincipal.SelectedTab = tabControlPrincipal.TabPages["  Новый документ - " + this.m_intTabCount];
+                    // Загружаем содержимое файла в RichTextBox новой вкладки.
+                    ActiveDocument.LoadFile(FilePath, RichTextBoxStreamType.RichText);
+                    // Имя файла указывается в заголовке вкладки и ее имени.
+                    string NameOpenDocument = Path.GetFileName(FilePath);
+                    tabControlPrincipal.SelectedTab.Text = "  " + NameOpenDocument;
+                    tabControlPrincipal.SelectedTab.Name = FilePath;
+                    toolStripStatusLabel_DocPath.Text = "  " + FilePath;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Попытка отрыть файл неизвестного формата !", "Ошибка типа файла !", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
 
         /// <summary>
         /// Метод, открывающий существующий файл.
@@ -282,6 +352,7 @@ namespace text_editor
                         string NameOpenDocument = Path.GetFileName(openFileDialog_Document.FileName);
                         tabControlPrincipal.SelectedTab.Text = "  " + NameOpenDocument;
                         tabControlPrincipal.SelectedTab.Name = FilePath;
+                        toolStripStatusLabel_DocPath.Text = "  " + FilePath;
                     }
                     catch (Exception e)
                     {
@@ -328,7 +399,7 @@ namespace text_editor
             }
             else
             {
-                File.WriteAllText(FilePath, ActiveDocument.Rtf);
+                System.IO.File.WriteAllText(FilePath, ActiveDocument.Rtf);
                 Console.WriteLine("Method SaveDocument(else) Path to file -> " + FilePath);
             }
             //FilePath = tabControlPrincipal.SelectedTab.Name;
@@ -382,7 +453,7 @@ namespace text_editor
             printDialogPrincipal.AllowSomePages = true;
 
             if (printDialogPrincipal.ShowDialog() == DialogResult.OK)
-                printDocumentPrincipal.Print();
+                ActiveDocument.Print();
         }
 
         /// <summary>
@@ -403,11 +474,11 @@ namespace text_editor
         ///   Событие, отвечающее за рисование в <see cref = "PrintDocument" /> содержимого, которое он содержит
         ///   в выбранном документе для печати..
         /// </summary>
-        private void printDocumentPrincipal_PrintPage(object sender, PrintPageEventArgs e)
-        {
-            e.Graphics.DrawString(ActiveDocument.Text, ActiveDocument.Font, Brushes.Black, 100, 20);
-            e.Graphics.PageUnit = GraphicsUnit.Inch;
-        }
+        //private void printDocumentPrincipal_PrintPage(object sender, PrintPageEventArgs e)
+        //{
+        //    e.Graphics.DrawString(ActiveDocument.Text, ActiveDocument.Font, Brushes.Black, 100, 20);
+        //    e.Graphics.PageUnit = GraphicsUnit.Inch;
+        //}
 
         #endregion События операции печати
 
@@ -611,47 +682,29 @@ namespace text_editor
         /// <summary>
         /// Обработка нажатия на пункт меню "Создать новый"
         /// </summary>
-        private void toolStripMenuItem_NewCreate_Click(object sender, EventArgs e)
-        {
-            CreateNewTab();
-        }
+        private void toolStripMenuItem_NewCreate_Click(object sender, EventArgs e) => CreateNewTab();
 
         /// <summary>
         /// Обработка нажатия на пункт меню "Открыть"
         /// </summary>
-        private void toolStripMenuItem_OpenFile_Click(object sender, EventArgs e)
-        {
-            OpenDocument();
-        }
+        private void toolStripMenuItem_OpenFile_Click(object sender, EventArgs e) => OpenDocument();
 
         /// <summary>
         /// Обработка нажатия на пункт меню "Сохранить"
         /// </summary>
-        private void toolStripMenuItem_SaveFile_Click(object sender, EventArgs e)
-        {
-            SaveDocument();
-        }
+        private void toolStripMenuItem_SaveFile_Click(object sender, EventArgs e) => SaveDocument();
         /// <summary>
         /// Обработка нажатия на пункт меню "Сохранить как"
         /// </summary>
-        private void toolStripMenuItem_SaveAs_Click(object sender, EventArgs e)
-        {
-            SaveAsDocument();
-        }
+        private void toolStripMenuItem_SaveAs_Click(object sender, EventArgs e) => SaveAsDocument();
         /// <summary>
         /// Обработка нажатия на пункт меню "Печатать"
         /// </summary>
-        private void toolStripMenuItem_Print_Click(object sender, EventArgs e)
-        {
-            PrintDocument();
-        }
+        private void toolStripMenuItem_Print_Click(object sender, EventArgs e) => PrintDocument();
         /// <summary>
         /// Обработка нажатия на пункт меню "Просмотр печати"
         /// </summary>
-        private void toolStripMenuItem_PrintPreview_Click(object sender, EventArgs e)
-        {
-            PrintPreviwDocument();
-        }
+        private void toolStripMenuItem_PrintPreview_Click(object sender, EventArgs e) => PrintPreviwDocument();
         /// <summary>
         /// Обработка нажатия на пункт меню "Выход"
         /// </summary>
@@ -665,60 +718,27 @@ namespace text_editor
 
         #region Пунк меню "Редактировать" и контекстное меню
 
-        private void toolStripMenuItem_UndoLast_Click(object sender, EventArgs e)
-        {
-            UndoLastChange();
-        }
+        private void toolStripMenuItem_UndoLast_Click(object sender, EventArgs e) => UndoLastChange();
 
-        private void toolStripMenuItem_RedoLast_Click(object sender, EventArgs e)
-        {
-            RedoLastChange();
-        }
+        private void toolStripMenuItem_RedoLast_Click(object sender, EventArgs e) => RedoLastChange();
 
-        private void toolStripMenuItem_SelectAllText_Click(object sender, EventArgs e)
-        {
-            SelectAllText();
-        }
+        private void toolStripMenuItem_SelectAllText_Click(object sender, EventArgs e) => SelectAllText();
 
-        private void toolStripMenuItem_CopySelect_Click(object sender, EventArgs e)
-        {
-            CopySelectedText();
-        }
+        private void toolStripMenuItem_CopySelect_Click(object sender, EventArgs e) => CopySelectedText();
 
-        private void toolStripMenuItem_PasteInPlace_Click(object sender, EventArgs e)
-        {
-            PasteFromBuf();
-        }
+        private void toolStripMenuItem_PasteInPlace_Click(object sender, EventArgs e) => PasteFromBuf();
 
-        private void toolStripMenuItem_Undo_Click(object sender, EventArgs e)
-        {
-            UndoLastChange();
-        }
+        private void toolStripMenuItem_Undo_Click(object sender, EventArgs e) => UndoLastChange();
 
-        private void toolStripMenuItem_Redo_Click(object sender, EventArgs e)
-        {
-            RedoLastChange();
-        }
+        private void toolStripMenuItem_Redo_Click(object sender, EventArgs e) => RedoLastChange();
 
-        private void toolStripMenuItem_Cut_Click(object sender, EventArgs e)
-        {
-            CutText();
-        }
+        private void toolStripMenuItem_Cut_Click(object sender, EventArgs e) => CutText();
 
-        private void toolStripMenuItem_Copy_Click(object sender, EventArgs e)
-        {
-            CopySelectedText();
-        }
+        private void toolStripMenuItem_Copy_Click(object sender, EventArgs e) => CopySelectedText();
 
-        private void toolStripMenuItem_Paste_Click(object sender, EventArgs e)
-        {
-            PasteFromBuf();
-        }
+        private void toolStripMenuItem_Paste_Click(object sender, EventArgs e) => PasteFromBuf();
 
-        private void toolStripMenuItem_SelectAll_Click(object sender, EventArgs e)
-        {
-            SelectAllText();
-        }
+        private void toolStripMenuItem_SelectAll_Click(object sender, EventArgs e) => SelectAllText();
 
         #endregion Пунк меню "Редактировать" и контекстное меню
 
@@ -727,24 +747,15 @@ namespace text_editor
         /// <summary>
         /// Обработка нажатия на пункт меню "Поиск"
         /// </summary>
-        private void toolStripMenuItem_Search_Click(object sender, EventArgs e)
-        {
-            SearchWorld();
-        }
+        private void toolStripMenuItem_Search_Click(object sender, EventArgs e) => SearchWorld();
         /// <summary>
         /// Обработка клика в поле для ввода слов 
         /// </summary>
-        private void toolStripTextBox_textSearch_Click(object sender, EventArgs e)
-        {
-            toolStripTextBox_textSearch.Text = "";
-        }
+        private void toolStripTextBox_textSearch_Click(object sender, EventArgs e) => toolStripTextBox_textSearch.Text = "";
         /// <summary>
         /// Обработка нажатия на пункт меню "Очистить"
         /// </summary>
-        private void ToolStripMenuItem_ClearSearch_Click(object sender, EventArgs e)
-        {
-            SearchClear();
-        }
+        private void ToolStripMenuItem_ClearSearch_Click(object sender, EventArgs e) => SearchClear();
 
         #endregion Пункты меню "Поиск" "Очистка" и поле ввода текста
 
@@ -752,20 +763,11 @@ namespace text_editor
 
         #region Обработка событий контекстного меню клик на вкладке
 
-        private void toolStripMenuItem_Close_Click(object sender, EventArgs e)
-        {
-            DeleteTab();
-        }
+        private void toolStripMenuItem_Close_Click(object sender, EventArgs e) => DeleteTab();
 
-        private void toolStripMenuItem_CloseOthers_Click(object sender, EventArgs e)
-        {
-            RemoveAllActiveTabUnselected();
-        }
+        private void toolStripMenuItem_CloseOthers_Click(object sender, EventArgs e) => RemoveAllActiveTabUnselected();
 
-        private void toolStripMenuItem_CloseAll_Click(object sender, EventArgs e)
-        {
-            RemoveAllTabs();
-        }
+        private void toolStripMenuItem_CloseAll_Click(object sender, EventArgs e) => RemoveAllTabs();
 
         #endregion Обработка событий контекстного меню клик на вкладке
 
@@ -865,34 +867,22 @@ namespace text_editor
         /// <summary>
         /// Обработка нажатия кнопки выравнивания текста по левому краю
         /// </summary>
-        private void toolStripButton_AlignLeft_Click(object sender, EventArgs e)
-        {
-            ActiveDocument.SelectionAlignment = HorizontalAlignment.Left;
-        }
+        private void toolStripButton_AlignLeft_Click(object sender, EventArgs e) => ActiveDocument.SelectionAlignment = HorizontalAlignment.Left;
 
         /// <summary>
         /// Обработка нажатия кнопки выравнивания текста по центру
         /// </summary>
-        private void toolStripButton_AlignCenter_Click(object sender, EventArgs e)
-        {
-            ActiveDocument.SelectionAlignment = HorizontalAlignment.Center;
-        }
+        private void toolStripButton_AlignCenter_Click(object sender, EventArgs e) => ActiveDocument.SelectionAlignment = HorizontalAlignment.Center;
 
         /// <summary>
         /// Обработка нажатия кнопки выравнивания текста по правому краю
         /// </summary>
-        private void toolStripButton_AlignRight_Click(object sender, EventArgs e)
-        {
-            ActiveDocument.SelectionAlignment = HorizontalAlignment.Right;
-        }
+        private void toolStripButton_AlignRight_Click(object sender, EventArgs e) => ActiveDocument.SelectionAlignment = HorizontalAlignment.Right;
 
         /// <summary>
         /// Обработка нажатия кнопки выравнивания текста по ширине страницы
         /// </summary>
-        private void toolStripButton_AlignJustify_Click(object sender, EventArgs e)
-        {
-            ActiveDocument.SelectionAlignment = HorizontalAlignment.Center;
-        }
+        private void toolStripButton_AlignJustify_Click(object sender, EventArgs e) => ActiveDocument.SelectionAlignment = HorizontalAlignment.Center;
 
         /// <summary>
         /// Обработка нажатия кнопки смещения выделенного текста влево
@@ -908,43 +898,29 @@ namespace text_editor
         /// <summary>
         /// Обработка нажатия кнопки смещения выделенного текста вправо
         /// </summary>
-        private void toolStripButton_TextOutdent_Click(object sender, EventArgs e)
-        {
-            ActiveDocument.SelectionIndent += 25;
-        }
+        private void toolStripButton_TextOutdent_Click(object sender, EventArgs e) => ActiveDocument.SelectionIndent += 25;
 
         /// <summary>
         /// Обработка нажатия кнопки список с точками
         /// </summary>
-        private void toolStripButton_BulletedList_Click(object sender, EventArgs e)
-        {
-            ActiveDocument.SelectionBullet = !ActiveDocument.SelectionBullet;
-        }
+        private void toolStripButton_BulletedList_Click(object sender, EventArgs e) => ActiveDocument.SelectionBullet = !ActiveDocument.SelectionBullet;
 
         /// <summary>
         /// Обработка нажатия кнопки нумерованный список
         /// </summary>
-        private void toolStripButton_NumberedList_Click(object sender, EventArgs e)
-        {
+        private void toolStripButton_NumberedList_Click(object sender, EventArgs e) =>
             //TODO: Нужно найти решение
             ActiveDocument.SelectionBullet = !ActiveDocument.SelectionBullet;
-        }
 
         /// <summary>
         /// Обработка нажатия кнопки перевода в верхний регистр
         /// </summary>
-        private void toolStripButton_TextToUpper_Click(object sender, EventArgs e)
-        {
-            ActiveDocument.SelectedText = ActiveDocument.SelectedText.ToUpper();
-        }
+        private void toolStripButton_TextToUpper_Click(object sender, EventArgs e) => ActiveDocument.SelectedText = ActiveDocument.SelectedText.ToUpper();
 
         /// <summary>
         /// Обработка нажатия кнопки перевода в нижний регистр
         /// </summary>
-        private void toolStripButton_TextToLower_Click(object sender, EventArgs e)
-        {
-            ActiveDocument.SelectedText = ActiveDocument.SelectedText.ToLower();
-        }
+        private void toolStripButton_TextToLower_Click(object sender, EventArgs e) => ActiveDocument.SelectedText = ActiveDocument.SelectedText.ToLower();
 
         /// <summary>
         /// Обработка нажатия кнопки увеличения размера текста
@@ -1031,10 +1007,7 @@ namespace text_editor
             ActiveDocument.SelectionFont = NewFont;
         }
 
-        private void toolStripButton_InsertImage_Click(object sender, EventArgs e)
-        {
-            InsertImage();
-        }
+        private void toolStripButton_InsertImage_Click(object sender, EventArgs e) => InsertImage();
 
 
         #endregion Обработка событий панели интрументов toolStrip_Top
@@ -1091,6 +1064,15 @@ namespace text_editor
             {
                 FilePath = null;
             }
+            if(FilePath == null)
+            {
+                toolStripStatusLabel_DocPath.Text = "  Не сохранённый документ !";
+            }
+            else
+            {
+                toolStripStatusLabel_DocPath.Text = "  " + FilePath;
+            }
+            
             Console.WriteLine("Method tabControlPrincipal_Click Path to file -> " + FilePath);
         }
 
@@ -1101,14 +1083,11 @@ namespace text_editor
 
         #region Музыкальный плайер
 
-        private void музыкаToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            panel3.Visible = !panel3.Visible;
-        }
+        private void музыкаToolStripMenuItem_Click(object sender, EventArgs e) => panel3.Visible = !panel3.Visible;
 
         private void button_Add_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog dialog = new OpenFileDialog() { Multiselect = true, Filter = "Audio files|*.wav;*.aac;*.mp4;*.mp3;" })
+            using (OpenFileDialog dialog = new OpenFileDialog() { Multiselect = true, Filter = "Audio files|*.wav;*.aac;*.mp4;*.m4a;*.mp3;" })
             {
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
@@ -1124,6 +1103,24 @@ namespace text_editor
             if (((ListBox)sender).SelectedItem == null) return;
 
             Player.SelectAudio(((ListBox)sender).SelectedIndex);
+            // Читаем теги из файла в объект tfile
+            var tfile = TagLib.File.Create(Player.CurrentAudio.SourceUrl);
+            // Устанавливаем имя трека
+            label_TrakName.Text = tfile.Tag.Title;
+            // Устанавливаем название альбома
+            string new_album = tfile.Tag.Album + " - " + tfile.Tag.Year;
+            label_Album.Text = new_album;
+            // Устанавливаем обложку из файла
+            try
+            {
+                byte[] bin = (byte[])(tfile.Tag.Pictures[0].Data.Data);
+                pictureBox_MuzikCover.Image = Image.FromStream(new MemoryStream(bin));
+            }
+            catch 
+            {
+                Console.WriteLine("Нет обложки установлена def_cover");
+                pictureBox_MuzikCover.Image = text_editor.Properties.Resources.def_cover;
+            }
         }
 
         private void button_Play_Click(object sender, EventArgs e)
@@ -1167,7 +1164,27 @@ namespace text_editor
         }
 
 
+
         #endregion Музыкальный плайер
+
+        #region Панель интрументов работа с файлами
+
+        private void ToolStripButtonFiles_Create_Click(object sender, EventArgs e) => CreateNewTab();
+        private void ToolStripButtonFiles_Open_Click(object sender, EventArgs e) => OpenDocument();
+        private void ToolStripButtonFiles_Save_Click(object sender, EventArgs e) => SaveDocument();
+        private void ToolStripButtonFiles_Cut_Click(object sender, EventArgs e) => CutText();
+        private void ToolStripButtonFiles_Copy_Click(object sender, EventArgs e) => CopySelectedText();
+        private void ToolStripButtonFiles_Paste_Click(object sender, EventArgs e) => PasteFromBuf();
+        private void ToolStripButtonFiles_Print_Click(object sender, EventArgs e)
+        {
+            ActiveDocument.Print();
+        }
+        private void ToolStripButton_Help_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        #endregion Панель интрументов работа с файлами
 
     }
 }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
