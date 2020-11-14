@@ -65,16 +65,6 @@ namespace text_editor
         {
             InitializeComponent();
 
-            //if (path != string.Empty && Path.GetExtension(path).ToLower() != ".rtf")
-            //{
-            //    MessageBox.Show("Ok", "File Type ok", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Dropped File is not Bgl File", "File Type Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            //    path = string.Empty;
-            //}
-
             Player = new AudioPlayer();
             // подписываемся на событие изменения статуса
             Player.PlayingStatusChanged += (s, e) => button_Play.Text = e == Status.Playing ? "Pause" : "Play";
@@ -113,7 +103,6 @@ namespace text_editor
             tabControlPrincipal.DrawItem += TabControlPrincipal_DrawItem;
             CloseImage = text_editor.Properties.Resources.close_tab;
             tabControlPrincipal.Padding = new Point(10, 3);
-            //panel_MControl.Paint += dropShadow;
         }
 
         //private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
@@ -166,30 +155,6 @@ namespace text_editor
 
         #region Методы
 
-        //private void dropShadow(object sender, PaintEventArgs e)
-        //{
-        //    Panel panel = (Panel)sender;
-        //    Color[] shadow = new Color[3];
-        //    shadow[0] = Color.FromArgb(181, 181, 181);
-        //    shadow[1] = Color.FromArgb(195, 195, 195);
-        //    shadow[2] = Color.FromArgb(211, 211, 211);
-        //    Pen pen = new Pen(shadow[0]);
-        //    using (pen)
-        //    {
-        //        foreach (Panel p in panel.Controls.OfType<Panel>())
-        //        {
-        //            Point pt = p.Location;
-        //            pt.Y += p.Height;
-        //            for (var sp = 0; sp < 3; sp++)
-        //            {
-        //                pen.Color = shadow[sp];
-        //                e.Graphics.DrawLine(pen, pt.X, pt.Y, pt.X + p.Width - 1, pt.Y);
-        //                pt.Y++;
-        //            }
-        //        }
-        //    }
-        //}
-
         #region Вкладки
         ///<summary>
         ///Метод, который создает новый документ без содержимого на новой вкладке.
@@ -212,7 +177,7 @@ namespace text_editor
             // вставка картинки перетаскиванием
             Body.AllowDrop = true;
             Body.DragDrop += new DragEventHandler(Body_DragDrop);
-            
+
             // Количество вкладок увеличивается ...
             this.m_intTabCount++;
             // Для нового документа создается имя.
@@ -289,7 +254,7 @@ namespace text_editor
 
         #region Открыть и сохранить
         /// <summary>
-        /// Метод открыть с помощью приложения
+        /// Метод открыть с помощью приложения из папки
         /// </summary>
         /// <param name="path">путь к файлу</param>
         public void OpenDocumentContext(string path)
@@ -572,21 +537,44 @@ namespace text_editor
         }
         /// <summary>
         /// Вставка изображения перетаскиванием из папки в поле документа.
-        /// Обработка события перетаскивания изображения в поле активного документа
+        /// Открытие документа перетаскиванием в поле вкладки.
+        /// Обработка события перетаскивания в поле активного документа.
         /// </summary>
         private void Body_DragDrop(object sender, DragEventArgs e)
         {
-            // для вставки изображения
-            string[] droppedFiles = e.Data.GetData(DataFormats.FileDrop) as string[];
-            foreach (string droppedFile in droppedFiles)
+            object fileName = e.Data.GetData("FileDrop");
+            
+            if(fileName != null)
             {
-                using (Bitmap image = new Bitmap(droppedFile))
+                var list = fileName as string[];
+                // Console.WriteLine(list[0]);
+                // Если в поле файла перетаскиваем файл .rtf
+                if(list != null && !string.IsNullOrWhiteSpace(list[0]) && Path.GetExtension(list[0]).ToLower() == ".rtf")
                 {
-                    Clipboard.SetDataObject(image);
-                    DataFormats.Format MyFormat = DataFormats.GetFormat(DataFormats.Bitmap);
-                    if (ActiveDocument.CanPaste(MyFormat))
+                    OpenDocumentContext(list[0]);
+                }
+                // Если в поле файла перетаскиваем файл .txt
+                else if (list != null && !string.IsNullOrWhiteSpace(list[0]) && Path.GetExtension(list[0]).ToLower() == ".txt")
+                {
+                    // Загружка содержимого в текущую вкладку
+                    ActiveDocument.Clear();
+                    ActiveDocument.LoadFile(list[0], RichTextBoxStreamType.PlainText);
+                }
+                else
+                {
+                    // для вставки изображения перетаскиванием
+                    string[] droppedFiles = e.Data.GetData(DataFormats.FileDrop) as string[];
+                    foreach (string droppedFile in droppedFiles)
                     {
-                        ActiveDocument.Paste(MyFormat);
+                        using (Bitmap image = new Bitmap(droppedFile))
+                        {
+                            Clipboard.SetDataObject(image);
+                            DataFormats.Format MyFormat = DataFormats.GetFormat(DataFormats.Bitmap);
+                            if (ActiveDocument.CanPaste(MyFormat))
+                            {
+                                ActiveDocument.Paste(MyFormat);
+                            }
+                        }
                     }
                 }
             }
@@ -1078,10 +1066,28 @@ namespace text_editor
 
         #endregion Обработка событий кликов на вкладках
 
+        #region Обработка событий панели интрументов работа с файлами
+
+        private void ToolStripButtonFiles_Create_Click(object sender, EventArgs e) => CreateNewTab();
+        private void ToolStripButtonFiles_Open_Click(object sender, EventArgs e) => OpenDocument();
+        private void ToolStripButtonFiles_Save_Click(object sender, EventArgs e) => SaveDocument();
+        private void ToolStripButtonFiles_Cut_Click(object sender, EventArgs e) => CutText();
+        private void ToolStripButtonFiles_Copy_Click(object sender, EventArgs e) => CopySelectedText();
+        private void ToolStripButtonFiles_Paste_Click(object sender, EventArgs e) => PasteFromBuf();
+        private void ToolStripButtonFiles_Print_Click(object sender, EventArgs e)
+        {
+            ActiveDocument.Print();
+        }
+        private void ToolStripButton_Help_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        #endregion Обработка событий панели интрументов работа с файлами
+
         #endregion Обработка событий
 
-
-        #region Музыкальный плайер
+        #region Музыкальный плеер
 
         private void музыкаToolStripMenuItem_Click(object sender, EventArgs e) => panel3.Visible = !panel3.Visible;
 
@@ -1165,26 +1171,7 @@ namespace text_editor
 
 
 
-        #endregion Музыкальный плайер
-
-        #region Панель интрументов работа с файлами
-
-        private void ToolStripButtonFiles_Create_Click(object sender, EventArgs e) => CreateNewTab();
-        private void ToolStripButtonFiles_Open_Click(object sender, EventArgs e) => OpenDocument();
-        private void ToolStripButtonFiles_Save_Click(object sender, EventArgs e) => SaveDocument();
-        private void ToolStripButtonFiles_Cut_Click(object sender, EventArgs e) => CutText();
-        private void ToolStripButtonFiles_Copy_Click(object sender, EventArgs e) => CopySelectedText();
-        private void ToolStripButtonFiles_Paste_Click(object sender, EventArgs e) => PasteFromBuf();
-        private void ToolStripButtonFiles_Print_Click(object sender, EventArgs e)
-        {
-            ActiveDocument.Print();
-        }
-        private void ToolStripButton_Help_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        #endregion Панель интрументов работа с файлами
+        #endregion Музыкальный плеер
 
     }
 }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
