@@ -15,6 +15,12 @@ namespace text_editor
 {
     public partial class FormMain : Form
     {
+        #region MyRegion
+
+
+
+        #endregion
+
         Image CloseImage;
 
         [DllImport("user32.dll")]
@@ -67,16 +73,30 @@ namespace text_editor
 
             Player = new AudioPlayer();
             // подписываемся на событие изменения статуса
-            Player.PlayingStatusChanged += (s, e) => button_Play.Text = e == Status.Playing ? "Pause" : "Play";
+            //Player.PlayingStatusChanged += (s, e) => button_Play.Text = e == Status.Playing ? "Pause" : "Play";
+            //st_Button_Play
+            Player.PlayingStatusChanged += (s, e) => st_Button_Play.Text = e == Status.Playing ? "Pause" : "Play";
 
             Player.AudioSelected += (s, e) =>
             {
                 //приравниваем максимум трекбара к продолжительности трека
-                trackBar_Duration.Maximum = (int)e.Duration;
+                if((int)e.Duration > 0)
+                {
+                    trackBar_Duration.Maximum = (int)e.Duration;
+                    //выводим длину трека в правый лэбел
+                    label_Duration.Text = e.DurationTime.ToString(@"mm\:ss");
+                }
+                else
+                {
+                    // обработка костыльная ошибки чтения длительности файла
+                    trackBar_Duration.Maximum = 1200;
+                    //выводим длину трека в правый лэбел
+                    label_Duration.Text = ((AudioPlayer)s).PositionTime.ToString(@"mm\:ss");
+                }
+                
                 //выводим название трека в верхний лэбел 
                 label_TrakName.Text = e.Name;
-                //выводим длину трека в правый лэбел
-                label_Duration.Text = e.DurationTime.ToString(@"mm\:ss");
+                
                 listBox_Playlist.SelectedItem = e.Name;
             };
 
@@ -128,14 +148,14 @@ namespace text_editor
                 //        tabRect.Top + (tabRect.Height - addImage.Height) / 2);
                 //}
                 // рисум кнопку закрытия для всех вкладок
-               // else
+                // else
                 //{
-                    var closeImage = new Bitmap(text_editor.Properties.Resources.close_tab);
-                    e.Graphics.DrawImage(closeImage,
-                        (tabRect.Right - closeImage.Width - 3),
-                        tabRect.Top + (tabRect.Height +1 - closeImage.Height) / 2);
-                    TextRenderer.DrawText(e.Graphics, tabPage.Text, tabPage.Font,
-                        tabRect, tabPage.ForeColor, TextFormatFlags.Left);
+                var closeImage = new Bitmap(text_editor.Properties.Resources.close_tab);
+                e.Graphics.DrawImage(closeImage,
+                    (tabRect.Right - closeImage.Width - 3),
+                    tabRect.Top + (tabRect.Height + 1 - closeImage.Height) / 2);
+                TextRenderer.DrawText(e.Graphics, tabPage.Text, tabPage.Font,
+                    tabRect, tabPage.ForeColor, TextFormatFlags.Left);
                 //}
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
@@ -151,6 +171,8 @@ namespace text_editor
         {
             get { return (RichTextBox)tabControlPrincipal.SelectedTab.Controls["Body"]; }
         }
+
+        
         #endregion Свойства
 
         #region Методы
@@ -197,9 +219,6 @@ namespace text_editor
             FilePath = null;
             //Console.WriteLine("Method CreateNewTab Path to file -> " + FilePath);
         }
-
-        
-
         /// <summary>
         ///   Метод, удаляющий текущую выбранную вкладку.
         /// </summary>
@@ -747,6 +766,23 @@ namespace text_editor
 
         #endregion Пункты меню "Поиск" "Очистка" и поле ввода текста
 
+        #region Пунк меню справка
+        private void toolStripMenuItem_Help_Click(object sender, EventArgs e)
+        {
+            OpenDocumentContext("help.rtf");
+        }
+
+        private void toolStripMenuItem_License_Click(object sender, EventArgs e)
+        {
+            OpenDocumentContext("license.rtf");
+        }
+
+        private void toolStripMenuItem_About_Click(object sender, EventArgs e)
+        {
+
+        }
+        #endregion Пунк меню справка
+
         #endregion Обработка событий главного меню
 
         #region Обработка событий контекстного меню клик на вкладке
@@ -1116,6 +1152,9 @@ namespace text_editor
             // Устанавливаем название альбома
             string new_album = tfile.Tag.Album + " - " + tfile.Tag.Year;
             label_Album.Text = new_album;
+            // Пишем  информацию в статус-бар
+            toolStripStatusLabel_NowPlay.Text = tfile.Tag.FirstPerformer + " :: " + tfile.Tag.Album + " :: " + tfile.Tag.Year + " :: " + tfile.Tag.Title;
+            
             // Устанавливаем обложку из файла
             try
             {
@@ -1129,35 +1168,19 @@ namespace text_editor
             }
         }
 
-        private void button_Play_Click(object sender, EventArgs e)
-        {
-            if (((Button)sender).Text == "Play") Player.Play();
-
-            else if (((Button)sender).Text == "Pause") Player.Pause();
-        }
         private void trackBar_Duration_Scroll(object sender, EventArgs e) => Player.Position = ((TrackBar)sender).Value;
         private void trackBar1_Scroll(object sender, EventArgs e) => Player.Volume = ((TrackBar)sender).Value;
-        private void button_Clear_Click(object sender, EventArgs e)
+        
+        
+       
+        #endregion Музыкальный плеер
+
+        private void toolStripMenuItem_GitHub_Click(object sender, EventArgs e)
         {
-            Player.Stop();
-            label_CurentPos.Text = "0.00";
-            label_Duration.Text = "0.00";
-            trackBar_Duration.Value = 0;
-            listBox_Playlist.Items.Clear();
-            Player.ClearPlaylist();
+            System.Diagnostics.Process.Start(@"https://github.com/stalkervr");
         }
-        private void button_Next_Click(object sender, EventArgs e)
-        {
-            if (listBox_Playlist.SelectedIndex < listBox_Playlist.Items.Count)
-            {
-                Player.SelectAudio(listBox_Playlist.SelectedIndex + 1);
-            }
-            else
-            {
-                Player.SelectAudio(0);
-            }
-        }
-        private void button_Prev_Click(object sender, EventArgs e)
+
+        private void st_Button_Prev_Click(object sender, EventArgs e)
         {
             if (listBox_Playlist.SelectedIndex < listBox_Playlist.Items.Count)
             {
@@ -1169,9 +1192,86 @@ namespace text_editor
             }
         }
 
+        private void st_Button_Play_Click(object sender, EventArgs e)
+        {
+            if (((Button)sender).Text == "Play") Player.Play();
 
+            else if (((Button)sender).Text == "Pause") Player.Pause();
+        }
 
-        #endregion Музыкальный плеер
+        private void st_Button_next_Click(object sender, EventArgs e)
+        {
+            if (listBox_Playlist.SelectedIndex < listBox_Playlist.Items.Count)
+            {
+                Player.SelectAudio(listBox_Playlist.SelectedIndex + 1);
+            }
+            else
+            {
+                Player.SelectAudio(0);
+            }
+        }
 
+        private void st_Button_Clear_Click(object sender, EventArgs e)
+        {
+            Player.Stop();
+            label_CurentPos.Text = "0.00";
+            label_Duration.Text = "0.00";
+            trackBar_Duration.Value = 0;
+            listBox_Playlist.Items.Clear();
+            Player.ClearPlaylist();
+            pictureBox_MuzikCover.Image = Properties.Resources.def_cover;
+            label_TrakName.Text = "Track name";
+            label_Album.Text = "Album - year";        }
+
+        private void st_Button_Add_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog dialog = new OpenFileDialog() { Multiselect = true, Filter = "Audio files|*.wav;*.aac;*.mp4;*.m4a;*.mp3;" })
+            {
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    Player.LoadAudio(dialog.FileNames);
+                    listBox_Playlist.Items.Clear();
+                    listBox_Playlist.Items.AddRange(Player.Playlist);
+                }
+            }
+        }
+
+        //private void button1_Click(object sender, EventArgs e)
+        //{
+        //    if (((Button)sender).Text == "Play") Player.Play();
+
+        //    else if (((Button)sender).Text == "Pause") Player.Pause();
+        //}
+
+        private void pictureBox_Mute_Click(object sender, EventArgs e)
+        {
+            if (Player.Volume <= 0)
+            {
+                Player.Volume = trackBar_Volume.Value; ;
+                pictureBox_Mute.Image = Properties.Resources.mute_off;
+                pictureBox_Vol100.Image = Properties.Resources.vol_lev_cur;
+            }
+            else
+            {
+                Player.Volume = 0;
+                pictureBox_Mute.Image = Properties.Resources.mute;
+                pictureBox_Vol100.Image = Properties.Resources.vol_lev_cur;
+            }
+        }
+
+        private void pictureBox_Vol100_Click(object sender, EventArgs e)
+        {
+            if (Player.Volume == 90)
+            {
+                Player.Volume = trackBar_Volume.Value;
+                pictureBox_Vol100.Image = Properties.Resources.vol_lev_cur;
+            }
+            else
+            {
+                Player.Volume = 90;
+                pictureBox_Vol100.Image = Properties.Resources.vol_lev_90;
+                pictureBox_Mute.Image = Properties.Resources.mute_off;
+            }     
+        }
     }
 }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         

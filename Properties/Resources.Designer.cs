@@ -111,6 +111,92 @@ namespace text_editor.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Calibri;}}
+        ///{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+        ///\pard\qr\f0\fs30\&apos;d1\&apos;ef\&apos;f0\&apos;e0\&apos;e2\&apos;ea\&apos;e0 \&apos;ef\&apos;ee \&apos;ef\&apos;f0\&apos;ee\&apos;e3\&apos;f0\&apos;e0\&apos;ec\&apos;ec\&apos;e5.\par
+        ///\par
+        ///\b\&apos;d1\&apos;ef\&apos;f0\&apos;e0\&apos;e2\&apos;ea\&apos;e0.\b0\par
+        ///
+        ///\pard\par
+        ///{\pict{\*\picprop}\wmetafile8\picw30004\pich18389\picwgoal17010\pichgoal10425 
+        ///01000900000398671a00000082671a000000050000000b0200000000050000000c02d547347582
+        ///671a00430f2000cc00000048035d0500000000d54734750000 [остаток строки не уместился]&quot;;.
+        /// </summary>
+        internal static string help {
+            get {
+                return ResourceManager.GetString("help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Calibri;}}
+        ///{\colortbl ;\red0\green0\blue255;}
+        ///{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+        ///\pard\f0\fs30\&apos;ce\&apos;d1\&apos;cd\&apos;ce\&apos;c2\&apos;cd\&apos;c0\&apos;df \&apos;ce\&apos;c1\&apos;d9\&apos;c5\&apos;d1\&apos;d2\&apos;c2\&apos;c5\&apos;cd\&apos;cd\&apos;c0\&apos;df \&apos;cb\&apos;c8\&apos;d6\&apos;c5\&apos;cd\&apos;c7\&apos;c8\&apos;df GNU\par
+        ///\par
+        ///\par
+        ///3-\&apos;ff \&apos;e2\&apos;e5\&apos;f0\&apos;f1\&apos;e8\&apos;ff \&apos;ee\&apos;f2 29 \&apos;e8\&apos;fe\&apos;ed\&apos;ff 2007 \&apos;e3.\par
+        ///\par
+        ///\par
+        ///Copyright (C) 2007 Free Software Foundation, Inc. &lt;{{\field{\*\fldinst{HYPERLINK &quot;http://fsf [остаток строки не уместился]&quot;;.
+        /// </summary>
+        internal static string license {
+            get {
+                return ResourceManager.GetString("license", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mute {
+            get {
+                object obj = ResourceManager.GetObject("mute", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mute_off {
+            get {
+                object obj = ResourceManager.GetObject("mute_off", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap vol_lev_90 {
+            get {
+                object obj = ResourceManager.GetObject("vol_lev_90", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap vol_lev_90_2 {
+            get {
+                object obj = ResourceManager.GetObject("vol_lev_90_2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap vol_lev_cur {
+            get {
+                object obj = ResourceManager.GetObject("vol_lev_cur", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap yellow {
