@@ -31,7 +31,7 @@ namespace text_editor
                 }
                 else
                 {
-                    MessageBox.Show("The file does not exist!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Файл не читается!", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
                     Application.Run(new FormMain());

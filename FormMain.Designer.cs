@@ -33,6 +33,8 @@
             this.BottomToolStripPanel = new System.Windows.Forms.ToolStripPanel();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel_DocPath = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel_Emp = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel_NowPlay = new System.Windows.Forms.ToolStripStatusLabel();
             this.TopToolStripPanel = new System.Windows.Forms.ToolStripPanel();
             this.menuStrip_Main = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem_AppIcon = new System.Windows.Forms.ToolStripMenuItem();
@@ -167,8 +169,6 @@
             this.printDialogPrincipal = new System.Windows.Forms.PrintDialog();
             this.printPreviewDialogPrincipal = new System.Windows.Forms.PrintPreviewDialog();
             this.colorDialog_FontColor = new System.Windows.Forms.ColorDialog();
-            this.toolStripStatusLabel_Emp = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabel_NowPlay = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip1.SuspendLayout();
             this.menuStrip_Main.SuspendLayout();
             this.toolStrip_Top_Text.SuspendLayout();
@@ -213,7 +213,7 @@
             this.statusStrip1.Location = new System.Drawing.Point(0, 0);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
-            this.statusStrip1.Size = new System.Drawing.Size(1184, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1312, 22);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -224,6 +224,20 @@
             this.toolStripStatusLabel_DocPath.Name = "toolStripStatusLabel_DocPath";
             this.toolStripStatusLabel_DocPath.Size = new System.Drawing.Size(40, 17);
             this.toolStripStatusLabel_DocPath.Text = "Пусто";
+            // 
+            // toolStripStatusLabel_Emp
+            // 
+            this.toolStripStatusLabel_Emp.AutoSize = false;
+            this.toolStripStatusLabel_Emp.Name = "toolStripStatusLabel_Emp";
+            this.toolStripStatusLabel_Emp.Size = new System.Drawing.Size(300, 17);
+            // 
+            // toolStripStatusLabel_NowPlay
+            // 
+            this.toolStripStatusLabel_NowPlay.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.toolStripStatusLabel_NowPlay.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.toolStripStatusLabel_NowPlay.Name = "toolStripStatusLabel_NowPlay";
+            this.toolStripStatusLabel_NowPlay.Size = new System.Drawing.Size(217, 17);
+            this.toolStripStatusLabel_NowPlay.Text = "Сейчас ничего не воспроизводится.";
             // 
             // TopToolStripPanel
             // 
@@ -258,7 +272,7 @@
             this.menuStrip_Main.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.menuStrip_Main.Location = new System.Drawing.Point(0, 0);
             this.menuStrip_Main.Name = "menuStrip_Main";
-            this.menuStrip_Main.Size = new System.Drawing.Size(1184, 32);
+            this.menuStrip_Main.Size = new System.Drawing.Size(1312, 32);
             this.menuStrip_Main.TabIndex = 0;
             this.menuStrip_Main.Text = "menuStrip1";
             // 
@@ -357,7 +371,7 @@
             | System.Windows.Forms.Keys.P)));
             this.toolStripMenuItem_PrintPreview.Size = new System.Drawing.Size(251, 22);
             this.toolStripMenuItem_PrintPreview.Text = "Просмотр печати";
-            this.toolStripMenuItem_PrintPreview.Click += new System.EventHandler(this.toolStripMenuItem_PrintPreview_Click);
+            this.toolStripMenuItem_PrintPreview.Visible = false;
             // 
             // toolStripSeparator3
             // 
@@ -475,6 +489,7 @@
             this.ToolStripMenuItem_Formats.Name = "ToolStripMenuItem_Formats";
             this.ToolStripMenuItem_Formats.Size = new System.Drawing.Size(76, 28);
             this.ToolStripMenuItem_Formats.Text = "Форматы";
+            this.ToolStripMenuItem_Formats.Visible = false;
             // 
             // ToolStripMenuItem_Preferens
             // 
@@ -486,6 +501,7 @@
             this.ToolStripMenuItem_Preferens.Name = "ToolStripMenuItem_Preferens";
             this.ToolStripMenuItem_Preferens.Size = new System.Drawing.Size(91, 28);
             this.ToolStripMenuItem_Preferens.Text = "  Настройки";
+            this.ToolStripMenuItem_Preferens.Visible = false;
             // 
             // ToolStripMenuItem_Info
             // 
@@ -688,7 +704,7 @@
             this.toolStripSeparator13,
             this.toolStripComboBox_FontFamiliSet,
             this.toolStripComboBox_FontSizeSet});
-            this.toolStrip_Top_Text.Location = new System.Drawing.Point(251, 32);
+            this.toolStrip_Top_Text.Location = new System.Drawing.Point(3, 63);
             this.toolStrip_Top_Text.Name = "toolStrip_Top_Text";
             this.toolStrip_Top_Text.Size = new System.Drawing.Size(784, 31);
             this.toolStrip_Top_Text.TabIndex = 1;
@@ -996,11 +1012,11 @@
             // 
             this.toolStripContainer1.ContentPanel.Controls.Add(this.panel4);
             this.toolStripContainer1.ContentPanel.Controls.Add(this.panel3);
-            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(1184, 676);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(1312, 650);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
             this.toolStripContainer1.Name = "toolStripContainer1";
-            this.toolStripContainer1.Size = new System.Drawing.Size(1184, 761);
+            this.toolStripContainer1.Size = new System.Drawing.Size(1312, 766);
             this.toolStripContainer1.TabIndex = 1;
             this.toolStripContainer1.Text = "toolStripContainer1";
             // 
@@ -1016,7 +1032,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(0, 0);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(884, 676);
+            this.panel4.Size = new System.Drawing.Size(1012, 650);
             this.panel4.TabIndex = 4;
             // 
             // tabControlPrincipal
@@ -1026,7 +1042,7 @@
             this.tabControlPrincipal.Location = new System.Drawing.Point(0, 0);
             this.tabControlPrincipal.Name = "tabControlPrincipal";
             this.tabControlPrincipal.SelectedIndex = 0;
-            this.tabControlPrincipal.Size = new System.Drawing.Size(884, 676);
+            this.tabControlPrincipal.Size = new System.Drawing.Size(1012, 650);
             this.tabControlPrincipal.TabIndex = 0;
             this.tabControlPrincipal.Click += new System.EventHandler(this.tabControlPrincipal_Click);
             this.tabControlPrincipal.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tabControlPrincipal_MouseDown);
@@ -1037,9 +1053,9 @@
             this.panel3.Controls.Add(this.panel1);
             this.panel3.Controls.Add(this.panel6);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel3.Location = new System.Drawing.Point(884, 0);
+            this.panel3.Location = new System.Drawing.Point(1012, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(300, 676);
+            this.panel3.Size = new System.Drawing.Size(300, 650);
             this.panel3.TabIndex = 3;
             // 
             // panel7
@@ -1048,7 +1064,7 @@
             this.panel7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel7.Location = new System.Drawing.Point(0, 376);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(300, 157);
+            this.panel7.Size = new System.Drawing.Size(300, 131);
             this.panel7.TabIndex = 10;
             // 
             // panel_List
@@ -1059,7 +1075,7 @@
             this.panel_List.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel_List.Location = new System.Drawing.Point(0, 0);
             this.panel_List.Name = "panel_List";
-            this.panel_List.Size = new System.Drawing.Size(300, 157);
+            this.panel_List.Size = new System.Drawing.Size(300, 131);
             this.panel_List.TabIndex = 3;
             // 
             // panel10
@@ -1068,7 +1084,7 @@
             this.panel10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel10.Location = new System.Drawing.Point(20, 0);
             this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(260, 157);
+            this.panel10.Size = new System.Drawing.Size(260, 131);
             this.panel10.TabIndex = 3;
             // 
             // listBox_Playlist
@@ -1081,7 +1097,7 @@
             this.listBox_Playlist.FormattingEnabled = true;
             this.listBox_Playlist.Location = new System.Drawing.Point(0, 0);
             this.listBox_Playlist.Name = "listBox_Playlist";
-            this.listBox_Playlist.Size = new System.Drawing.Size(260, 157);
+            this.listBox_Playlist.Size = new System.Drawing.Size(260, 131);
             this.listBox_Playlist.TabIndex = 0;
             this.listBox_Playlist.SelectedIndexChanged += new System.EventHandler(this.listBox_Playlist_SelectedIndexChanged);
             // 
@@ -1090,7 +1106,7 @@
             this.panel9.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel9.Location = new System.Drawing.Point(0, 0);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(20, 157);
+            this.panel9.Size = new System.Drawing.Size(20, 131);
             this.panel9.TabIndex = 2;
             // 
             // panel8
@@ -1098,7 +1114,7 @@
             this.panel8.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel8.Location = new System.Drawing.Point(280, 0);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(20, 157);
+            this.panel8.Size = new System.Drawing.Size(20, 131);
             this.panel8.TabIndex = 1;
             // 
             // panel1
@@ -1206,7 +1222,7 @@
             this.panel6.Controls.Add(this.st_Button_Clear);
             this.panel6.Controls.Add(this.trackBar_Volume);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel6.Location = new System.Drawing.Point(0, 533);
+            this.panel6.Location = new System.Drawing.Point(0, 507);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(300, 143);
             this.panel6.TabIndex = 8;
@@ -1550,30 +1566,17 @@
             this.printPreviewDialogPrincipal.ShowIcon = false;
             this.printPreviewDialogPrincipal.Visible = false;
             // 
-            // toolStripStatusLabel_Emp
-            // 
-            this.toolStripStatusLabel_Emp.AutoSize = false;
-            this.toolStripStatusLabel_Emp.Name = "toolStripStatusLabel_Emp";
-            this.toolStripStatusLabel_Emp.Size = new System.Drawing.Size(300, 17);
-            // 
-            // toolStripStatusLabel_NowPlay
-            // 
-            this.toolStripStatusLabel_NowPlay.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.toolStripStatusLabel_NowPlay.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.toolStripStatusLabel_NowPlay.Name = "toolStripStatusLabel_NowPlay";
-            this.toolStripStatusLabel_NowPlay.Size = new System.Drawing.Size(217, 17);
-            this.toolStripStatusLabel_NowPlay.Text = "Сейчас ничего не воспроизводится.";
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1184, 761);
+            this.ClientSize = new System.Drawing.Size(1312, 766);
             this.Controls.Add(this.toolStripContainer1);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormMain";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();

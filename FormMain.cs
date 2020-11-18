@@ -1,28 +1,18 @@
 using System;
 using System.Drawing;
-using System.Drawing.Printing;
 using System.Drawing.Text;
 using System.IO;
-//using System.Reflection;
 using System.Windows.Forms;
-//using PrintCtrl;
 using System.Runtime.InteropServices;
 using DAudio;
-using TagLib;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace text_editor
 {
     public partial class FormMain : Form
     {
-        #region MyRegion
-
-
-
-        #endregion
-
-        Image CloseImage;
-
+        // необходимо для отрисовки кнопки закрытия вкладки
         [DllImport("user32.dll")]
         private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
         private const int TCM_SETMINTABWIDTH = 0x1300 + 49;
@@ -44,11 +34,19 @@ namespace text_editor
         /// </summary>
         private const int DefaultFontSize = 15;
 
-        private AudioPlayer Player;
-
         #endregion Константы
 
         #region Притные поля
+
+        /// <summary>
+        /// Музыкальный плеер
+        /// </summary>
+        private AudioPlayer Player;
+
+        /// <summary>
+        /// Путь к папке с музыкой.
+        /// </summary
+        private string MusicPath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
 
         /// <summary>
         /// Путь к файлу.
@@ -72,9 +70,8 @@ namespace text_editor
             InitializeComponent();
 
             Player = new AudioPlayer();
+
             // подписываемся на событие изменения статуса
-            //Player.PlayingStatusChanged += (s, e) => button_Play.Text = e == Status.Playing ? "Pause" : "Play";
-            //st_Button_Play
             Player.PlayingStatusChanged += (s, e) => st_Button_Play.Text = e == Status.Playing ? "Pause" : "Play";
 
             Player.AudioSelected += (s, e) =>
@@ -99,7 +96,7 @@ namespace text_editor
                 
                 listBox_Playlist.SelectedItem = e.Name;
             };
-
+            
             Player.ProgressChanged += (s, e) =>
             {
                 trackBar_Duration.Value = (int)e;
@@ -121,17 +118,16 @@ namespace text_editor
             // отрисовка кнопок закрытия вкладок
             tabControlPrincipal.DrawMode = TabDrawMode.OwnerDrawFixed;
             tabControlPrincipal.DrawItem += TabControlPrincipal_DrawItem;
-            CloseImage = text_editor.Properties.Resources.close_tab;
+            Image CloseImage = Properties.Resources.close_tab;
             tabControlPrincipal.Padding = new Point(10, 3);
+
+            // загружаем музыку в список воспроизведения
+            LoadAudioFromStartDirectoryAsync();
+            //LoadAudioFromStartDirectory();
         }
-
-        //private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    // If the last TabPage is selected then Create a new TabPage
-        //    if (tabControlPrincipal.SelectedIndex == tabControlPrincipal.TabPages.Count - 1)
-        //        CreateNewTab();
-        //}
-
+        /// <summary>
+        /// Событие отрисовывает кнопку закрытия вкладки
+        /// </summary>
         private void TabControlPrincipal_DrawItem(object sender, DrawItemEventArgs e)
         {
             try
@@ -139,24 +135,14 @@ namespace text_editor
                 var tabPage = this.tabControlPrincipal.TabPages[e.Index];
                 var tabRect = this.tabControlPrincipal.GetTabRect(e.Index);
                 tabRect.Inflate(2, -3);
-                // рисуем кнопку добавления вкладки
-                //if (e.Index == this.tabControlPrincipal.TabCount - 1)
-                //{
-                //    var addImage = new Bitmap(text_editor.Properties.Resources.add_tab);
-                //    e.Graphics.DrawImage(addImage,
-                //        tabRect.Left + (tabRect.Width - addImage.Width) / 2,
-                //        tabRect.Top + (tabRect.Height - addImage.Height) / 2);
-                //}
-                // рисум кнопку закрытия для всех вкладок
-                // else
-                //{
-                var closeImage = new Bitmap(text_editor.Properties.Resources.close_tab);
+                
+                var closeImage = new Bitmap(Properties.Resources.close_tab);
                 e.Graphics.DrawImage(closeImage,
                     (tabRect.Right - closeImage.Width - 3),
                     tabRect.Top + (tabRect.Height + 1 - closeImage.Height) / 2);
                 TextRenderer.DrawText(e.Graphics, tabPage.Text, tabPage.Font,
                     tabRect, tabPage.ForeColor, TextFormatFlags.Left);
-                //}
+               
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
@@ -172,7 +158,6 @@ namespace text_editor
             get { return (RichTextBox)tabControlPrincipal.SelectedTab.Controls["Body"]; }
         }
 
-        
         #endregion Свойства
 
         #region Методы
@@ -193,9 +178,19 @@ namespace text_editor
                 Font = this.m_DefaultFontFamili
             };
 
+            Panel header = new Panel 
+            { 
+                Name = "Header",
+                BackColor = Color.White,
+                Height = 10,
+                Dock = DockStyle.Top
+            };
+            
+
+
             // смещение границ начала и конца строки в окне и отступа сверху
-            const int dist = 24;
-            Body.SetInnerMargins(dist, dist, dist, 0);
+            const int dist = 47;
+            Body.SetInnerMargins(dist, 0, dist, 0);
             // вставка картинки перетаскиванием
             Body.AllowDrop = true;
             Body.DragDrop += new DragEventHandler(Body_DragDrop);
@@ -213,6 +208,7 @@ namespace text_editor
                 ContextMenuStrip = contextMenuStripContextTab
             };
             // Новый RichTextBox добавляется внутри новой вкладки (TabPage).
+            //NewTab.Controls.Add(header);
             NewTab.Controls.Add(Body);
             // Новая вкладка (TabPage) добавляется внутри элемента управления вкладкой (TabControl).
             tabControlPrincipal.TabPages.Add(NewTab);
@@ -440,32 +436,6 @@ namespace text_editor
                 ActiveDocument.Print();
         }
 
-        /// <summary>
-        /// Метод, открывающий диалоговое окно с предварительным просмотром того, как будет выглядеть документ при печати.
-        /// </summary>
-        private void PrintPreviwDocument()
-        {
-            printDocumentPrincipal.DocumentName = tabControlPrincipal.SelectedTab.Name;
-
-            printPreviewDialogPrincipal.Document = printDocumentPrincipal;
-
-            printPreviewDialogPrincipal.ShowDialog();
-        }
-
-        #region События операции печати
-
-        /// <summary>
-        ///   Событие, отвечающее за рисование в <see cref = "PrintDocument" /> содержимого, которое он содержит
-        ///   в выбранном документе для печати..
-        /// </summary>
-        //private void printDocumentPrincipal_PrintPage(object sender, PrintPageEventArgs e)
-        //{
-        //    e.Graphics.DrawString(ActiveDocument.Text, ActiveDocument.Font, Brushes.Black, 100, 20);
-        //    e.Graphics.PageUnit = GraphicsUnit.Inch;
-        //}
-
-        #endregion События операции печати
-
         #endregion Печать
 
         #region Обработка текста
@@ -473,50 +443,32 @@ namespace text_editor
         ///<summary>
         /// Метод, отменяющий последнее действие, сделанное пользователем.
         ///</summary>
-        private void UndoLastChange()
-        {
-            ActiveDocument.Undo();
-        }
+        private void UndoLastChange() => ActiveDocument.Undo();
 
         ///<summary>
         /// Метод, повторяющий последнее действие, сделанное пользователем.
         /// </summary>
-        private void RedoLastChange()
-        {
-            ActiveDocument.Redo();
-        }
+        private void RedoLastChange() => ActiveDocument.Redo();
 
         ///<summary>
         /// Метод, который вырезает выделение из документа и помещает его в буфер обмена.
         /// </summary>
-        private void CutText()
-        {
-            ActiveDocument.Cut();
-        }
+        private void CutText() => ActiveDocument.Cut();
 
         ///<summary>
         /// Метод, который копирует выделение с холста и помещает его в буфер обмена.
         /// </summary>
-        private void CopySelectedText()
-        {
-            ActiveDocument.Copy();
-        }
+        private void CopySelectedText() => ActiveDocument.Copy();
 
         ///<summary>
         /// Метод, вставляющий содержимое буфера обмена.
         /// </summary>
-        private void PasteFromBuf()
-        {
-            ActiveDocument.Paste();
-        }
+        private void PasteFromBuf() => ActiveDocument.Paste();
 
         ///<summary>
         /// Метод, который выделяет весь текст в текущем документе.
         /// </summary>
-        private void SelectAllText()
-        {
-            ActiveDocument.SelectAll();
-        }
+        private void SelectAllText() => ActiveDocument.SelectAll();
 
         #endregion Обработка текста
 
@@ -708,10 +660,7 @@ namespace text_editor
         /// Обработка нажатия на пункт меню "Печатать"
         /// </summary>
         private void toolStripMenuItem_Print_Click(object sender, EventArgs e) => PrintDocument();
-        /// <summary>
-        /// Обработка нажатия на пункт меню "Просмотр печати"
-        /// </summary>
-        private void toolStripMenuItem_PrintPreview_Click(object sender, EventArgs e) => PrintPreviwDocument();
+        
         /// <summary>
         /// Обработка нажатия на пункт меню "Выход"
         /// </summary>
@@ -1125,6 +1074,78 @@ namespace text_editor
 
         #region Музыкальный плеер
 
+        /// <summary>
+        /// Синхронный метод сканирования директории с музыкой установленной в свойствах
+        /// </summary>
+
+        private void LoadAudioFromStartDirectory()
+        {
+            try
+            {
+                var dirs = Directory
+                .EnumerateFiles(MusicPath, "*.*", (SearchOption)1)
+                .Where
+                (
+                file =>
+                file.ToLower().EndsWith("wav") ||
+                file.ToLower().EndsWith("aac") ||
+                file.ToLower().EndsWith("mp4") ||
+                file.ToLower().EndsWith("m4a") ||
+                file.ToLower().EndsWith("mp3")
+                )
+                .ToArray();
+                Console.WriteLine("Количество аудио файлов в папке = {0}.", dirs.Length);
+                foreach (string dir in dirs)
+                {
+                    Player.LoadAudio(dir);
+                    listBox_Playlist.Items.Clear();
+                    listBox_Playlist.Items.AddRange(Player.Playlist);
+                    Console.WriteLine(dir);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Произошла ошибка : {0}", e.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Асинхронный метод сканирования директории с музыкой установленной в свойствах
+        /// </summary>
+        private async void LoadAudioFromStartDirectoryAsync()
+        {
+            try
+            {
+                await Task.Run(() =>
+                {
+                    var dirs = Directory
+                    .EnumerateFiles(MusicPath, "*.*", (SearchOption)1)
+                    .Where
+                    (
+                    file =>
+                    file.ToLower().EndsWith("wav") ||
+                    file.ToLower().EndsWith("aac") ||
+                    file.ToLower().EndsWith("mp4") ||
+                    file.ToLower().EndsWith("m4a") ||
+                    file.ToLower().EndsWith("mp3")
+                    )
+                    .ToArray();
+                    Console.WriteLine("Количество аудио файлов в папке = {0}.", dirs.Length);
+                    foreach (string dir in dirs)
+                    {
+                        Player.LoadAudio(dir);
+                        listBox_Playlist.Items.Clear();
+                        listBox_Playlist.Items.AddRange(Player.Playlist);
+                        Console.WriteLine(dir);
+                    }
+                }); 
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("The process failed: {0}", e.ToString());
+            }
+        }
+
         private void музыкаToolStripMenuItem_Click(object sender, EventArgs e) => panel3.Visible = !panel3.Visible;
 
         private void button_Add_Click(object sender, EventArgs e)
@@ -1136,6 +1157,7 @@ namespace text_editor
                     Player.LoadAudio(dialog.FileNames);
                     listBox_Playlist.Items.Clear();
                     listBox_Playlist.Items.AddRange(Player.Playlist);
+
                 }
             }
         }
@@ -1170,10 +1192,6 @@ namespace text_editor
 
         private void trackBar_Duration_Scroll(object sender, EventArgs e) => Player.Position = ((TrackBar)sender).Value;
         private void trackBar1_Scroll(object sender, EventArgs e) => Player.Volume = ((TrackBar)sender).Value;
-        
-        
-       
-        #endregion Музыкальный плеер
 
         private void toolStripMenuItem_GitHub_Click(object sender, EventArgs e)
         {
@@ -1221,7 +1239,8 @@ namespace text_editor
             Player.ClearPlaylist();
             pictureBox_MuzikCover.Image = Properties.Resources.def_cover;
             label_TrakName.Text = "Track name";
-            label_Album.Text = "Album - year";        }
+            label_Album.Text = "Album - year";
+        }
 
         private void st_Button_Add_Click(object sender, EventArgs e)
         {
@@ -1235,13 +1254,6 @@ namespace text_editor
                 }
             }
         }
-
-        //private void button1_Click(object sender, EventArgs e)
-        //{
-        //    if (((Button)sender).Text == "Play") Player.Play();
-
-        //    else if (((Button)sender).Text == "Pause") Player.Pause();
-        //}
 
         private void pictureBox_Mute_Click(object sender, EventArgs e)
         {
@@ -1271,7 +1283,10 @@ namespace text_editor
                 Player.Volume = 90;
                 pictureBox_Vol100.Image = Properties.Resources.vol_lev_90;
                 pictureBox_Mute.Image = Properties.Resources.mute_off;
-            }     
+            }
         }
+
+        #endregion Музыкальный плеер
+
     }
 }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         

@@ -111,6 +111,15 @@ namespace text_editor.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на .
+        /// </summary>
+        internal static string def_playlist {
+            get {
+                return ResourceManager.GetString("def_playlist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на {\rtf1\ansi\ansicpg1251\deff0\nouicompat\deflang1049{\fonttbl{\f0\fnil\fcharset204 Calibri;}}
         ///{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
         ///\pard\qr\f0\fs30\&apos;d1\&apos;ef\&apos;f0\&apos;e0\&apos;e2\&apos;ea\&apos;e0 \&apos;ef\&apos;ee \&apos;ef\&apos;f0\&apos;ee\&apos;e3\&apos;f0\&apos;e0\&apos;ec\&apos;ec\&apos;e5.\par
