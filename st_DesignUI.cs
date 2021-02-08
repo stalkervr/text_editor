@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using System.Runtime.InteropServices;
+using System.ComponentModel;
 
 namespace st_DesignUI
 {
@@ -38,13 +40,13 @@ namespace st_DesignUI
             graph.SmoothingMode = SmoothingMode.HighQuality;
             graph.Clear(Parent.BackColor);
 
-            Rectangle rect = new Rectangle(0, 0, Width-1, Height-1);
+            Rectangle rect = new Rectangle(0, 0, Width - 1, Height - 1);
             graph.DrawRectangle(new Pen(BackColor), rect);
             graph.FillRectangle(new SolidBrush(BackColor), rect);
 
             if (MouseEntered)
             {
-                graph.DrawRectangle(new Pen(Color.FromArgb(60,Color.White)), rect);
+                graph.DrawRectangle(new Pen(Color.FromArgb(60, Color.White)), rect);
                 graph.FillRectangle(new SolidBrush(Color.FromArgb(60, Color.White)), rect);
             }
 
@@ -93,6 +95,16 @@ namespace st_DesignUI
 
         private bool MouseEntered = false;
         private bool MousePressed = false;
+
+        private Image icon = null;
+
+
+        public Image Icon
+        {
+            get { return icon; }
+            set { icon = value; Invalidate(); }
+        }
+
         public st_ButtonCircle()
         {
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw | ControlStyles.SupportsTransparentBackColor | ControlStyles.UserPaint, true);
@@ -106,6 +118,7 @@ namespace st_DesignUI
 
             SF.Alignment = StringAlignment.Center;
             SF.LineAlignment = StringAlignment.Center;
+            //Icon = icon;
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -133,6 +146,7 @@ namespace st_DesignUI
             }
 
             graph.DrawString(Text, Font, new SolidBrush(ForeColor), rect, SF);
+            //graph.DrawImage(icon, rect);
         }
 
         protected override void OnMouseEnter(EventArgs e)
@@ -166,7 +180,7 @@ namespace st_DesignUI
     }
     //**********************************************************************
 
-    public partial class st_ButtonGradient : UserControl
+    class st_ButtonGradient : UserControl
     {
         private int wh = 20;
         private float gradient_angle = 30;
@@ -179,6 +193,7 @@ namespace st_DesignUI
         {
 
             DoubleBuffered = true;
+            BackColor = Color.Transparent;
             //t.Interval = 60;
             //t.Start();
             //t.Tick += (s, e) => { Gradient_angle = Gradient_angle % 360 + 1; };
@@ -192,19 +207,19 @@ namespace st_DesignUI
             set { wh = value; Invalidate(); }
         }
 
-
+        [Category("st_DesignUI Props")]
         public Color Color_1
         {
             get { return cl0; }
             set { cl0 = value; Invalidate(); }
         }
-
+        [Category("st_DesignUI Props")]
         public Color Color_2
         {
             get { return cl1; }
             set { cl1 = value; Invalidate(); }
         }
-
+        [Category("st_DesignUI Props")]
         public float Gradient_angle
         {
             get { return gradient_angle; }
@@ -234,4 +249,38 @@ namespace st_DesignUI
             base.OnPaint(e);
         }
     }
+
+    //*****************************************************************************
+
+    public partial class st_DragPanel : Component
+    {
+        private Control handleControl;
+
+        public Control SelectControl
+        {
+            get
+            {
+                return this.handleControl;
+            }
+            set
+            {
+                this.handleControl = value;
+                this.handleControl.MouseDown += new MouseEventHandler(this.DragForm_MouseDown);
+            }
+        }
+        [DllImport("user32.dll")]
+        public static extern int SendMessage(IntPtr a, int msg, int wParam, int lParam);
+        [DllImport("user32.dll")]
+        public static extern bool ReleaseCapture();
+        private void DragForm_MouseDown(object sender, MouseEventArgs e)
+        {
+            bool flag = e.Button == MouseButtons.Left;
+            if (flag)
+            {
+                st_DragPanel.ReleaseCapture();
+                st_DragPanel.SendMessage(this.SelectControl.FindForm().Handle, 161, 2, 0);
+            }
+        }
+    }
 }
+

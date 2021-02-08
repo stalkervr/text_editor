@@ -12,6 +12,7 @@ namespace text_editor
 {
     public partial class FormMain : Form
     {
+
         // необходимо для отрисовки кнопки закрытия вкладки
         [DllImport("user32.dll")]
         private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
@@ -103,6 +104,10 @@ namespace text_editor
                 label_CurentPos.Text = ((AudioPlayer)s).PositionTime.ToString(@"mm\:ss");
             };
         }
+
+        
+
+
         /// <summary>
         /// Обработка события загрузки формы
         /// </summary>
@@ -153,9 +158,9 @@ namespace text_editor
         /// который находится внутри вкладки, выбранной пользователем в данный момент.
         ///</summary>
         ///
-        public RichTextBox ActiveDocument
+        public AdvRichTextBox ActiveDocument
         {
-            get { return (RichTextBox)tabControlPrincipal.SelectedTab.Controls["Body"]; }
+            get { return (AdvRichTextBox)tabControlPrincipal.SelectedTab.Controls["Body"]; }
         }
 
         #endregion Свойства
@@ -169,7 +174,7 @@ namespace text_editor
         private void CreateNewTab()
         {
             //Создается экземпляр нового RichTextBox со следующими значениями, установленными в его свойствах.
-            RichTextBox Body = new RichTextBox
+            AdvRichTextBox Body = new AdvRichTextBox
             {
                 Name = "Body",
                 AcceptsTab = true,
@@ -275,7 +280,7 @@ namespace text_editor
         public void OpenDocumentContext(string path)
         {
             // Если было выбрано допустимое имя файла ...
-            if (path != string.Empty && Path.GetExtension(path).ToLower() == ".rtf")
+            if (path != string.Empty && Path.GetExtension(path).ToLower() == ".rtf" || Path.GetExtension(path).ToLower() == ".txt")
             {
                 try // Пробуем прочитать файл
                 {
@@ -286,7 +291,15 @@ namespace text_editor
                     // Новая сгенерированная вкладка ищется и выбирается.
                     tabControlPrincipal.SelectedTab = tabControlPrincipal.TabPages["  Новый документ - " + this.m_intTabCount];
                     // Загружаем содержимое файла в RichTextBox новой вкладки.
-                    ActiveDocument.LoadFile(FilePath, RichTextBoxStreamType.RichText);
+                    if(Path.GetExtension(path).ToLower() == ".rtf")
+                    {
+                        ActiveDocument.LoadFile(FilePath, RichTextBoxStreamType.RichText);
+                    }
+                    else
+                    {
+                        ActiveDocument.Text = File.ReadAllText(FilePath, System.Text.Encoding.UTF8);
+                        //ActiveDocument.LoadFile(FilePath, RichTextBoxStreamType.PlainText);
+                    }
                     // Имя файла указывается в заголовке вкладки и ее имени.
                     string NameOpenDocument = Path.GetFileName(FilePath);
                     tabControlPrincipal.SelectedTab.Text = "  " + NameOpenDocument;
@@ -295,13 +308,14 @@ namespace text_editor
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(e.Message);
+                    MessageBox.Show("Попытка отрыть файл неизвестного формата !", e.Message);
                 }
             }
             else
             {
                 MessageBox.Show("Попытка отрыть файл неизвестного формата !", "Ошибка типа файла !", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
+            Console.WriteLine(FilePath);
         }
 
         /// <summary>
@@ -310,7 +324,7 @@ namespace text_editor
         private void OpenDocument()
         {
             openFileDialog_Document.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            openFileDialog_Document.Filter = "Формат текстовых файлов (RTF)|*.rtf";
+            openFileDialog_Document.Filter = "Формат текстовых файлов (RTF)|*.rtf;*.txt";
 
             if (openFileDialog_Document.ShowDialog() == DialogResult.OK)
             {
@@ -327,7 +341,15 @@ namespace text_editor
                         // Новая сгенерированная вкладка ищется и выбирается.
                         tabControlPrincipal.SelectedTab = tabControlPrincipal.TabPages["  Новый документ - " + this.m_intTabCount];
                         // Загружаем содержимое файла в RichTextBox новой вкладки.
-                        ActiveDocument.LoadFile(openFileDialog_Document.FileName, RichTextBoxStreamType.RichText);
+                        if (Path.GetExtension(FilePath).ToLower() == ".rtf")
+                        {
+                            ActiveDocument.LoadFile(FilePath, RichTextBoxStreamType.RichText);
+                        }
+                        else
+                        {
+                            //ActiveDocument.LoadFile(FilePath, RichTextBoxStreamType.PlainText);
+                            ActiveDocument.Text = File.ReadAllText(FilePath, System.Text.Encoding.UTF8);
+                        }
                         // Имя файла указывается в заголовке вкладки и ее имени.
                         string NameOpenDocument = Path.GetFileName(openFileDialog_Document.FileName);
                         tabControlPrincipal.SelectedTab.Text = "  " + NameOpenDocument;
@@ -336,6 +358,7 @@ namespace text_editor
                     }
                     catch (Exception e)
                     {
+                        //Console.WriteLine("Здесь ошибка !");
                         MessageBox.Show(e.Message);
                     }
                 }
@@ -351,7 +374,7 @@ namespace text_editor
             {
                 saveFileDialog_Document.FileName = tabControlPrincipal.SelectedTab.Name;
                 saveFileDialog_Document.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-                saveFileDialog_Document.Filter = "Формат текстового файла (RTF)|*.rtf";
+                saveFileDialog_Document.Filter = "Формат текстовых файлов (RTF)|*.rtf;*.txt";
                 saveFileDialog_Document.Title = "Сохранить";
                 if (saveFileDialog_Document.ShowDialog() == DialogResult.OK)
                 {
@@ -364,7 +387,14 @@ namespace text_editor
                         try
                         {
                             // Сохраняем содержимое RichTextBox в установленном пути к файлу.
-                            ActiveDocument.SaveFile(saveFileDialog_Document.FileName, RichTextBoxStreamType.RichText);
+                            if (Path.GetExtension(FilePath).ToLower() == ".rtf")
+                            {
+                                ActiveDocument.SaveFile(saveFileDialog_Document.FileName, RichTextBoxStreamType.RichText);
+                            }
+                            else
+                            {
+                                ActiveDocument.SaveFile(saveFileDialog_Document.FileName, RichTextBoxStreamType.PlainText);
+                            }
                             // Имя файла указывается в заголовке вкладки и ее имени.
                             string FileName = Path.GetFileName(saveFileDialog_Document.FileName);
                             tabControlPrincipal.SelectedTab.Text = FileName;
@@ -379,7 +409,15 @@ namespace text_editor
             }
             else
             {
-                System.IO.File.WriteAllText(FilePath, ActiveDocument.Rtf);
+                if (Path.GetExtension(FilePath).ToLower() == ".rtf")
+                {
+                    System.IO.File.WriteAllText(FilePath, ActiveDocument.Rtf);
+                }
+                else
+                {
+                    System.IO.File.WriteAllText(FilePath, ActiveDocument.Text);
+                }
+                    
                 Console.WriteLine("Method SaveDocument(else) Path to file -> " + FilePath);
             }
             //FilePath = tabControlPrincipal.SelectedTab.Name;
@@ -456,7 +494,7 @@ namespace text_editor
         private void CutText() => ActiveDocument.Cut();
 
         ///<summary>
-        /// Метод, который копирует выделение с холста и помещает его в буфер обмена.
+        /// Метод, который копирует выделенный текст и помещает его в буфер обмена.
         /// </summary>
         private void CopySelectedText() => ActiveDocument.Copy();
 
@@ -518,19 +556,14 @@ namespace text_editor
             if(fileName != null)
             {
                 var list = fileName as string[];
-                // Console.WriteLine(list[0]);
-                // Если в поле файла перетаскиваем файл .rtf
-                if(list != null && !string.IsNullOrWhiteSpace(list[0]) && Path.GetExtension(list[0]).ToLower() == ".rtf")
+                // Если в поле файла перетаскиваем файл .rtf или .txt
+                if(list != null && !string.IsNullOrWhiteSpace(list[0]) 
+                    && Path.GetExtension(list[0]).ToLower() == ".rtf" 
+                    || Path.GetExtension(list[0]).ToLower() == ".txt")
                 {
                     OpenDocumentContext(list[0]);
                 }
-                // Если в поле файла перетаскиваем файл .txt
-                else if (list != null && !string.IsNullOrWhiteSpace(list[0]) && Path.GetExtension(list[0]).ToLower() == ".txt")
-                {
-                    // Загружка содержимого в текущую вкладку
-                    ActiveDocument.Clear();
-                    ActiveDocument.LoadFile(list[0], RichTextBoxStreamType.PlainText);
-                }
+
                 else
                 {
                     // для вставки изображения перетаскиванием
@@ -541,9 +574,15 @@ namespace text_editor
                         {
                             Clipboard.SetDataObject(image);
                             DataFormats.Format MyFormat = DataFormats.GetFormat(DataFormats.Bitmap);
+                            //Console.WriteLine(test);
                             if (ActiveDocument.CanPaste(MyFormat))
                             {
+
                                 ActiveDocument.Paste(MyFormat);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Ошибка вставки изображения !/n Формат не поддерживает вставку графики !");
                             }
                         }
                     }
@@ -840,22 +879,22 @@ namespace text_editor
         /// <summary>
         /// Обработка нажатия кнопки выравнивания текста по левому краю
         /// </summary>
-        private void toolStripButton_AlignLeft_Click(object sender, EventArgs e) => ActiveDocument.SelectionAlignment = HorizontalAlignment.Left;
+        private void toolStripButton_AlignLeft_Click(object sender, EventArgs e) => ActiveDocument.SelectionAlignment = TextAlign.Left;
 
         /// <summary>
         /// Обработка нажатия кнопки выравнивания текста по центру
         /// </summary>
-        private void toolStripButton_AlignCenter_Click(object sender, EventArgs e) => ActiveDocument.SelectionAlignment = HorizontalAlignment.Center;
+        private void toolStripButton_AlignCenter_Click(object sender, EventArgs e) => ActiveDocument.SelectionAlignment = TextAlign.Center;
 
         /// <summary>
         /// Обработка нажатия кнопки выравнивания текста по правому краю
         /// </summary>
-        private void toolStripButton_AlignRight_Click(object sender, EventArgs e) => ActiveDocument.SelectionAlignment = HorizontalAlignment.Right;
+        private void toolStripButton_AlignRight_Click(object sender, EventArgs e) => ActiveDocument.SelectionAlignment = TextAlign.Right;
 
         /// <summary>
         /// Обработка нажатия кнопки выравнивания текста по ширине страницы
         /// </summary>
-        private void toolStripButton_AlignJustify_Click(object sender, EventArgs e) => ActiveDocument.SelectionAlignment = HorizontalAlignment.Center;
+        private void toolStripButton_AlignJustify_Click(object sender, EventArgs e) => ActiveDocument.SelectionAlignment = TextAlign.Justify;
 
         /// <summary>
         /// Обработка нажатия кнопки смещения выделенного текста влево
@@ -992,7 +1031,7 @@ namespace text_editor
         /// </summary>
         private void tabControlPrincipal_MouseDown(object sender, MouseEventArgs e)
         {
-            // Process MouseDown event only till (tabControl.TabPages.Count - 1) excluding the last TabPage
+            // обработка события MouseDown для вкладок за исключением последней
             for (var i = 0; i <= this.tabControlPrincipal.TabPages.Count - 1; i++)
             {
                 var tabRect = this.tabControlPrincipal.GetTabRect(i);
@@ -1004,14 +1043,31 @@ namespace text_editor
                     tabRect.Top + (tabRect.Height - closeImage.Height) / 2,
                     closeImage.Width,
                     closeImage.Height);
-                //
+
                 if (imageRect.Contains(e.Location))
                 {
+                    const string message = "Вы хотите сохранить изменения в файле ?";
+                    const string caption = "Текстовый редактор Ё";
+                    
                     //сохраняем документ перед закрытием
-                    if (string.IsNullOrEmpty(FilePath))
+                    if (string.IsNullOrEmpty(FilePath) && ActiveDocument.Modified)
                     {
-                        SaveDocument();
+                        var result = MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (result == DialogResult.Yes)
+                        {
+                            SaveDocument();
+                        }
                     }
+                    else if (!string.IsNullOrEmpty(FilePath) && ActiveDocument.Modified)
+                    {
+                        var result = MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (result == DialogResult.Yes)
+                        {
+                            SaveDocument();
+                        }
+         
+                    }
+
                     //удаляем вкладку
                     this.tabControlPrincipal.TabPages.RemoveAt(i);
                     //если закрыты все вкладки создаем новую пустую вкладку
@@ -1045,8 +1101,7 @@ namespace text_editor
             {
                 toolStripStatusLabel_DocPath.Text = "  " + FilePath;
             }
-            
-            Console.WriteLine("Method tabControlPrincipal_Click Path to file -> " + FilePath);
+            //Console.WriteLine("Method tabControlPrincipal_Click Path to file -> " + FilePath);
         }
 
         #endregion Обработка событий кликов на вкладках
@@ -1065,7 +1120,7 @@ namespace text_editor
         }
         private void ToolStripButton_Help_Click(object sender, EventArgs e)
         {
-
+            OpenDocumentContext("help.rtf");
         }
 
         #endregion Обработка событий панели интрументов работа с файлами
@@ -1130,19 +1185,20 @@ namespace text_editor
                     file.ToLower().EndsWith("mp3")
                     )
                     .ToArray();
-                    Console.WriteLine("Количество аудио файлов в папке = {0}.", dirs.Length);
+                    //Console.WriteLine("Количество аудио файлов в папке = {0}.", dirs.Length);
                     foreach (string dir in dirs)
                     {
                         Player.LoadAudio(dir);
                         listBox_Playlist.Items.Clear();
                         listBox_Playlist.Items.AddRange(Player.Playlist);
-                        Console.WriteLine(dir);
+                        //Console.WriteLine(dir);
                     }
                 }); 
             }
             catch (Exception e)
             {
-                Console.WriteLine("The process failed: {0}", e.ToString());
+                MessageBox.Show(e.Message);
+                Console.WriteLine("Ошибка загрузки музыки: {0}", e.ToString());
             }
         }
 
@@ -1197,6 +1253,7 @@ namespace text_editor
         {
             System.Diagnostics.Process.Start(@"https://github.com/stalkervr");
         }
+        //********************************************************************************
 
         private void st_Button_Prev_Click(object sender, EventArgs e)
         {

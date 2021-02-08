@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Drawing.Printing;
 using System.Diagnostics;
@@ -10,7 +9,7 @@ public static class RichTextBoxExtensions
 {
     public static void Print(this RichTextBox control)
     {
-        RichTextBoxPrintHelper helper = new RichTextBoxPrintHelper(control);
+        RichTextBoxAd helper = new RichTextBoxAd(control);
         helper.PrintRTF();
     }
 }
@@ -19,10 +18,10 @@ public static class RichTextBoxExtensions
 /// A helper to provide an easy method for printing a RichTextBox
 /// based of work by Martin Müller http://msdn.microsoft.com/en-us/library/ms996492.aspx
 /// </summary>
-public class RichTextBoxPrintHelper
+public class RichTextBoxAd
 {
     RichTextBox control;
-    public RichTextBoxPrintHelper(RichTextBox controlToPrint)
+    public RichTextBoxAd(RichTextBox controlToPrint)
     {
         control = controlToPrint;
     }

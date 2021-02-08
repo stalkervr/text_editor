@@ -133,11 +133,6 @@
             this.panel6 = new System.Windows.Forms.Panel();
             this.pictureBox_Mute = new System.Windows.Forms.PictureBox();
             this.pictureBox_Vol100 = new System.Windows.Forms.PictureBox();
-            this.st_Button_next = new st_DesignUI.st_Button();
-            this.st_Button_Play = new st_DesignUI.st_Button();
-            this.st_Button_Prev = new st_DesignUI.st_Button();
-            this.st_Button_Add = new st_DesignUI.st_Button();
-            this.st_Button_Clear = new st_DesignUI.st_Button();
             this.trackBar_Volume = new System.Windows.Forms.TrackBar();
             this.toolStrip_Files = new System.Windows.Forms.ToolStrip();
             this.ToolStripButtonFiles_Create = new System.Windows.Forms.ToolStripButton();
@@ -169,6 +164,11 @@
             this.printDialogPrincipal = new System.Windows.Forms.PrintDialog();
             this.printPreviewDialogPrincipal = new System.Windows.Forms.PrintPreviewDialog();
             this.colorDialog_FontColor = new System.Windows.Forms.ColorDialog();
+            this.st_Button_next = new st_DesignUI.st_Button();
+            this.st_Button_Play = new st_DesignUI.st_Button();
+            this.st_Button_Prev = new st_DesignUI.st_Button();
+            this.st_Button_Add = new st_DesignUI.st_Button();
+            this.st_Button_Clear = new st_DesignUI.st_Button();
             this.statusStrip1.SuspendLayout();
             this.menuStrip_Main.SuspendLayout();
             this.toolStrip_Top_Text.SuspendLayout();
@@ -621,7 +621,6 @@
             // toolStripTextBox_textSearch
             // 
             this.toolStripTextBox_textSearch.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.toolStripTextBox_textSearch.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.toolStripTextBox_textSearch.Name = "toolStripTextBox_textSearch";
             this.toolStripTextBox_textSearch.Size = new System.Drawing.Size(120, 28);
             this.toolStripTextBox_textSearch.Text = "Искать";
@@ -704,9 +703,9 @@
             this.toolStripSeparator13,
             this.toolStripComboBox_FontFamiliSet,
             this.toolStripComboBox_FontSizeSet});
-            this.toolStrip_Top_Text.Location = new System.Drawing.Point(3, 63);
+            this.toolStrip_Top_Text.Location = new System.Drawing.Point(255, 32);
             this.toolStrip_Top_Text.Name = "toolStrip_Top_Text";
-            this.toolStrip_Top_Text.Size = new System.Drawing.Size(784, 31);
+            this.toolStrip_Top_Text.Size = new System.Drawing.Size(815, 31);
             this.toolStrip_Top_Text.TabIndex = 1;
             // 
             // toolStripButton_BoldFont
@@ -774,6 +773,7 @@
             this.toolStripButton_AlignLeft.Name = "toolStripButton_AlignLeft";
             this.toolStripButton_AlignLeft.Size = new System.Drawing.Size(28, 28);
             this.toolStripButton_AlignLeft.Text = "Align left";
+            this.toolStripButton_AlignLeft.ToolTipText = "Левое выравнивание";
             this.toolStripButton_AlignLeft.Click += new System.EventHandler(this.toolStripButton_AlignLeft_Click);
             // 
             // toolStripButton_AlignCenter
@@ -785,6 +785,7 @@
             this.toolStripButton_AlignCenter.Name = "toolStripButton_AlignCenter";
             this.toolStripButton_AlignCenter.Size = new System.Drawing.Size(28, 28);
             this.toolStripButton_AlignCenter.Text = "Align center";
+            this.toolStripButton_AlignCenter.ToolTipText = "По центру";
             this.toolStripButton_AlignCenter.Click += new System.EventHandler(this.toolStripButton_AlignCenter_Click);
             // 
             // toolStripButton_AlignRight
@@ -796,6 +797,7 @@
             this.toolStripButton_AlignRight.Name = "toolStripButton_AlignRight";
             this.toolStripButton_AlignRight.Size = new System.Drawing.Size(28, 28);
             this.toolStripButton_AlignRight.Text = "Align right";
+            this.toolStripButton_AlignRight.ToolTipText = "Правое выравнивание";
             this.toolStripButton_AlignRight.Click += new System.EventHandler(this.toolStripButton_AlignRight_Click);
             // 
             // toolStripButton_AlignJustify
@@ -807,6 +809,7 @@
             this.toolStripButton_AlignJustify.Name = "toolStripButton_AlignJustify";
             this.toolStripButton_AlignJustify.Size = new System.Drawing.Size(28, 28);
             this.toolStripButton_AlignJustify.Text = "Align justify";
+            this.toolStripButton_AlignJustify.ToolTipText = "По ширине";
             this.toolStripButton_AlignJustify.Click += new System.EventHandler(this.toolStripButton_AlignJustify_Click);
             // 
             // toolStripSeparator8
@@ -823,6 +826,7 @@
             this.toolStripButton_TextIndent.Name = "toolStripButton_TextIndent";
             this.toolStripButton_TextIndent.Size = new System.Drawing.Size(28, 28);
             this.toolStripButton_TextIndent.Text = "Text indent";
+            this.toolStripButton_TextIndent.ToolTipText = "Уменьшить отступ";
             this.toolStripButton_TextIndent.Click += new System.EventHandler(this.toolStripButton_TextIndent_Click);
             // 
             // toolStripButton_TextOutdent
@@ -834,6 +838,7 @@
             this.toolStripButton_TextOutdent.Name = "toolStripButton_TextOutdent";
             this.toolStripButton_TextOutdent.Size = new System.Drawing.Size(28, 28);
             this.toolStripButton_TextOutdent.Text = "Text outdent";
+            this.toolStripButton_TextOutdent.ToolTipText = "Увеличить отступ";
             this.toolStripButton_TextOutdent.Click += new System.EventHandler(this.toolStripButton_TextOutdent_Click);
             // 
             // toolStripSeparator9
@@ -850,6 +855,7 @@
             this.toolStripButton_BulletedList.Name = "toolStripButton_BulletedList";
             this.toolStripButton_BulletedList.Size = new System.Drawing.Size(28, 28);
             this.toolStripButton_BulletedList.Text = "Bulleted list";
+            this.toolStripButton_BulletedList.ToolTipText = "Маркированный список";
             this.toolStripButton_BulletedList.Click += new System.EventHandler(this.toolStripButton_BulletedList_Click);
             // 
             // toolStripButton_NumberedList
@@ -861,6 +867,7 @@
             this.toolStripButton_NumberedList.Name = "toolStripButton_NumberedList";
             this.toolStripButton_NumberedList.Size = new System.Drawing.Size(28, 28);
             this.toolStripButton_NumberedList.Text = "Numbered list";
+            this.toolStripButton_NumberedList.Visible = false;
             this.toolStripButton_NumberedList.Click += new System.EventHandler(this.toolStripButton_NumberedList_Click);
             // 
             // toolStripSeparator10
@@ -877,7 +884,7 @@
             this.toolStripButton_TextToUpper.Name = "toolStripButton_TextToUpper";
             this.toolStripButton_TextToUpper.Size = new System.Drawing.Size(32, 28);
             this.toolStripButton_TextToUpper.Text = "TT";
-            this.toolStripButton_TextToUpper.ToolTipText = "Text to uppercase";
+            this.toolStripButton_TextToUpper.ToolTipText = "Заглавные буквы";
             this.toolStripButton_TextToUpper.Click += new System.EventHandler(this.toolStripButton_TextToUpper_Click);
             // 
             // toolStripButton_TextToLower
@@ -889,7 +896,7 @@
             this.toolStripButton_TextToLower.Name = "toolStripButton_TextToLower";
             this.toolStripButton_TextToLower.Size = new System.Drawing.Size(26, 28);
             this.toolStripButton_TextToLower.Text = "tt";
-            this.toolStripButton_TextToLower.ToolTipText = "Text to lowercase";
+            this.toolStripButton_TextToLower.ToolTipText = "Прописные буквы";
             this.toolStripButton_TextToLower.Click += new System.EventHandler(this.toolStripButton_TextToLower_Click);
             // 
             // toolStripButton_FontUp
@@ -901,7 +908,7 @@
             this.toolStripButton_FontUp.Name = "toolStripButton_FontUp";
             this.toolStripButton_FontUp.Size = new System.Drawing.Size(32, 28);
             this.toolStripButton_FontUp.Text = "T+";
-            this.toolStripButton_FontUp.ToolTipText = "Font ++";
+            this.toolStripButton_FontUp.ToolTipText = "Шрифт ++";
             this.toolStripButton_FontUp.Click += new System.EventHandler(this.toolStripButton_FontUp_Click);
             // 
             // toolStripButton_FontDown
@@ -913,7 +920,7 @@
             this.toolStripButton_FontDown.Name = "toolStripButton_FontDown";
             this.toolStripButton_FontDown.Size = new System.Drawing.Size(28, 28);
             this.toolStripButton_FontDown.Text = "T-";
-            this.toolStripButton_FontDown.ToolTipText = "Font --";
+            this.toolStripButton_FontDown.ToolTipText = "Шрифт --";
             this.toolStripButton_FontDown.Click += new System.EventHandler(this.toolStripButton_FontDown_Click);
             // 
             // toolStripSeparator11
@@ -930,6 +937,7 @@
             this.toolStripButton_SetFontColor.Name = "toolStripButton_SetFontColor";
             this.toolStripButton_SetFontColor.Size = new System.Drawing.Size(28, 28);
             this.toolStripButton_SetFontColor.Text = "Chose font color";
+            this.toolStripButton_SetFontColor.ToolTipText = "Цвет шрифта";
             this.toolStripButton_SetFontColor.Click += new System.EventHandler(this.toolStripButton_SetFontColor_Click);
             // 
             // toolStripSeparator12
@@ -949,7 +957,7 @@
             this.toolStripSplitButton_MarkText.Name = "toolStripSplitButton_MarkText";
             this.toolStripSplitButton_MarkText.Size = new System.Drawing.Size(40, 28);
             this.toolStripSplitButton_MarkText.Text = "Mark text";
-            this.toolStripSplitButton_MarkText.ToolTipText = "Mark text";
+            this.toolStripSplitButton_MarkText.ToolTipText = "Выделить маркером";
             this.toolStripSplitButton_MarkText.ButtonClick += new System.EventHandler(this.toolStripSplitButton_MarkText_ButtonClick);
             // 
             // toolStripMenuItem_Yellow
@@ -1012,7 +1020,7 @@
             // 
             this.toolStripContainer1.ContentPanel.Controls.Add(this.panel4);
             this.toolStripContainer1.ContentPanel.Controls.Add(this.panel3);
-            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(1312, 650);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(1312, 681);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
             this.toolStripContainer1.Name = "toolStripContainer1";
@@ -1032,7 +1040,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(0, 0);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1012, 650);
+            this.panel4.Size = new System.Drawing.Size(1012, 681);
             this.panel4.TabIndex = 4;
             // 
             // tabControlPrincipal
@@ -1042,7 +1050,7 @@
             this.tabControlPrincipal.Location = new System.Drawing.Point(0, 0);
             this.tabControlPrincipal.Name = "tabControlPrincipal";
             this.tabControlPrincipal.SelectedIndex = 0;
-            this.tabControlPrincipal.Size = new System.Drawing.Size(1012, 650);
+            this.tabControlPrincipal.Size = new System.Drawing.Size(1012, 681);
             this.tabControlPrincipal.TabIndex = 0;
             this.tabControlPrincipal.Click += new System.EventHandler(this.tabControlPrincipal_Click);
             this.tabControlPrincipal.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tabControlPrincipal_MouseDown);
@@ -1055,7 +1063,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel3.Location = new System.Drawing.Point(1012, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(300, 650);
+            this.panel3.Size = new System.Drawing.Size(300, 681);
             this.panel3.TabIndex = 3;
             // 
             // panel7
@@ -1064,7 +1072,7 @@
             this.panel7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel7.Location = new System.Drawing.Point(0, 376);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(300, 131);
+            this.panel7.Size = new System.Drawing.Size(300, 162);
             this.panel7.TabIndex = 10;
             // 
             // panel_List
@@ -1075,7 +1083,7 @@
             this.panel_List.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel_List.Location = new System.Drawing.Point(0, 0);
             this.panel_List.Name = "panel_List";
-            this.panel_List.Size = new System.Drawing.Size(300, 131);
+            this.panel_List.Size = new System.Drawing.Size(300, 162);
             this.panel_List.TabIndex = 3;
             // 
             // panel10
@@ -1084,7 +1092,7 @@
             this.panel10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel10.Location = new System.Drawing.Point(20, 0);
             this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(260, 131);
+            this.panel10.Size = new System.Drawing.Size(260, 162);
             this.panel10.TabIndex = 3;
             // 
             // listBox_Playlist
@@ -1097,7 +1105,7 @@
             this.listBox_Playlist.FormattingEnabled = true;
             this.listBox_Playlist.Location = new System.Drawing.Point(0, 0);
             this.listBox_Playlist.Name = "listBox_Playlist";
-            this.listBox_Playlist.Size = new System.Drawing.Size(260, 131);
+            this.listBox_Playlist.Size = new System.Drawing.Size(260, 162);
             this.listBox_Playlist.TabIndex = 0;
             this.listBox_Playlist.SelectedIndexChanged += new System.EventHandler(this.listBox_Playlist_SelectedIndexChanged);
             // 
@@ -1106,7 +1114,7 @@
             this.panel9.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel9.Location = new System.Drawing.Point(0, 0);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(20, 131);
+            this.panel9.Size = new System.Drawing.Size(20, 162);
             this.panel9.TabIndex = 2;
             // 
             // panel8
@@ -1114,7 +1122,7 @@
             this.panel8.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel8.Location = new System.Drawing.Point(280, 0);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(20, 131);
+            this.panel8.Size = new System.Drawing.Size(20, 162);
             this.panel8.TabIndex = 1;
             // 
             // panel1
@@ -1222,7 +1230,7 @@
             this.panel6.Controls.Add(this.st_Button_Clear);
             this.panel6.Controls.Add(this.trackBar_Volume);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel6.Location = new System.Drawing.Point(0, 507);
+            this.panel6.Location = new System.Drawing.Point(0, 538);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(300, 143);
             this.panel6.TabIndex = 8;
@@ -1246,71 +1254,6 @@
             this.pictureBox_Vol100.TabIndex = 13;
             this.pictureBox_Vol100.TabStop = false;
             this.pictureBox_Vol100.Click += new System.EventHandler(this.pictureBox_Vol100_Click);
-            // 
-            // st_Button_next
-            // 
-            this.st_Button_next.BackColor = System.Drawing.Color.Gray;
-            this.st_Button_next.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.st_Button_next.ForeColor = System.Drawing.Color.White;
-            this.st_Button_next.Location = new System.Drawing.Point(217, 66);
-            this.st_Button_next.Name = "st_Button_next";
-            this.st_Button_next.Size = new System.Drawing.Size(70, 30);
-            this.st_Button_next.TabIndex = 12;
-            this.st_Button_next.Text = "Next";
-            this.st_Button_next.UseVisualStyleBackColor = false;
-            this.st_Button_next.Click += new System.EventHandler(this.st_Button_next_Click);
-            // 
-            // st_Button_Play
-            // 
-            this.st_Button_Play.BackColor = System.Drawing.Color.DarkGray;
-            this.st_Button_Play.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.st_Button_Play.ForeColor = System.Drawing.Color.White;
-            this.st_Button_Play.Location = new System.Drawing.Point(100, 66);
-            this.st_Button_Play.Name = "st_Button_Play";
-            this.st_Button_Play.Size = new System.Drawing.Size(111, 66);
-            this.st_Button_Play.TabIndex = 11;
-            this.st_Button_Play.Text = "Play";
-            this.st_Button_Play.UseVisualStyleBackColor = false;
-            this.st_Button_Play.Click += new System.EventHandler(this.st_Button_Play_Click);
-            // 
-            // st_Button_Prev
-            // 
-            this.st_Button_Prev.BackColor = System.Drawing.Color.Gray;
-            this.st_Button_Prev.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.st_Button_Prev.ForeColor = System.Drawing.Color.White;
-            this.st_Button_Prev.Location = new System.Drawing.Point(14, 66);
-            this.st_Button_Prev.Name = "st_Button_Prev";
-            this.st_Button_Prev.Size = new System.Drawing.Size(80, 30);
-            this.st_Button_Prev.TabIndex = 10;
-            this.st_Button_Prev.Text = "Prev";
-            this.st_Button_Prev.UseVisualStyleBackColor = false;
-            this.st_Button_Prev.Click += new System.EventHandler(this.st_Button_Prev_Click);
-            // 
-            // st_Button_Add
-            // 
-            this.st_Button_Add.BackColor = System.Drawing.Color.Gray;
-            this.st_Button_Add.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.st_Button_Add.ForeColor = System.Drawing.Color.White;
-            this.st_Button_Add.Location = new System.Drawing.Point(216, 102);
-            this.st_Button_Add.Name = "st_Button_Add";
-            this.st_Button_Add.Size = new System.Drawing.Size(70, 30);
-            this.st_Button_Add.TabIndex = 9;
-            this.st_Button_Add.Text = "Add";
-            this.st_Button_Add.UseVisualStyleBackColor = false;
-            this.st_Button_Add.Click += new System.EventHandler(this.st_Button_Add_Click);
-            // 
-            // st_Button_Clear
-            // 
-            this.st_Button_Clear.BackColor = System.Drawing.Color.Gray;
-            this.st_Button_Clear.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.st_Button_Clear.ForeColor = System.Drawing.Color.White;
-            this.st_Button_Clear.Location = new System.Drawing.Point(14, 102);
-            this.st_Button_Clear.Name = "st_Button_Clear";
-            this.st_Button_Clear.Size = new System.Drawing.Size(80, 30);
-            this.st_Button_Clear.TabIndex = 8;
-            this.st_Button_Clear.Text = "Clear";
-            this.st_Button_Clear.UseVisualStyleBackColor = false;
-            this.st_Button_Clear.Click += new System.EventHandler(this.st_Button_Clear_Click);
             // 
             // trackBar_Volume
             // 
@@ -1565,6 +1508,71 @@
             this.printPreviewDialogPrincipal.Name = "printPreviewDialog_Main";
             this.printPreviewDialogPrincipal.ShowIcon = false;
             this.printPreviewDialogPrincipal.Visible = false;
+            // 
+            // st_Button_next
+            // 
+            this.st_Button_next.BackColor = System.Drawing.Color.Gray;
+            this.st_Button_next.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.st_Button_next.ForeColor = System.Drawing.Color.White;
+            this.st_Button_next.Location = new System.Drawing.Point(217, 66);
+            this.st_Button_next.Name = "st_Button_next";
+            this.st_Button_next.Size = new System.Drawing.Size(70, 30);
+            this.st_Button_next.TabIndex = 12;
+            this.st_Button_next.Text = "Next";
+            this.st_Button_next.UseVisualStyleBackColor = false;
+            this.st_Button_next.Click += new System.EventHandler(this.st_Button_next_Click);
+            // 
+            // st_Button_Play
+            // 
+            this.st_Button_Play.BackColor = System.Drawing.Color.DarkGray;
+            this.st_Button_Play.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.st_Button_Play.ForeColor = System.Drawing.Color.White;
+            this.st_Button_Play.Location = new System.Drawing.Point(100, 66);
+            this.st_Button_Play.Name = "st_Button_Play";
+            this.st_Button_Play.Size = new System.Drawing.Size(111, 66);
+            this.st_Button_Play.TabIndex = 11;
+            this.st_Button_Play.Text = "Play";
+            this.st_Button_Play.UseVisualStyleBackColor = false;
+            this.st_Button_Play.Click += new System.EventHandler(this.st_Button_Play_Click);
+            // 
+            // st_Button_Prev
+            // 
+            this.st_Button_Prev.BackColor = System.Drawing.Color.Gray;
+            this.st_Button_Prev.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.st_Button_Prev.ForeColor = System.Drawing.Color.White;
+            this.st_Button_Prev.Location = new System.Drawing.Point(14, 66);
+            this.st_Button_Prev.Name = "st_Button_Prev";
+            this.st_Button_Prev.Size = new System.Drawing.Size(80, 30);
+            this.st_Button_Prev.TabIndex = 10;
+            this.st_Button_Prev.Text = "Prev";
+            this.st_Button_Prev.UseVisualStyleBackColor = false;
+            this.st_Button_Prev.Click += new System.EventHandler(this.st_Button_Prev_Click);
+            // 
+            // st_Button_Add
+            // 
+            this.st_Button_Add.BackColor = System.Drawing.Color.Gray;
+            this.st_Button_Add.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.st_Button_Add.ForeColor = System.Drawing.Color.White;
+            this.st_Button_Add.Location = new System.Drawing.Point(216, 102);
+            this.st_Button_Add.Name = "st_Button_Add";
+            this.st_Button_Add.Size = new System.Drawing.Size(70, 30);
+            this.st_Button_Add.TabIndex = 9;
+            this.st_Button_Add.Text = "Add";
+            this.st_Button_Add.UseVisualStyleBackColor = false;
+            this.st_Button_Add.Click += new System.EventHandler(this.st_Button_Add_Click);
+            // 
+            // st_Button_Clear
+            // 
+            this.st_Button_Clear.BackColor = System.Drawing.Color.Gray;
+            this.st_Button_Clear.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.st_Button_Clear.ForeColor = System.Drawing.Color.White;
+            this.st_Button_Clear.Location = new System.Drawing.Point(14, 102);
+            this.st_Button_Clear.Name = "st_Button_Clear";
+            this.st_Button_Clear.Size = new System.Drawing.Size(80, 30);
+            this.st_Button_Clear.TabIndex = 8;
+            this.st_Button_Clear.Text = "Clear";
+            this.st_Button_Clear.UseVisualStyleBackColor = false;
+            this.st_Button_Clear.Click += new System.EventHandler(this.st_Button_Clear_Click);
             // 
             // FormMain
             // 
